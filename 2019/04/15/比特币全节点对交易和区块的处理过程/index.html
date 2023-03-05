@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"padding":18},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="交易的处理过程 “tx” messages  Check syntactic correctness Make sure neither in or out lists are empty Size in bytes &lt;&#x3D; MAX_BLOCK_SIZE Each output value, as well as the total, must be in legal money range">
+<meta property="og:type" content="article">
+<meta property="og:title" content="比特币全节点对交易和区块的处理过程">
+<meta property="og:url" content="https://hzxgoforward.github.io/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%A8%E8%8A%82%E7%82%B9%E5%AF%B9%E4%BA%A4%E6%98%93%E5%92%8C%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="萌虎下山">
+<meta property="og:description" content="交易的处理过程 “tx” messages  Check syntactic correctness Make sure neither in or out lists are empty Size in bytes &lt;&#x3D; MAX_BLOCK_SIZE Each output value, as well as the total, must be in legal money range">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-05T12:08:13.809Z">
+<meta property="article:author" content="hzx">
+<meta property="article:tag" content="比特币">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="https://hzxgoforward.github.io/2019/04/15/比特币全节点对交易和区块的处理过程/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>比特币全节点对交易和区块的处理过程 | 萌虎下山</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">萌虎下山</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">与其感慨路难行，不如马上出发!</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%A8%E8%8A%82%E7%82%B9%E5%AF%B9%E4%BA%A4%E6%98%93%E5%92%8C%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar2.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="萌虎下山">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">比特币全节点对交易和区块的处理过程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2019-04-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-15T00:00:00+08:00">2019-04-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-03-05 20:08:13" itemprop="dateModified" datetime="2023-03-05T20:08:13+08:00">2023-03-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6/" itemprop="url" rel="index"><span itemprop="name">区块链技术研究</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span id="busuanzi_value_page_pv"></span>次阅读
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="交易的处理过程"><a class="markdownIt-Anchor" href="#交易的处理过程"></a> 交易的处理过程</h2>
+<p>“tx” messages</p>
+<ol>
+<li>Check syntactic correctness</li>
+<li>Make sure neither in or out lists are empty</li>
+<li>Size in bytes &lt;= MAX_BLOCK_SIZE</li>
+<li>Each output value, as well as the total, must be in legal money range</li>
+<li>Make sure none of the inputs have hash=0, n=-1 (coinbase transactions)</li>
+<li>Check that nLockTime &lt;= INT_MAX<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>, size in bytes &gt;= 100<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, and sig opcount &lt;= 2<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></li>
+<li>Reject “nonstandard” transactions: scriptSig doing anything other than pushing numbers on the stack, or scriptPubkey not matching the two usual forms.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></li>
+<li>Reject if we already have matching tx in the pool, or in a block in the main branch</li>
+<li>For each input, if the referenced output exists in any other tx in the pool, reject this transaction.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></li>
+<li>For each input, look in the main branch and the transaction pool to find the referenced output transaction. If the output transaction is missing for any input, this will be an orphan transaction. Add to the orphan transactions, if a matching transaction is not in there already.<br />
+For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject this transaction</li>
+<li>For each input, if the referenced output does not exist (e.g. never existed or has already been spent), reject this transaction<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></li>
+<li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range</li>
+<li>Reject if the sum of input values &lt; sum of output values</li>
+<li>Reject if transaction fee (defined as sum of input values minus sum of output values) would be too low to get into an empty block</li>
+<li>Verify the scriptPubKey accepts for each input; reject if any are bad</li>
+<li>Add to transaction pool<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
+<li>“Add to wallet if mine”</li>
+<li>Relay transaction to peers</li>
+<li>For each orphan transaction that uses this one as one of its inputs, run all these steps (including this one) recursively on that orphan.</li>
+</ol>
+<h2 id="区块的处理过程"><a class="markdownIt-Anchor" href="#区块的处理过程"></a> 区块的处理过程</h2>
+<ol>
+<li>
+<p>Check syntactic correctness</p>
+</li>
+<li>
+<p>Reject if duplicate of block we have in any of the three categories</p>
+</li>
+<li>
+<p>Transaction list must be non-empty</p>
+</li>
+<li>
+<p>Block hash must satisfy claimed nBits proof of work</p>
+</li>
+<li>
+<p>Block timestamp must not be more than two hours in the future</p>
+</li>
+<li>
+<p>First transaction must be coinbase (i.e. only 1 input, with hash=0,<br />
+n=-1), the rest must not be</p>
+</li>
+<li>
+<p>For each transaction, apply “tx” checks 2-4</p>
+</li>
+<li>
+<p>For the coinbase (first) transaction, scriptSig length must be 2-100</p>
+</li>
+<li>
+<p>Reject if sum of transaction sig opcounts &gt; MAX_BLOCK_SIGOPS</p>
+</li>
+<li>
+<p>Verify Merkle hash</p>
+</li>
+<li>
+<p>Check if prev block (matching prev hash) is in main branch or side<br />
+branches. If not, add this to orphan blocks, then query peer we got<br />
+this from for 1st missing orphan block in prev chain;done with block</p>
+</li>
+<li>
+<p>Check that nBits value matches the difficulty rules.</p>
+</li>
+<li>
+<p>Reject if timestamp is the median time of the last 11 blocks or<br />
+before</p>
+</li>
+<li>
+<p>For certain old blocks (i.e. on initial block download) check that<br />
+hash matches known values</p>
+</li>
+<li>
+<p>Add block into the tree. There are three cases: 1. block further<br />
+extends the main branch; 2. block extends a side branch but does<br />
+not add enough difficulty to make it become the new main branch; 3.<br />
+block extends a side branch and makes it the new main branch.</p>
+</li>
+<li>
+<p>For case 1, adding to main branch:</p>
+<ol>
+<li>
+<p>For all but the coinbase transaction, apply the following:</p>
+<ol>
+<li>For each input, look in the main branch to find the referenced output transaction. Reject if the output transaction is missing for any input.</li>
+<li>For each input, if we are using the nth output of the earlier transaction, but it has fewer than n+1 outputs, reject.</li>
+<li>For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.</li>
+<li>Verify crypto signatures for each input; reject if any are bad.</li>
+<li>For each input, if the referenced output has already been spent by a transaction in the main branch, reject.</li>
+<li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range.</li>
+<li>Reject if the sum of input values &lt; sum of output values.</li>
+</ol>
+</li>
+<li>
+<p>Reject if coinbase value &gt; sum of block creation fee and transaction fees</p>
+</li>
+<li>
+<p>(If we have not rejected):</p>
+</li>
+<li>
+<p>For each transaction, “Add to wallet if mine”</p>
+</li>
+<li>
+<p>For each transaction in the block, delete any matching transaction from the transaction pool</p>
+</li>
+<li>
+<p>Relay block to our peers</p>
+</li>
+<li>
+<p>If we rejected, the block is not counted as part of the main branch</p>
+</li>
+</ol>
+</li>
+</ol>
+<pre><code>17. For case 2, adding to a side branch, we don't do anything.
+18. For case 3, a side branch becoming the main branch:
+
+	1. Find the fork block on the main branch which this side branch forks off of.
+	2. Redefine the main branch to only go up to this fork block.
+	3. For each block on the side branch, from the child of the fork block to the leaf, add to the main branch:
+	
+		1. Do &quot;branch&quot; checks 3-11.
+		2. For all but the coinbase transaction, apply the following:
+
+			1. For each input, look in the main branch to find the referenced output transaction.Reject if the output transaction is missing for any input.
+			2. For each input, if we are using the nth output of the earlier transaction, but it has fewer than n+1 outputs, reject.
+			3. For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.
+			4. Verify crypto signatures for each input; reject if any are bad.
+			5. For each input, if the referenced output has already been spent by a transaction in the main branch, reject.
+			6. Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range.
+			7. Reject if the sum of input values &lt; sum of output values.
+		
+		3. Reject if coinbase value &gt; sum of block creation fee and transaction fees.
+		4. (If we have not rejected):
+		5. For each transaction, &quot;Add to wallet if mine&quot;
+
+
+	4. If we reject at any point, leave the main branch as what it was originally, done with block.
+	5. For each block in the old main branch, from the leaf down to the child of the fork block:
+
+		1. For each non-coinbase transaction in the block:
+			1. Apply &quot;tx&quot; checks 2-9, except in step 8, only look in the transaction pool for duplicates, not the main branch.
+			2. Add to transaction pool if accepted, else go on to next transaction
+
+	6. For each block in the new main branch, from the child of the fork node to the leaf:
+		1. For each transaction in the block, delete any matching transaction from the transaction pool.
+	7. Relay block to our peers
+</code></pre>
+<ol start="19">
+<li>For each orphan block for which this block is its prev, run all these steps (including this one) recursively on that orphan</li>
+</ol>
+<h2 id="注解"><a class="markdownIt-Anchor" href="#注解"></a> 注解</h2>
+<h2 id="引用"><a class="markdownIt-Anchor" href="#引用"></a> 引用</h2>
+<p><a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Protocol_rules">https://en.bitcoin.it/wiki/Protocol_rules</a></p>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>nLockTime must not exceed 31 bits, as some clients will interpret it incorrectly. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>A valid transaction requires at least 100 bytes. If it’s any less, the transaction is not valid <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>The number of signature operands in the signature (no, that is not redundant) for standard transactions will never exceed two. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Note that this is not a hard requirement on clients. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Note that this is not a hard requirement on clients. The network-enforced rule is that only one transaction spending a particular output can be in the blockchain, thus preventing double-spending. Technically miners can choose which one they want to put into the block they’re working on as long as no other transaction has spent that output either previously in the blockchain, or in the same block. The in-memory transaction pool can technically be managed in whatever way the miner is willing to implement. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>This is the protection against double-spending. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Note that when the transaction is accepted into the memory pool, an additional check is made to ensure that the coinbase value does not exceed the transaction fees plus the expected BTC value (25BTC as of this writing). <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%AF%94%E7%89%B9%E5%B8%81/" rel="tag"># 比特币</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/10/An%20Empirical%20Analysis%20of%20Traceability%20in%20the%20Monero%20Blockchain/" rel="next" title="An Empirical Analysis of Traceability in the Monero Blockchain">
+                <i class="fa fa-chevron-left"></i> An Empirical Analysis of Traceability in the Monero Blockchain
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E4%B8%ADTxid%E5%92%8CTxhash%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="prev" title="比特币中Txid和Txhash的区别">
+                比特币中Txid和Txhash的区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar2.jpg"
+                alt="博主" />
+            
+              <p class="site-author-name" itemprop="name">博主</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/hzxGoForward" title="github &rarr; https://github.com/hzxGoForward" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>github</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/wen-ge-hua-49/activities" title="zhihu &rarr; https://www.zhihu.com/people/wen-ge-hua-49/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>zhihu</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/hzx@pku.edu.cn" title="email &rarr; hzx@pku.edu.cn"><i class="fa fa-fw fa-envelope"></i>email</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://me.csdn.net/t46414704152abc" title="csdn &rarr; https://me.csdn.net/t46414704152abc" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>csdn</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://leetcode.cn/u/hzxforward/" title="leetcode &rarr; https://leetcode.cn/u/hzxforward/" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>leetcode</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%98%93%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-text"> 交易的处理过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-text"> 区块的处理过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-text"> 注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-text"> 引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+<!--背景音乐-->
+<!--iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=37856454&auto=1&height=66"></iframe> --> 
+<!--<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=556319523&auto=1&height=66"></iframe> -->
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=4341314&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博主</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v6.3.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.6.0</div>
+
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!--注释本行<span id="busuanzi_container_site_pv" style='display:none'>-->
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    本站访问<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+    overflow: auto hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('Copy')
+        }, 300)
+      }).append(e)
+    })
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+
+</body>
+</html>
