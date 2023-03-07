@@ -108,12 +108,12 @@
 
 
 
-  <meta name="description" content="交易的处理过程“tx” messages  Check syntactic correctness Make sure neither in or out lists are empty Size in bytes &lt;&#x3D; MAX_BLOCK_SIZE Each output value, as well as the total, must be in legal money range M">
+  <meta name="description" content="交易的处理过程 “tx” messages  Check syntactic correctness Make sure neither in or out lists are empty Size in bytes &lt;&#x3D; MAX_BLOCK_SIZE Each output value, as well as the total, must be in legal money range">
 <meta property="og:type" content="article">
 <meta property="og:title" content="比特币全节点对交易和区块的处理过程">
 <meta property="og:url" content="https://hzxgoforward.github.io/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%A8%E8%8A%82%E7%82%B9%E5%AF%B9%E4%BA%A4%E6%98%93%E5%92%8C%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="HuZhenXing">
-<meta property="og:description" content="交易的处理过程“tx” messages  Check syntactic correctness Make sure neither in or out lists are empty Size in bytes &lt;&#x3D; MAX_BLOCK_SIZE Each output value, as well as the total, must be in legal money range M">
+<meta property="og:description" content="交易的处理过程 “tx” messages  Check syntactic correctness Make sure neither in or out lists are empty Size in bytes &lt;&#x3D; MAX_BLOCK_SIZE Each output value, as well as the total, must be in legal money range">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-04-14T16:00:00.000Z">
 <meta property="article:modified_time" content="2023-03-05T12:08:13.809Z">
@@ -476,74 +476,92 @@
       
 
       
-        <h2 id="交易的处理过程"><a href="#交易的处理过程" class="headerlink" title="交易的处理过程"></a>交易的处理过程</h2><p>“tx” messages</p>
+        <h2 id="交易的处理过程"><a class="markdownIt-Anchor" href="#交易的处理过程"></a> 交易的处理过程</h2>
+<p>“tx” messages</p>
 <ol>
 <li>Check syntactic correctness</li>
 <li>Make sure neither in or out lists are empty</li>
 <li>Size in bytes &lt;= MAX_BLOCK_SIZE</li>
 <li>Each output value, as well as the total, must be in legal money range</li>
 <li>Make sure none of the inputs have hash=0, n=-1 (coinbase transactions)</li>
-<li>Check that nLockTime &lt;= INT_MAX<sup><a href="#fn_1" id="reffn_1">1</a></sup>, size in bytes &gt;= 100<sup><a href="#fn_2" id="reffn_2">2</a></sup>, and sig opcount &lt;= 2<sup><a href="#fn_3" id="reffn_3">3</a></sup></li>
-<li>Reject “nonstandard” transactions: scriptSig doing anything other than pushing numbers on the stack, or scriptPubkey not matching the two usual forms.<sup><a href="#fn_4" id="reffn_4">4</a></sup></li>
+<li>Check that nLockTime &lt;= INT_MAX<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>, size in bytes &gt;= 100<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, and sig opcount &lt;= 2<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></li>
+<li>Reject “nonstandard” transactions: scriptSig doing anything other than pushing numbers on the stack, or scriptPubkey not matching the two usual forms.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></li>
 <li>Reject if we already have matching tx in the pool, or in a block in the main branch</li>
-<li>For each input, if the referenced output exists in any other tx in the pool, reject this transaction.<sup><a href="#fn_5" id="reffn_5">5</a></sup></li>
-<li>For each input, look in the main branch and the transaction pool to find the referenced output transaction. If the output transaction is missing for any input, this will be an orphan transaction. Add to the orphan transactions, if a matching transaction is not in there already.<br>For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject this transaction</li>
-<li>For each input, if the referenced output does not exist (e.g. never existed or has already been spent), reject this transaction<sup><a href="#fn_6" id="reffn_6">6</a></sup></li>
+<li>For each input, if the referenced output exists in any other tx in the pool, reject this transaction.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></li>
+<li>For each input, look in the main branch and the transaction pool to find the referenced output transaction. If the output transaction is missing for any input, this will be an orphan transaction. Add to the orphan transactions, if a matching transaction is not in there already.<br />
+For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject this transaction</li>
+<li>For each input, if the referenced output does not exist (e.g. never existed or has already been spent), reject this transaction<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></li>
 <li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range</li>
 <li>Reject if the sum of input values &lt; sum of output values</li>
 <li>Reject if transaction fee (defined as sum of input values minus sum of output values) would be too low to get into an empty block</li>
 <li>Verify the scriptPubKey accepts for each input; reject if any are bad</li>
-<li>Add to transaction pool<sup><a href="#fn_7" id="reffn_7">7</a></sup></li>
+<li>Add to transaction pool<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
 <li>“Add to wallet if mine”</li>
 <li>Relay transaction to peers</li>
 <li>For each orphan transaction that uses this one as one of its inputs, run all these steps (including this one) recursively on that orphan.</li>
 </ol>
-<h2 id="区块的处理过程"><a href="#区块的处理过程" class="headerlink" title="区块的处理过程"></a>区块的处理过程</h2><ol>
-<li>Check syntactic correctness</li>
-<li>Reject if duplicate of block we have in any of the three categories</li>
-<li>Transaction list must be non-empty</li>
-<li>Block hash must satisfy claimed nBits proof of work</li>
-<li>Block timestamp must not be more than two hours in the future</li>
-<li>First transaction must be coinbase (i.e. only 1 input, with hash=0,<br>n=-1), the rest must not be</li>
-<li>For each transaction, apply “tx” checks 2-4</li>
-<li>For the coinbase (first) transaction, scriptSig length must be 2-100</li>
-<li>Reject if sum of transaction sig opcounts &gt; MAX_BLOCK_SIGOPS</li>
-<li>Verify Merkle hash</li>
-<li>Check if prev block (matching prev hash) is in main branch or side<br>branches. If not, add this to orphan blocks, then query peer we got<br>this from for 1st missing orphan block in prev chain;done with block</li>
-<li>Check that nBits value matches the difficulty rules.</li>
-<li>Reject if timestamp is the median time of the last 11 blocks or<br>before</li>
-<li>For certain old blocks (i.e. on initial block download) check that<br>hash matches known values</li>
-<li>Add block into the tree. There are three cases: 1. block further<br>extends the main branch; 2. block extends a side branch but does<br>not add enough difficulty to make it become the new main branch; 3.<br>block extends a side branch and makes it the new main branch.</li>
-<li><p>For case 1, adding to main branch:</p>
-<pre><code> 1. For all but the coinbase transaction, apply the following:
-
-   1. For each input, look in the main branch to find the referenced output transaction. Reject if the output transaction is missing for any input.
-   2. For each input, if we are using the nth output of the earlier transaction, but it has fewer than n+1 outputs, reject.
-   3. For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.
-   4. Verify crypto signatures for each input; reject if any are bad.
-   5. For each input, if the referenced output has already been spent by a transaction in the main branch, reject.
-   6. Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range.
-   7. Reject if the sum of input values &lt; sum of output values.
-</code></pre><ol>
-<li>Reject if coinbase value &gt; sum of block creation fee and transaction fees</li>
-<li>(If we have not rejected):</li>
-<li>For each transaction, “Add to wallet if mine”</li>
-<li>For each transaction in the block, delete any matching transaction from the transaction pool</li>
-<li>Relay block to our peers</li>
-<li>If we rejected, the block is not counted as part of the main branch</li>
-</ol>
+<h2 id="区块的处理过程"><a class="markdownIt-Anchor" href="#区块的处理过程"></a> 区块的处理过程</h2>
 <ol>
-<li>For case 2, adding to a side branch, we don’t do anything.</li>
-<li><p>For case 3, a side branch becoming the main branch:</p>
+<li>
+<p>Check syntactic correctness</p>
+</li>
+<li>
+<p>Reject if duplicate of block we have in any of the three categories</p>
+</li>
+<li>
+<p>Transaction list must be non-empty</p>
+</li>
+<li>
+<p>Block hash must satisfy claimed nBits proof of work</p>
+</li>
+<li>
+<p>Block timestamp must not be more than two hours in the future</p>
+</li>
+<li>
+<p>First transaction must be coinbase (i.e. only 1 input, with hash=0,<br />
+n=-1), the rest must not be</p>
+</li>
+<li>
+<p>For each transaction, apply “tx” checks 2-4</p>
+</li>
+<li>
+<p>For the coinbase (first) transaction, scriptSig length must be 2-100</p>
+</li>
+<li>
+<p>Reject if sum of transaction sig opcounts &gt; MAX_BLOCK_SIGOPS</p>
+</li>
+<li>
+<p>Verify Merkle hash</p>
+</li>
+<li>
+<p>Check if prev block (matching prev hash) is in main branch or side<br />
+branches. If not, add this to orphan blocks, then query peer we got<br />
+this from for 1st missing orphan block in prev chain;done with block</p>
+</li>
+<li>
+<p>Check that nBits value matches the difficulty rules.</p>
+</li>
+<li>
+<p>Reject if timestamp is the median time of the last 11 blocks or<br />
+before</p>
+</li>
+<li>
+<p>For certain old blocks (i.e. on initial block download) check that<br />
+hash matches known values</p>
+</li>
+<li>
+<p>Add block into the tree. There are three cases: 1. block further<br />
+extends the main branch; 2. block extends a side branch but does<br />
+not add enough difficulty to make it become the new main branch; 3.<br />
+block extends a side branch and makes it the new main branch.</p>
+</li>
+<li>
+<p>For case 1, adding to main branch:</p>
 <ol>
-<li>Find the fork block on the main branch which this side branch forks off of.</li>
-<li>Redefine the main branch to only go up to this fork block.</li>
-<li><p>For each block on the side branch, from the child of the fork block to the leaf, add to the main branch:</p>
+<li>
+<p>For all but the coinbase transaction, apply the following:</p>
 <ol>
-<li>Do “branch” checks 3-11.</li>
-<li><p>For all but the coinbase transaction, apply the following:</p>
-<ol>
-<li>For each input, look in the main branch to find the referenced output transaction.Reject if the output transaction is missing for any input.</li>
+<li>For each input, look in the main branch to find the referenced output transaction. Reject if the output transaction is missing for any input.</li>
 <li>For each input, if we are using the nth output of the earlier transaction, but it has fewer than n+1 outputs, reject.</li>
 <li>For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.</li>
 <li>Verify crypto signatures for each input; reject if any are bad.</li>
@@ -552,35 +570,86 @@
 <li>Reject if the sum of input values &lt; sum of output values.</li>
 </ol>
 </li>
-<li><p>Reject if coinbase value &gt; sum of block creation fee and transaction fees.</p>
+<li>
+<p>Reject if coinbase value &gt; sum of block creation fee and transaction fees</p>
 </li>
-<li>(If we have not rejected):</li>
-<li>For each transaction, “Add to wallet if mine”</li>
+<li>
+<p>(If we have not rejected):</p>
+</li>
+<li>
+<p>For each transaction, “Add to wallet if mine”</p>
+</li>
+<li>
+<p>For each transaction in the block, delete any matching transaction from the transaction pool</p>
+</li>
+<li>
+<p>Relay block to our peers</p>
+</li>
+<li>
+<p>If we rejected, the block is not counted as part of the main branch</p>
+</li>
 </ol>
 </li>
 </ol>
-</li>
-</ol>
-</li>
-</ol>
-<pre><code>    4. If we reject at any point, leave the main branch as what it was originally, done with block.
-    5. For each block in the old main branch, from the leaf down to the child of the fork block:
+<pre><code>17. For case 2, adding to a side branch, we don't do anything.
+18. For case 3, a side branch becoming the main branch:
 
-        1. For each non-coinbase transaction in the block:
-            1. Apply &quot;tx&quot; checks 2-9, except in step 8, only look in the transaction pool for duplicates, not the main branch.
-            2. Add to transaction pool if accepted, else go on to next transaction
+	1. Find the fork block on the main branch which this side branch forks off of.
+	2. Redefine the main branch to only go up to this fork block.
+	3. For each block on the side branch, from the child of the fork block to the leaf, add to the main branch:
+	
+		1. Do &quot;branch&quot; checks 3-11.
+		2. For all but the coinbase transaction, apply the following:
 
-    6. For each block in the new main branch, from the child of the fork node to the leaf:
-        1. For each transaction in the block, delete any matching transaction from the transaction pool.
-    7. Relay block to our peers
-</code></pre><ol>
+			1. For each input, look in the main branch to find the referenced output transaction.Reject if the output transaction is missing for any input.
+			2. For each input, if we are using the nth output of the earlier transaction, but it has fewer than n+1 outputs, reject.
+			3. For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.
+			4. Verify crypto signatures for each input; reject if any are bad.
+			5. For each input, if the referenced output has already been spent by a transaction in the main branch, reject.
+			6. Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range.
+			7. Reject if the sum of input values &lt; sum of output values.
+		
+		3. Reject if coinbase value &gt; sum of block creation fee and transaction fees.
+		4. (If we have not rejected):
+		5. For each transaction, &quot;Add to wallet if mine&quot;
+
+
+	4. If we reject at any point, leave the main branch as what it was originally, done with block.
+	5. For each block in the old main branch, from the leaf down to the child of the fork block:
+
+		1. For each non-coinbase transaction in the block:
+			1. Apply &quot;tx&quot; checks 2-9, except in step 8, only look in the transaction pool for duplicates, not the main branch.
+			2. Add to transaction pool if accepted, else go on to next transaction
+
+	6. For each block in the new main branch, from the child of the fork node to the leaf:
+		1. For each transaction in the block, delete any matching transaction from the transaction pool.
+	7. Relay block to our peers
+</code></pre>
+<ol start="19">
 <li>For each orphan block for which this block is its prev, run all these steps (including this one) recursively on that orphan</li>
 </ol>
-<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><blockquote id="fn_1">
-<sup>1</sup>. nLockTime must not exceed 31 bits, as some clients will interpret it incorrectly.<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
-</blockquote>
-<p><sup><a href="#fn_2" id="reffn_2">2</a></sup>:A valid transaction requires at least 100 bytes. If it’s any less, the transaction is not valid<br> <sup><a href="#fn_3" id="reffn_3">3</a></sup>:The number of signature operands in the signature (no, that is not redundant) for standard transactions will never exceed two.<br> <sup><a href="#fn_4" id="reffn_4">4</a></sup>:Note that this is not a hard requirement on clients.<br> <sup><a href="#fn_5" id="reffn_5">5</a></sup>:Note that this is not a hard requirement on clients. The network-enforced rule is that only one transaction spending a particular output can be in the blockchain, thus preventing double-spending. Technically miners can choose which one they want to put into the block they’re working on as long as no other transaction has spent that output either previously in the blockchain, or in the same block. The in-memory transaction pool can technically be managed in whatever way the miner is willing to implement.<br> <sup><a href="#fn_6" id="reffn_6">6</a></sup>:This is the protection against double-spending.<br> <sup><a href="#fn_7" id="reffn_7">7</a></sup>:Note that when the transaction is accepted into the memory pool, an additional check is made to ensure that the coinbase value does not exceed the transaction fees plus the expected BTC value (25BTC as of this writing).</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Protocol_rules">https://en.bitcoin.it/wiki/Protocol_rules</a></p>
+<h2 id="注解"><a class="markdownIt-Anchor" href="#注解"></a> 注解</h2>
+<h2 id="引用"><a class="markdownIt-Anchor" href="#引用"></a> 引用</h2>
+<p><a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Protocol_rules">https://en.bitcoin.it/wiki/Protocol_rules</a></p>
+<hr class="footnotes-sep" />
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>nLockTime must not exceed 31 bits, as some clients will interpret it incorrectly. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>A valid transaction requires at least 100 bytes. If it’s any less, the transaction is not valid <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>The number of signature operands in the signature (no, that is not redundant) for standard transactions will never exceed two. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Note that this is not a hard requirement on clients. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Note that this is not a hard requirement on clients. The network-enforced rule is that only one transaction spending a particular output can be in the blockchain, thus preventing double-spending. Technically miners can choose which one they want to put into the block they’re working on as long as no other transaction has spent that output either previously in the blockchain, or in the same block. The in-memory transaction pool can technically be managed in whatever way the miner is willing to implement. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>This is the protection against double-spending. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>Note that when the transaction is accepted into the memory pool, an additional check is made to ensure that the coinbase value does not exceed the transaction fees plus the expected BTC value (25BTC as of this writing). <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 
       
     </div>
@@ -774,7 +843,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%98%93%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-text">交易的处理过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-text">区块的处理过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-text">注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-text">引用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%98%93%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-text"> 交易的处理过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-text"> 区块的处理过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-text"> 注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-text"> 引用</span></a></li></ol></div>
             
 
           </div>
