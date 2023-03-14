@@ -108,12 +108,12 @@
 
 
 
-  <meta name="description" content="视频截取 1ffmpeg -ss 00:00:02 -i v2.mp4 -to 00:00:32 -c:v copy -c:a copy  v2_trim.mp4  视频拼接   新建一个 mylist.txt 文件，在文件中标记需要合并视频文件的名称，格式如下：   file &amp;#x27;v1.mp4&amp;#x27; file &amp;#x27;v2.mp4&amp;#x27; file &amp;#x27;v3.mp">
+  <meta name="description" content="视频截取1ffmpeg -ss 00:00:02 -i v2.mp4 -to 00:00:32 -c:v copy -c:a copy  v2_trim.mp4 视频拼接 新建一个 mylist.txt 文件，在文件中标记需要合并视频文件的名称，格式如下：  &#96;&#96;&#96;txtfile ‘v1.mp4’file ‘v2.mp4’file ‘v3.mp4’ 123453. 执行 concat 命令 4.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ffmpeg 常用命令">
 <meta property="og:url" content="https://hzxgoforward.github.io/2023/03/06/ffmpeg%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="HuZhenXing">
-<meta property="og:description" content="视频截取 1ffmpeg -ss 00:00:02 -i v2.mp4 -to 00:00:32 -c:v copy -c:a copy  v2_trim.mp4  视频拼接   新建一个 mylist.txt 文件，在文件中标记需要合并视频文件的名称，格式如下：   file &amp;#x27;v1.mp4&amp;#x27; file &amp;#x27;v2.mp4&amp;#x27; file &amp;#x27;v3.mp">
+<meta property="og:description" content="视频截取1ffmpeg -ss 00:00:02 -i v2.mp4 -to 00:00:32 -c:v copy -c:a copy  v2_trim.mp4 视频拼接 新建一个 mylist.txt 文件，在文件中标记需要合并视频文件的名称，格式如下：  &#96;&#96;&#96;txtfile ‘v1.mp4’file ‘v2.mp4’file ‘v3.mp4’ 123453. 执行 concat 命令 4.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-03-06T03:24:26.435Z">
 <meta property="article:modified_time" content="2023-03-06T03:32:05.474Z">
@@ -464,24 +464,15 @@
       
 
       
-        <h2 id="视频截取"><a class="markdownIt-Anchor" href="#视频截取"></a> 视频截取</h2>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -ss 00:00:02 -i v2.mp4 -to 00:00:32 -c:v copy -c:a copy  v2_trim.mp4</span><br></pre></td></tr></table></figure>
-<h2 id="视频拼接"><a class="markdownIt-Anchor" href="#视频拼接"></a> 视频拼接</h2>
-<ol>
-<li>
-<p>新建一个 mylist.txt 文件，在文件中标记需要合并视频文件的名称，格式如下：</p>
+        <h2 id="视频截取"><a href="#视频截取" class="headerlink" title="视频截取"></a>视频截取</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -ss 00:00:02 -i v2.mp4 -to 00:00:32 -c:v copy -c:a copy  v2_trim.mp4</span><br></pre></td></tr></table></figure>
+<h2 id="视频拼接"><a href="#视频拼接" class="headerlink" title="视频拼接"></a>视频拼接</h2><ol>
+<li><p>新建一个 mylist.txt 文件，在文件中标记需要合并视频文件的名称，格式如下：</p>
 </li>
-<li>
-<pre class="highlight"><code class="txt">file &#x27;v1.mp4&#x27;
-file &#x27;v2.mp4&#x27;
-file &#x27;v3.mp4&#x27;
+<li><p>```txt<br>file ‘v1.mp4’<br>file ‘v2.mp4’<br>file ‘v3.mp4’</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 执行 concat 命令 </span><br><span class="line"></span><br><span class="line">4. ```</span><br><span class="line">   ffmpeg -f concat -i mylist.txt -c copy merge.mp4</span><br></pre></td></tr></table></figure>
-
-</code></pre>
 </li>
 </ol>
-<h2 id="文件格式转码"><a class="markdownIt-Anchor" href="#文件格式转码"></a> 文件格式转码</h2>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i v1.jpg v2.png</span><br></pre></td></tr></table></figure>
+<h2 id="文件格式转码"><a href="#文件格式转码" class="headerlink" title="文件格式转码"></a>文件格式转码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i v1.jpg v2.png</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -675,7 +666,7 @@ file &#x27;v3.mp4&#x27;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%88%AA%E5%8F%96"><span class="nav-text"> 视频截取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%8B%BC%E6%8E%A5"><span class="nav-text"> 视频拼接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E7%A0%81"><span class="nav-text"> 文件格式转码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%88%AA%E5%8F%96"><span class="nav-text">视频截取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E6%8B%BC%E6%8E%A5"><span class="nav-text">视频拼接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E8%BD%AC%E7%A0%81"><span class="nav-text">文件格式转码</span></a></li></ol></div>
             
 
           </div>
