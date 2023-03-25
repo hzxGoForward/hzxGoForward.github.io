@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"padding":18},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Solana 的 Turbine Block Propagation Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 leader（领导）。每个 leader 有固定的出块区间，Solana中将其称之为 slot。 当一个 leader 生产一个新区块后，需要尽快将其分发给">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HuZhenXing">
+<meta property="og:url" content="https://hzxgoforward.github.io/2023/03/25/Solana%20Turbine%20Block%20Propagation/index.html">
+<meta property="og:site_name" content="HuZhenXing">
+<meta property="og:description" content="Solana 的 Turbine Block Propagation Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 leader（领导）。每个 leader 有固定的出块区间，Solana中将其称之为 slot。 当一个 leader 生产一个新区块后，需要尽快将其分发给">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-03-25T14:25:55.913Z">
+<meta property="article:modified_time" content="2023-03-25T14:25:56.530Z">
+<meta property="article:author" content="hzx">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+  <link rel="canonical" href="https://hzxgoforward.github.io/2023/03/25/Solana Turbine Block Propagation/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | HuZhenXing</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HuZhenXing</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">与其感慨路难行，不如马上出发!</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/03/25/Solana%20Turbine%20Block%20Propagation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-03-25 22:25:55 / 更新于：22:25:56" itemprop="dateCreated datePublished" datetime="2023-03-25T22:25:55+08:00">2023-03-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span id="busuanzi_value_page_pv"></span>次阅读
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="solana-的-turbine-block-propagation"><a class="markdownIt-Anchor" href="#solana-的-turbine-block-propagation"></a> Solana 的 Turbine Block Propagation</h1>
+<p>Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 leader（领导）。每个 leader 有固定的出块区间，Solana中将其称之为 slot。</p>
+<p>当一个 leader 生产一个新区块后，需要尽快将其分发给其他 validator，为此，Solana 使用了一种称之为 Turbine 的方法。在这种方法中，当 leader 分发新区块时，使用纠删码对新区块进行切分成若干份，随后将每一份数据分发给一个 validator。每个 validator 收到一份数据后，再将自己收到的数据分发给其他 validator。这是一种树形分发方式，其方式完全就是 <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/1165389.945474">split-stream</a> 的翻版。</p>
+<h2 id="数据分发结构"><a class="markdownIt-Anchor" href="#数据分发结构"></a> 数据分发结构</h2>
+<p>当 Leader 分发区块时，会选择 <strong>DATA_PLANE_FANOUT</strong> 个节点，并向这些节点分发数据。<strong>DATA_PLANE_FANOUT</strong> 是配置的一个值。当前 Leader 选择时，直接按照各个 validator 质押的 stake 份额的高低选择，Leader 会按照从高到低选择一批节点，然后使用随机选取 <strong>DATA_PLANE_FANOUT</strong> 个节点，进行随机选择的目的是为了提高安全性。可以看出，质押份额越高的节点是最快收到新区块的节点。</p>
+<p>假设 Leader 是分发过程中的根节点，构成了第 0 层（layer），那么 Leader 刚开始选择的这些节点构成了第 1 层，第一层的节点再次选择其他节点构成第 3 层，依次类推，最终，整个数据的分发方式构成了一个多播树，其方式类似下图，每个节点的子节点数由  <strong>DATA_PLANE_FANOUT</strong> 决定，当前这个值是在系统启动时配置好的。</p>
+<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NDQiIGhlaWdodD0iMzA0Ij4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI3NDQiIGhlaWdodD0iMzA0Ij48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iMjE2IiB3aWR0aD0iMTY4IiBoZWlnaHQ9IjY0IiBjbGFzcz0ic29saWQgbm9maWxsIiByeD0iMCI+PC9yZWN0PgogIDx0ZXh0IHg9IjM0IiB5PSIyNTIiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMTM4IiB5PSIyNTIiID4zPC90ZXh0PgogIDxyZWN0IHg9IjE4OCIgeT0iMjE2IiB3aWR0aD0iMTY4IiBoZWlnaHQ9IjY0IiBjbGFzcz0ic29saWQgbm9maWxsIiByeD0iMCI+PC9yZWN0PgogIDx0ZXh0IHg9IjIxOCIgeT0iMjUyIiA+TmVpZ2hib3Job29kPC90ZXh0PgogIDx0ZXh0IHg9IjMyMiIgeT0iMjUyIiA+NDwvdGV4dD4KICA8cmVjdCB4PSIzODAiIHk9IjIxNiIgd2lkdGg9IjE2OCIgaGVpZ2h0PSI2NCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8dGV4dCB4PSI0MTAiIHk9IjI1MiIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSI1MTQiIHk9IjI1MiIgPjU8L3RleHQ+CiAgPHJlY3QgeD0iNTY0IiB5PSIyMTYiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iNTk0IiB5PSIyNTIiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNjk4IiB5PSIyNTIiID42PC90ZXh0PgogIDx0ZXh0IHg9IjMwNiIgeT0iNDQiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNDEwIiB5PSI0NCIgPjA8L3RleHQ+CiAgPHRleHQgeD0iMTU0IiB5PSIxNDAiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMjU4IiB5PSIxNDAiID4xPC90ZXh0PgogIDx0ZXh0IHg9IjQ3NCIgeT0iMTQwIiA+TmVpZ2hib3Job29kPC90ZXh0PgogIDx0ZXh0IHg9IjU3OCIgeT0iMTQwIiA+MjwvdGV4dD4KICA8Zz4KICAgIDxsaW5lIHgxPSIyNzYiIHkxPSI4IiB4Mj0iNDQ0IiB5Mj0iOCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjc2IiB5MT0iOCIgeDI9IjI3NiIgeTI9IjcyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0NDQiIHkxPSI4IiB4Mj0iNDQ0IiB5Mj0iNzIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIwNCIgeTE9IjQwIiB4Mj0iMjc2IiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIwNCIgeTE9IjQwIiB4Mj0iMjA0IiB5Mj0iODQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjQ0NCIgeTE9IjQwIiB4Mj0iNTMyIiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjUzMiIgeTE9IjQwIiB4Mj0iNTMyIiB5Mj0iODQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjI3NiIgeTE9IjcyIiB4Mj0iNDQ0IiB5Mj0iNzIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPHBvbHlnb24gcG9pbnRzPSIyMDAsODQgMjA4LDg0IDIwNCw5NiIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogICAgPHBvbHlnb24gcG9pbnRzPSI1MjgsODQgNTM2LDg0IDUzMiw5NiIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogIDwvZz4KICA8Zz4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxMDQiIHgyPSIyOTIiIHkyPSIxMDQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjEyNCIgeTE9IjEwNCIgeDI9IjEyNCIgeTI9IjE2OCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjkyIiB5MT0iMTA0IiB4Mj0iMjkyIiB5Mj0iMTY4IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxNjgiIHgyPSIyOTIiIHkyPSIxNjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjE1NiIgeTE9IjE2OCIgeDI9IjE1NiIgeTI9IjE5NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjA0IiB5MT0iMTY4IiB4Mj0iMjA0IiB5Mj0iMTk2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxwb2x5Z29uIHBvaW50cz0iMTUyLDE5NiAxNjAsMTk2IDE1NiwyMDgiIGNsYXNzPSJmaWxsZWQiPjwvcG9seWdvbj4KICAgIDxwb2x5Z29uIHBvaW50cz0iMjAwLDE5NiAyMDgsMTk2IDIwNCwyMDgiIGNsYXNzPSJmaWxsZWQiPjwvcG9seWdvbj4KICA8L2c+CiAgPGc+CiAgICA8bGluZSB4MT0iNDQ0IiB5MT0iMTA0IiB4Mj0iNjEyIiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0NDQiIHkxPSIxMDQiIHgyPSI0NDQiIHkyPSIxNjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjYxMiIgeTE9IjEwNCIgeDI9IjYxMiIgeTI9IjE2OCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iNDQ0IiB5MT0iMTY4IiB4Mj0iNjEyIiB5Mj0iMTY4IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI1MzIiIHkxPSIxNjgiIHgyPSI1MzIiIHkyPSIxOTYiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjU4MCIgeTE9IjE2OCIgeDI9IjU4MCIgeTI9IjE5NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjUyOCwxOTYgNTM2LDE5NiA1MzIsMjA4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8cG9seWdvbiBwb2ludHM9IjU3NiwxOTYgNTg0LDE5NiA1ODAsMjA4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgo8L3N2Zz4=)</p>
+<h2 id="shred-分发过程"><a class="markdownIt-Anchor" href="#shred-分发过程"></a> Shred 分发过程</h2>
+<p>当 Leader 分发新区块时，Leader 在第 0 层。然后把编码为若干个分片，每个分片称之为一个 Shred。</p>
+<p>当分发一个 Shred 时，Leader 节点选择并发送给一个特定的节点，这个节点称之为这个Turbine 树的根节点（root node）或者锚节点（anchor node）。锚节点会将该 Shred 分发给第 1 层的节点，同时还会发送给第 2 层的节点。因此，一个 锚节点需要将一个 Shred 分发给 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mi>D</mi><mi>A</mi><mi>T</mi><mi>A</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>L</mi><mi>A</mi><mi>N</mi><mi>E</mi><mi mathvariant="normal">_</mi><mi>F</mi><mi>A</mi><mi>N</mi><mi>O</mi><mi>U</mi><mi>T</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2 \times DATA\_PLANE\_FANOUT - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">A</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 个节点，而普通节点只需要发送给下一层的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi><mi>T</mi><mi>A</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>L</mi><mi>A</mi><mi>N</mi><mi>E</mi><mi mathvariant="normal">_</mi><mi>F</mi><mi>A</mi><mi>N</mi><mi>O</mi><mi>U</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">DATA\_PLANE\_FANOUT</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">A</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 个节点。</p>
+<p>下图展示了一个 Leader  在 fanout 设置为 2 的情况下把一个 Shred 分发给 Neighborhood 0 的过程。Leader 首先选择将 Shred 发送给 Validator 1（根节点），随后 Validator 1 将 Shred 转发给 Validator 2，而 Validator 1 和 Validator 2 构成了第 1 层。</p>
+<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NTIiIGhlaWdodD0iMjU2Ij4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI1NTIiIGhlaWdodD0iMjU2Ij48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iMTA0IiB3aWR0aD0iNTM2IiBoZWlnaHQ9IjEyOCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8cmVjdCB4PSIzNjQiIHk9IjEzNiIgd2lkdGg9IjE0NCIgaGVpZ2h0PSI2NCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8dGV4dCB4PSIzOTQiIHk9IjE3MiIgPlZhbGlkYXRvcjwvdGV4dD4KICA8dGV4dCB4PSI0NzQiIHk9IjE3MiIgPjI8L3RleHQ+CiAgPHRleHQgeD0iMjE4IiB5PSIxNDAiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMzIyIiB5PSIxNDAiID4wPC90ZXh0PgogIDx0ZXh0IHg9IjY2IiB5PSIxNzIiID5WYWxpZGF0b3I8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjE4OCIgPlJvb3Q8L3RleHQ+CiAgPHRleHQgeD0iMTQ2IiB5PSIxNzIiID4xPC90ZXh0PgogIDx0ZXh0IHg9IjI1MCIgeT0iNDQiID5MZWFkZXI8L3RleHQ+CiAgPGc+CiAgICA8bGluZSB4MT0iMjEyIiB5MT0iOCIgeDI9IjMzMiIgeTI9IjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIxMiIgeTE9IjgiIHgyPSIyMTIiIHkyPSI3MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzMyIiB5MT0iOCIgeDI9IjMzMiIgeTI9IjcyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMDgiIHkxPSI0MCIgeDI9IjIxMiIgeTI9IjQwIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMDgiIHkxPSI0MCIgeDI9IjEwOCIgeTI9IjExNiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjEyIiB5MT0iNzIiIHgyPSIzMzIiIHkyPSI3MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwNCwxMTYgMTEyLDExNiAxMDgsMTI4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgogIDxnPgogICAgPGxpbmUgeDE9IjM2IiB5MT0iMTM2IiB4Mj0iMTgwIiB5Mj0iMTM2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIzNiIgeTE9IjEzNiIgeDI9IjM2IiB5Mj0iMjAwIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxODAiIHkxPSIxMzYiIHgyPSIxODAiIHkyPSIyMDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjE4MCIgeTE9IjE1MiIgeDI9IjM1MiIgeTI9IjE1MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjM1MiwxNDggMzYwLDE1MiAzNTIsMTU2IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8bGluZSB4MT0iMzYiIHkxPSIyMDAiIHgyPSIxODAiIHkyPSIyMDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogIDwvZz4KPC9zdmc+)</p>
+<p>如下图所示，Validator 1 和 Validator 2 继续将 Shred 发送给第 2 层的节点。可以看出，Validator 1 作为锚节点总共发送了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">2\times2-1=3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 次，而 Validator 2 只发送了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 次。</p>
+<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NTIiIGhlaWdodD0iMzIwIj4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI1NTIiIGhlaWdodD0iMzIwIj48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iOCIgd2lkdGg9IjUzNiIgaGVpZ2h0PSIxNzYiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iMjE4IiB5PSI0NCIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSIzMjIiIHk9IjQ0IiA+MDwvdGV4dD4KICA8dGV4dCB4PSI2NiIgeT0iNzYiID5WYWxpZGF0b3I8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjkyIiA+Um9vdDwvdGV4dD4KICA8dGV4dCB4PSIxNDYiIHk9Ijc2IiA+MTwvdGV4dD4KICA8dGV4dCB4PSIzOTQiIHk9Ijc2IiA+VmFsaWRhdG9yPC90ZXh0PgogIDx0ZXh0IHg9IjQ3NCIgeT0iNzYiID4yPC90ZXh0PgogIDxyZWN0IHg9IjI4IiB5PSIyMzIiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iNTgiIHk9IjI2OCIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSIxNjIiIHk9IjI2OCIgPjE8L3RleHQ+CiAgPHJlY3QgeD0iMzQ4IiB5PSIyMzIiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iMzc4IiB5PSIyNjgiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNDgyIiB5PSIyNjgiID4yPC90ZXh0PgogIDxnPgogICAgPGxpbmUgeDE9IjM2IiB5MT0iNDAiIHgyPSIxODAiIHkyPSI0MCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzYiIHkxPSI0MCIgeDI9IjM2IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxODAiIHkxPSI0MCIgeDI9IjE4MCIgeTI9IjEwNCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTgwIiB5MT0iNTYiIHgyPSIzNTIiIHkyPSI1NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjM1Miw1MiAzNjAsNTYgMzUyLDYwIiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8bGluZSB4MT0iMzYiIHkxPSIxMDQiIHgyPSIxODAiIHkyPSIxMDQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjEwOCIgeTE9IjEwNCIgeDI9IjEwOCIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTI0IiB5MT0iMTA0IiB4Mj0iMTI0IiB5Mj0iMTM2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxMzYiIHgyPSIzNjQiIHkyPSIxMzYiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjEzNiIgeDI9IjM2NCIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwNCwyMTIgMTEyLDIxMiAxMDgsMjI0IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8cG9seWdvbiBwb2ludHM9IjM2MCwyMTIgMzY4LDIxMiAzNjQsMjI0IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgogIDxnPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjQwIiB4Mj0iNTA4IiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjQwIiB4Mj0iMzY0IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI1MDgiIHkxPSI0MCIgeDI9IjUwOCIgeTI9IjEwNCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzY0IiB5MT0iMTA0IiB4Mj0iNTA4IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0MjAiIHkxPSIxMDQiIHgyPSI0MjAiIHkyPSIxNTIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjQzNiIgeTE9IjEwNCIgeDI9IjQzNiIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTY0IiB5MT0iMTUyIiB4Mj0iNDIwIiB5Mj0iMTUyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxNjQiIHkxPSIxNTIiIHgyPSIxNjQiIHkyPSIyMTIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPHBvbHlnb24gcG9pbnRzPSIxNjAsMjEyIDE2OCwyMTIgMTY0LDIyNCIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogICAgPHBvbHlnb24gcG9pbnRzPSI0MzIsMjEyIDQ0MCwyMTIgNDM2LDIyNCIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogIDwvZz4KPC9zdmc+)</p>
+<p>需要说明的是，上述图解只是如何发送一份 Shred 的过程，实际上，Leader 会使用纠删码把一个区块编码为多个 Shred，然后针对每一个 Shred，把每个 Shred 发送给不同的根节点。假设整个区块被编码为 2 个 Shred，随后 Validator 1 将收到的 Shred 1 发送给 Validator2，而 Validator 2 会将收到的 Shred 2 发送给 Validator 2。最终 Validator 1 和 Validator 2 都可以通过纠删码解码原始的区块。</p>
+<p>为了快速传输数据，Solana 使用 UDP 协议进行传输，而 UDP 不是可靠传输，因此，传输过程中加入 FEC 以增加数据的鲁棒性。</p>
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.solana.com/cluster/turbine-block-propagation">Slolana Document－Turbine Block Propagation</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/03/06/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/" rel="next" title="一篇顶会论文需要必须交代的问题。">
+                <i class="fa fa-chevron-left"></i> 一篇顶会论文需要必须交代的问题。
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar1.jpg"
+                alt="博主" />
+            
+              <p class="site-author-name" itemprop="name">博主</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/hzxGoForward" title="github &rarr; https://github.com/hzxGoForward" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/wen-ge-hua-49/activities" title="zhihu &rarr; https://www.zhihu.com/people/wen-ge-hua-49/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-zhihu"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="/hzx@pku.edu.cn" title="email &rarr; hzx@pku.edu.cn"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://me.csdn.net/t46414704152abc/" title="csdn &rarr; https://me.csdn.net/t46414704152abc/" rel="noopener" target="_blank"><i class="fa fa-fw fa-csdn"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://leetcode.cn/u/hzxforward/" title="leetcode &rarr; https://leetcode.cn/u/hzxforward/" rel="noopener" target="_blank"><i class="fa fa-fw fa-leetcode"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#solana-%E7%9A%84-turbine-block-propagation"><span class="nav-text"> Solana 的 Turbine Block Propagation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E7%BB%93%E6%9E%84"><span class="nav-text"> 数据分发结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shred-%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="nav-text"> Shred 分发过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text"> 参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+<!--背景音乐-->
+<!--iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=37856454&auto=1&height=66"></iframe> --> 
+<!--<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=556319523&auto=1&height=66"></iframe> -->
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=4341314&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博主</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v6.3.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.6.0</div>
+
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!--注释本行<span id="busuanzi_container_site_pv" style='display:none'>-->
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    本站访问<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('Copy')
+        }, 300)
+      }).append(e)
+    })
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+
+</body>
+</html>

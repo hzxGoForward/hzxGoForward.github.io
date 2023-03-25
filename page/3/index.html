@@ -356,6 +356,288 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/01/10/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/01/10/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/3/index.html">逻辑回归的理解</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2019-01-10 15:11:03" itemprop="dateCreated datePublished" datetime="2019-01-10T15:11:03+08:00">2019-01-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-03-05 20:01:10" itemprop="dateModified" datetime="2023-03-05T20:01:10+08:00">2023-03-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="逻辑回归logistic-regression"><a class="markdownIt-Anchor" href="#逻辑回归logistic-regression"></a> 逻辑回归(Logistic Regression)##</h2>
+<h3 id="1-回归regression"><a class="markdownIt-Anchor" href="#1-回归regression"></a> 1. 回归(Regression)</h3>
+<ul>
+<li>回归，我的理解来说，其直观的理解就是拟合的意思。我们以线性回归为例子，在二维平面上有一系列红色的点，我们想用一条直线来尽量拟合这些红色的点，这就是线性回归。回归的本质就是我们的预测结果尽量贴近实际观测的结果，或者说我们的求得一些参数，经过计算之后的预测结果尽可能接近真实值。</li>
+</ul>
+<center> <image src="https://i.imgur.com/la7bDLS.jpg" width = 50% ></image></center>
+### 2. 逻辑回归的由来 ###
+<ul>
+<li>对于二类线性可分的数据集，使用线性感知器就可以很好的分类。如下图中红色和蓝色的点，我们使用一条直线<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">x_1 +x_2 = 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span>就可以区分两种数据集，在直线上方的属于红色类，直线下方的属于蓝色类。</li>
+</ul>
+<center> <image src="https://i.imgur.com/uPQ0xxk.jpg"></image></center>
+- 但是如果二类线性不可分的数据集，我们无法找到一条直线能够将两种类别很好的区分，即线性回归的分类法对于线性不可分的数据无法有效分类。例如下图中的红色点和蓝色点，我们无法使用一条直线很好的区分这两类，但是我们可以使用非线性分类器，如果我们使用${x_1}^2+{x_2}^2 = 1$，在圆外面的为红色类，在圆里面的一类为蓝色类。
+<center> <image src="https://i.imgur.com/TdJn8NO.jpg" ></image></center>
+- 诚然，数据线性可分可以使用线性分类器，如果数据线性不可分，可以使用非线性分类器，这里似乎没有逻辑回归什么事情。但是如果我们想知道对于一个二类分类问题，对于具体的一个样例，我们不仅想知道该类属于某一类，而且还想知道该类属于某一类的概率多大,有什么办法呢？
+<ul>
+<li>
+<p>线性回归和非线性回归的分类问题都不能给予解答，因为线性回归和非线性回归的问题，假设其分类函数如下：<br />
+$$ y = wx+b $$</p>
+</li>
+<li>
+<p>y的阈值处于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>（</mtext><mo>−</mo><mi mathvariant="normal">∞</mi><mtext>，</mtext><mo>+</mo><mi mathvariant="normal">∞</mi><mtext>）</mtext></mrow><annotation encoding="application/x-tex">（-\infty，+\infty）</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">（</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">，</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">）</span></span></span></span>，此时不能很好的给出属于某一类的概率，因为概率的范围是[0,1],我们需要一个更好的映射函数，能够将分类的结果很好的映射成为[0,1]之间的概率，并且这个函数能够具有很好的可微分性。在这种需求下，人们找到了这个映射函数，即逻辑斯谛函数，也就是我们常说的sigmoid函数，其形式如下：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>z</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{1+e^{-z} }
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.697331em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>sigmoid函数图像如下图所示</p>
+</li>
+</ul>
+<center> <image src="https://i.imgur.com/T53inQT.png" width = 50% ></image></center>
+<ul>
+<li>sigmoid函数完美的解决了上述需求，而且sigmoid函数连续可微分。</li>
+<li>假设数据离散二类可分，分为0类和1类,如果概率值大于1/2，我们就将该类划分为1类，如果概率值低于1/2,我们就将该类划分为0类。当z取值为0的时候，概率值为1/2，这时候需要人为规定划分为哪一类。</li>
+</ul>
+<h3>3. 逻辑回归的损失函数(Loss Function)和成本函数(Cost Function)<h3>
+<ul>
+<li>在二类分类中，我们假定sigmoid输出结果表示属于1类的概率值，我们很容易想到用平方损失函数，即</li>
+</ul>
+<center>
+<image src="https://i.imgur.com/3C1RzcD.jpg " widh = 50% height=80></image>
+</center>
+<ul>
+<li>在这种情况下，我们φ(z(i))表示sigmoid对第i个值的预测结果，我们将sigmoid函数带入上述成本函数中，绘制其图像，发现这个成本函数的函数图像是一个非凸函数，如下图所示，这个函数里面有很多极小值，如果采用梯度下降法，则会导致陷入局部最优解中,有没有一个凸函数的成本函数呢？</li>
+</ul>
+<center>
+<image src = "https://i.imgur.com/R5r6LvC.jpg " width = 50%></image>
+</center>
+<ul>
+<li>假设sigmoid函数φ(z)表示属于1类的概率，于是做出如下的定义：</li>
+</ul>
+<center><image src=" https://i.imgur.com/IBlS1zQ.jpg"></image></center>
+<ul>
+<li>将两个式子综合来，可以改写为下式：</li>
+</ul>
+<center>
+<image src="https://i.imgur.com/KdpNVpf.jpg"></image></center>
+<ul>
+<li>
+<p>上式将分类为0和分类和1的概率计算公式合二为一。假设分类器分类足够准确，此时对于一个样本，如果它是属于1类，分类器求出的属于1类的概率应该尽可能大，即p(y=1lx)尽可能接近1；如果它是0类，分类器求出的属于0类的概率应该尽可能大，即p(y=0lx)尽可能接近1。</p>
+</li>
+<li>
+<p>通过上述公式对二类分类的情况分析，可知我们的目的是求取参数w和b，使得p(ylx)对0类和1类的分类结果尽可能取最大值，然而实际上我们定义的损失函数的是求最小值，于是，很自然的，我们想到对p(ylx)式子加一个负号，就变成了求最小值的问题，这就得到了逻辑回归中的损失函数。</p>
+</li>
+<li>
+<p>不过，为了计算方便，我们通常对上述式子取log，因而得到下式：</p>
+</li>
+</ul>
+<center>
+<image src="https://i.imgur.com/Swgjn66.jpg " width =50%></image></center>
+<ul>
+<li>公式(1)是对概率公式取log，公式(2)是对公式(1)取相反数。上述公式的函数图像如下图所示。这是一个凸函数（斜率是非单调递减的函数即凸函数），因此可以用梯度下降法求其最小值。</li>
+</ul>
+<p><image src="https://i.imgur.com/CAHBRdg.jpg "></image></center></p>
+<ul>
+<li>根据损失函数是单个样本的预测值和实际值的误差，而成本函数是全部样本的预测值和实际值之间的误差，于是对所有样本的损失值取平均数，得到我们的成本函数：</li>
+</ul>
+<p><image src="https://i.imgur.com/cNXT1Ev.jpg"></image> </center></p>
+<ul>
+<li>损失函数是凸函数，m个损失函数的和仍然是凸函数，因而可以用梯度下降法求最小值。</li>
+</ul>
+<h3 id="4极大似然法求解逻辑回归"><a class="markdownIt-Anchor" href="#4极大似然法求解逻辑回归"></a> 4.极大似然法求解逻辑回归</h3>
+<ul>
+<li>还可以用我们熟知的统计学知识——极大似然法估计逻辑回归中的参数w和b，上述得到的logp(y|w,x),假设目前有m组样本，分别为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>m</mi></msub><mo separator="true">,</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x_1,y_1),(x_2,y_2)...(x_m,y_m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，其中xi表示第i个样本的特征，yi表示第i个样本的类别，yi = 0或者1，利用极大似然法的原则，假设所有训练样本独立同分布，则联合概率为所有样本概率的乘积，即：</li>
+</ul>
+<center><image src="https://i.imgur.com/kaGRRZc.jpg"></image></center>
+- 对上述公式两边取对数，得到下述公式，是不是对这个公式优点熟悉呢？这个公式就是我们的成本函数的和，对于这个公式和成本函数来说，取平均值和不取平均值没有影响。
+<center><image src="https://i.imgur.com/zHLnJJc.jpg"></image></center>
+- 按照极大似然法求极值的方法，分别对w的每个参数求偏导数使其为0，得到对数似然方程组，求解该方程，便可以到的w的参数。只是如果参数很多，求解方程组就会很复杂，此时可以考虑梯度下降法来求解。
+<h3 id="5-总结"><a class="markdownIt-Anchor" href="#5-总结"></a> 5. 总结</h3>
+<ul>
+<li>
+<p>逻辑回归最大的优势在于它的输出结果不仅可以用于分类，还可以表征某个样本属于某类别的概率。</p>
+</li>
+<li>
+<p>逻辑斯谛函数将原本输出结果从范围<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>（</mtext><mo>−</mo><mi mathvariant="normal">∞</mi><mtext>，</mtext><mo>+</mo><mi mathvariant="normal">∞</mi><mtext>）</mtext></mrow><annotation encoding="application/x-tex">（-\infty，+\infty）</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">（</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">，</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">）</span></span></span></span> 映射到(0,1)，从而完成概率的估测。</p>
+</li>
+<li>
+<p>逻辑回归得判定的阈值能够映射为平面的一条判定边界，随着特征的复杂化，判定边界可能是多种多样的样貌，但是它能够较好地把两类样本点分隔开，解决分类问题。</p>
+</li>
+<li>
+<p>求解逻辑回归参数的传统方法是梯度下降，构造为凸函数的代价函数后，每次沿着偏导方向(下降速度最快方向)迈进一小部分，直至N次迭代后到达最低点。</p>
+</li>
+</ul>
+<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/han_xiaoyang/article/details/49123419">http://blog.csdn.net/han_xiaoyang/article/details/49123419</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/zjuPeco/article/details/77165974">http://blog.csdn.net/zjuPeco/article/details/77165974</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/star_liux/article/details/39666737">http://blog.csdn.net/star_liux/article/details/39666737</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/01/10/%E8%82%A1%E7%A5%A8%E4%B9%B0%E5%8D%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2361,219 +2643,11 @@ contract B&#123;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2018/11/24/post-office%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/11/24/post-office%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/3/index.html">post_office问题</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2018-11-24 19:58:45" itemprop="dateCreated datePublished" datetime="2018-11-24T19:58:45+08:00">2018-11-24</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="更新于：2023-03-05 20:05:51" itemprop="dateModified" datetime="2023-03-05T20:05:51+08:00">2023-03-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">算法设计与分析</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <span id="more"></span>
-<h1 id="post-office-修建问题"><a class="markdownIt-Anchor" href="#post-office-修建问题"></a> Post Office 修建问题。</h1>
-<p>地址： <a target="_blank" rel="noopener" href="http://noi.openjudge.cn/ch0206/162/">http://noi.openjudge.cn/ch0206/162/</a></p>
-<h2 id="解题思路"><a class="markdownIt-Anchor" href="#解题思路"></a> 解题思路</h2>
-<p>设置F[p][v]表示V个village中修建p个邮局使得所有村庄到最近邮局的距离最近。<br />
-得到了如下递推公式：<br />
-F[p][v] = min{F[p][v], F[p-1][k-1]+ dis[k][v]};<br />
-为什么这样进行递推？这是因为本题目中以最后一个邮局所属的村庄进行划分，因为总有一些village到最后一个邮局的距离是最近的，但是这些村子的数量不知道，我们需要知道到底多少village划归到最后一个post office的时候是最优的。</p>
-<!-- more -->
-<p>#####隐藏内容<br />
-但是我们知道，能够划分到最后一个post office的village，至少是第p个，修建之前的p-1个post office，至少需要p-1个village。因此有如下等式：</p>
-<center>p-1<=k-1<=v</center>
-<p>递推式表示在前面k-1个village中修建p-1个post office，随后的第k个village到第v个village，修建最后一个post office， dis[k][v]表示在第k个village和第v个village中修建1个post office时各个village到这个post office的距离之和的最小值。</p>
-<p>现在需要解决如下问题，dis[k][v]如何计算？<br />
-在k和v之间修建一个post office，同时所有village到该post office的距离最小，该如何计算呢？正确计算方法是将post office修建到这些village的中位数中。</p>
-<p>假设范围是i和j-1之间的中位数中修建了一个post office，最优值为dis[i][j-1],现在当新加入一个village j之后。假设i和j-1之间的中位数是K，新加入j之后选择L作为新的post office 位置。现在分情况讨论：</p>
-<ul>
-<li>如果原本i和j之间有奇数个village，新加入一个j之后，仍然可以取原来的K作为中位数，此时中位数位置不变，所以  <center>
-  dis[i,j] = dis[i,j-1]+village[j] - village[(j+i)/2]
-  <center>
-</li>
-<li>如果原本i和j之间有偶数个village，假设此时post office的修建地址设置为中位数中较大的数的位置，此时新加入j后，post office的位置不发生改变，那么仍然由如下计算公式：  <center>
-  dis[i,j] = dis[i,j-1]+village[j] - village[(j+i)/2]
-  <center>
-</li>
-</ul>
-<p>综上，可以得出:<br />
-<center><br />
-dis[i,j] = dis[i,j-1]+village[j] - village[(j+i)/2]<br />
-</center></p>
-<h2 id="源代码"><a class="markdownIt-Anchor" href="#源代码"></a> 源代码</h2>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;climits&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">solution</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; village, <span class="type">int</span> officeCount)</span> </span>&#123;</span><br><span class="line">	vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">F</span>(officeCount + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(village.<span class="built_in">size</span>(), <span class="number">0</span>));</span><br><span class="line">	vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dis</span>(village.<span class="built_in">size</span>(), <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(village.<span class="built_in">size</span>(), <span class="number">0</span>));</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; village.<span class="built_in">size</span>(); ++i)&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = i+<span class="number">1</span>; j &lt; village.<span class="built_in">size</span>(); ++j) &#123;</span><br><span class="line">			<span class="type">int</span> k1 = (i + j - <span class="number">1</span>) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">			<span class="type">int</span>  k2 = (i + j) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">			dis[i][j] = dis[i][j - <span class="number">1</span>] + village[j] - village[(i+j)/<span class="number">2</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> v = <span class="number">1</span>; v &lt; village.<span class="built_in">size</span>(); ++v)</span><br><span class="line">		F[<span class="number">1</span>][v] = dis[<span class="number">1</span>][v];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> p = <span class="number">2</span>; p &lt;= officeCount; ++p)&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> v = p; v &lt; village.<span class="built_in">size</span>(); ++v) &#123;</span><br><span class="line">			F[p][v] = INT_MAX;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> k = p; k &lt;=v; ++k)</span><br><span class="line">				F[p][v] = <span class="built_in">min</span>(F[p][v],F[p<span class="number">-1</span>][k<span class="number">-1</span>]+dis[k][v]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> F[officeCount][village.<span class="built_in">size</span>() - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> V, P;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">&quot;%d %d&quot;</span>, &amp;V, &amp;P) != EOF) &#123;	</span><br><span class="line">		<span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">village</span><span class="params">(V+<span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= V; ++i)</span><br><span class="line">			<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;village[i]);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="built_in">solution</span>(village, P));</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="时间复杂度"><a class="markdownIt-Anchor" href="#时间复杂度"></a> 时间复杂度</h2>
-<p>上述代码的时间复杂度为O(pV^2)</p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/">&lt;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/">&lt;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">&gt;</a>
   </nav>
 
 
@@ -2905,6 +2979,8 @@ dis[i,j] = dis[i,j-1]+village[j] - village[(j+i)/2]<br />
   
     
       
+        
+      
     
       
     
@@ -2926,6 +3002,36 @@ dis[i,j] = dis[i,j-1]+village[j] - village[(j+i)/2]<br />
     
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+    overflow: auto hidden;
+}
+</style>
+
+    
   
 
 

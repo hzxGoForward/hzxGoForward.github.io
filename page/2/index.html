@@ -356,6 +356,267 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/04/10/An%20Empirical%20Analysis%20of%20Traceability%20in%20the%20Monero%20Blockchain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/10/An%20Empirical%20Analysis%20of%20Traceability%20in%20the%20Monero%20Blockchain/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">An Empirical Analysis of Traceability in the Monero Blockchain</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2019-04-10 18:56:14" itemprop="dateCreated datePublished" datetime="2019-04-10T18:56:14+08:00">2019-04-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-03-05 20:02:19" itemprop="dateModified" datetime="2023-03-05T20:02:19+08:00">2023-03-05</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6/" itemprop="url" rel="index"><span itemprop="name">区块链技术研究</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="abstract"><a class="markdownIt-Anchor" href="#abstract"></a> Abstract</h2>
+<p>This paper empirically evaluate <strong>two weakness</strong> in Monero’s mixin sampling strategy.</p>
+<ul>
+<li>About 62% of transaction inputs with one or more mixins are vulnerable to cascade effect so that the real input can be duduced by elimination</li>
+<li>Monero mixins are sampled in a way that mixins can be easily distinguished form the real input by their age distribution. Since the real input is always the newest input.</li>
+</ul>
+<p>The author use the 2th weakness to guess real input with a 80% accuracy over all transactions with one or more mixins.</p>
+<p>Besides, the author study the importance of mining pools and the former anonymous marketplace AlphaBay on the transaction volume. After removing mining pool activity, there remains a largte amount of potentially privacy-sensitive transactions that are affected by these weakness.</p>
+<p>To improve the anonymity of Monero, the author gives two contermeasures.</p>
+<ul>
+<li>A new mixins sampling method with two-parameter model (gama distribution)is proposed which can well approximate the user’s ‘spend-time’ distribution.</li>
+<li>Sampling mixins in ‘bins’, this method regardless of sampling distribution.</li>
+</ul>
+<h2 id="deducible-monero-transactions"><a class="markdownIt-Anchor" href="#deducible-monero-transactions"></a> Deducible Monero Transactions</h2>
+<p>A significant number of Monero transactions do not contain any mixins at all, but instead explicityly identify the real TXO being spent. Since users are allowed to create zero-mixins transactions at the begining of Monero. These zero-mixins transaction present a hazard of deanonymization of transactions include them as mixins.</p>
+<p>At the time of April 15, 2017, a total of 12158814 transaction inputs have zero mixins.Figure 5 presents the fraction of transactions containing zero-mixin inputs over time.<br />
+<img src="https://img-blog.csdnimg.cn/2019041009332043.png" alt="在这里插入图片描述" /></p>
+<h3 id="implemention"><a class="markdownIt-Anchor" href="#implemention"></a> implemention</h3>
+<p>The author extract Monero blackchain up to block 128774(April 15, 2017) and<br />
+stored it in a Neo4j graph database (11.5GB of data in total). the algorithm is the same as cascade effect(Amrit Kumar, Clément Fischer, Shruti Tople, and Prateek Saxena. A traceability analysis of Monero’s blockchain. In Simon N. Foley, Dieter Gollmann, and Einar Snekkenes, editors, Computer Security – ESORICS 2017: 22nd European Symposium on Research in Computer Security, Oslo, Norway, September 11-15, 2017, Proceedings, Part II, pages 153–173. Springer International Publishing, 2017.)</p>
+<h3 id="results-on-deducible-transactions"><a class="markdownIt-Anchor" href="#results-on-deducible-transactions"></a> Results on Deducible Transactions</h3>
+<p>Table 2 presents the results, totaly there are about 63% Monero transaction inputs with more than one mixins were deduced.</p>
+<p><img src="https://img-blog.csdnimg.cn/20190410094354625.png" alt="在这里插入图片描述" /><br />
+Figure 6 show the amount of vulnerable Monero transactions with the number of mixins, and it also shows transaction is less likely to be deducible with more mixins.<br />
+<img src="https://img-blog.csdnimg.cn/20190410094947234.png" alt="在这里插入图片描述" /></p>
+<h2 id="tracing-with-temporal-analysis"><a class="markdownIt-Anchor" href="#tracing-with-temporal-analysis"></a> Tracing With Temporal Analysis</h2>
+<h3 id="effective-untracebility"><a class="markdownIt-Anchor" href="#effective-untracebility"></a> Effective-Untracebility</h3>
+<p>To quantify the untraceability of a transaction input, the authors used <strong>guessing entropy</strong> to represent the expected number of gusses before guessing the real spent among a inputs. The transaction input’s guessing entropy is defined as</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">e</mi></mrow><mo>=</mo><munder><mo>∑</mo><mrow><mn>0</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>M</mi></mrow></munder><mi>i</mi><mo>⋅</mo><msub><mi>p</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\mathrm{Ge}=\sum_{0 \leq i \leq M} i \cdot p_{i}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathrm">G</span><span class="mord mathrm">e</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.43952em;vertical-align:-1.389515em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8556639999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mrel mtight">≤</span><span class="mord mathnormal mtight">i</span><span class="mrel mtight">≤</span><span class="mord mathnormal mtight" style="margin-right:0.10903em;">M</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.389515em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>where Ge is guessing entropy,  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><msub><mi>p</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>p</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>p</mi><mi>M</mi></msub></mrow><annotation encoding="application/x-tex">p = p_0, p_1, . . . , p_M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">M</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> are probabilities, sorted highest to lowest, that a <strong>referenced output</strong> is the real spend of a transaction input.</p>
+<p>The authors define <strong>effective-untraceability</strong> as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>G</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">1+2Ge</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathnormal">G</span><span class="mord mathnormal">e</span></span></span></span>.  if all referenced outputs of a transaction input are equally likely to be the real sepend, the effective-untraceabilty for that inputs is M+1.</p>
+<h2 id="the-guess-newest-heuristic"><a class="markdownIt-Anchor" href="#the-guess-newest-heuristic"></a> The Guess-Newest Heuristic</h2>
+<p>The author proposed a heustric that among all the prior outpus referenced by a Monero transaction input, the real spend is usually the newest one. That point view came from the Figure 2.<br />
+<img src="https://img-blog.csdnimg.cn/2019041010321024.png" alt="在这里插入图片描述" /><br />
+The conclusion came from zero-mixin inputs and inputs deduced from zero-mixin inputs. The mixin’s spending time is quite different with the real input.This is because users spend coins soon after receiving them while the mixin’s sampling method do not take account of user’s spending behaviours.</p>
+<p>The authors found the 92% of the deducible inputs coule be gussed correctly in that way. The result is in Table 3.<br />
+<img src="https://img-blog.csdnimg.cn/20190410110645176.png" alt="在这里插入图片描述" /></p>
+<h2 id="countermeasures"><a class="markdownIt-Anchor" href="#countermeasures"></a> Countermeasures</h2>
+<ol>
+<li><strong>Improve the mixin-sampling procedure to match the real spend-time of MOnero users.</strong></li>
+<li><strong>introduce a countermeasure called binned mixin sampling which modifies the current mixin sampling procedure.</strong></li>
+</ol>
+<h3 id="estimating-the-spend-time-distribution"><a class="markdownIt-Anchor" href="#estimating-the-spend-time-distribution"></a> Estimating the spend-time distribution</h3>
+<p>Following Figure shows the CDF of Bitcoin blockchain and Monero blockchain.<br />
+<img src="https://img-blog.csdnimg.cn/20190410162056147.png" alt="在这里插入图片描述" /><br />
+The Bitcoin spend-time have a somewhat similar shape with Monero spend-time.The authors use R’s fitdistr function to fit a gama distribution(shape parameter19.28, rate parameter 1.61)</p>
+<h3 id="sampling-mixins-using-the-spend-time-distribution"><a class="markdownIt-Anchor" href="#sampling-mixins-using-the-spend-time-distribution"></a> Sampling mixins using the spend-time distribution</h3>
+<p>using the distribution above to sample mixins to matches the ideal spend-time. The author’s method is:</p>
+<pre><code>1. sample a target timestamp directly from the distribution
+2. Find the nearest block containing at least one RingCT output.
+3. sample uniformly among the transaction outputs in that block
+</code></pre>
+<p>A more detail Algorithm is following<br />
+<img src="https://img-blog.csdnimg.cn/20190410162826490.png" alt="在这里插入图片描述" /></p>
+<h3 id="monte-carlo-simulation"><a class="markdownIt-Anchor" href="#monte-carlo-simulation"></a> Monte Carlo Simulation</h3>
+<p>Following Figure shows the effective untraceability set under the current regime and the author’s proposed mixin sampling routine, the effective-untraceability set has significant increased.method performs slightly worse than ideal at 6 and 12 months out, although still much better than the current method, and stays within 75% of the ideal<br />
+<img src="https://img-blog.csdnimg.cn/20190410163723319.png" alt="在这里插入图片描述" /></p>
+<ul>
+<li>Preserve some untraceability even in the face of a highly compromised mixin sampling distribution.</li>
+</ul>
+<h3 id="binned-mixin-sampling"><a class="markdownIt-Anchor" href="#binned-mixin-sampling"></a> Binned mixin sampling</h3>
+<p>Group outputs in the Monero blockchain into sets of some fixed size called bins such that ecah output in a bin is confirmed in the same block or a neighboring block as Figure 13.</p>
+<p><img src="https://img-blog.csdnimg.cn/20190410164656232.png" alt="在这里插入图片描述" /><br />
+Any transaction input referencing a transaction output in a bin, either as a mixin or spend, must also reference all other outputs in that bin. Thus, a real spend cannot be distinguished by age from the other mixin outputs in the bin. Additionally, binned mixin sampling ensures that all the outputs in a bin cannot be deduced as spent until the last unspent output in the bin is spent, preventing deduction attacks from reducing the effectiveuntraceability of an output to less than the bin size.</p>
+<p>Sample Algorithm is showed in Algorithm 2.<br />
+<img src="https://img-blog.csdnimg.cn/20190410184941659.png" alt="在这里插入图片描述" /></p>
+<h2 id="recommendations"><a class="markdownIt-Anchor" href="#recommendations"></a> Recommendations</h2>
+<ul>
+<li>The mixing sampling distribution should be modified to closer match the real distribution.</li>
+<li>Avoid including publicly deanonymized transaction outputs as mixins</li>
+<li>Monero users should be warned that their prior transactions are likely vulnerable to tracing analysis<br />
+The aothor launched a block explorer(<a target="_blank" rel="noopener" href="https://monerolink.com">https://monerolink.com</a>), which displays the linkages between transactions infered using our techniques, they recommend additionally developing a wallet tool that users can run locally to determine wheter their previous transactions are vulnerable.</li>
+</ul>
+<h2 id="thinking"><a class="markdownIt-Anchor" href="#thinking"></a> Thinking</h2>
+<p>There is some points in this paper:</p>
+<ul>
+<li>
+<p>Since zero-mixins result in a short transaction and spend less fees, so the user choose to choose zero-mixins, but the author ignores if it is because there are not enough same denominations?  But the paper [A Traceability Analysis of Monero’s Blockchain] (<a target="_blank" rel="noopener" href="https://blog.csdn.net/t46414704152abc/article/details/89175204">https://blog.csdn.net/t46414704152abc/article/details/89175204</a>) presents a rigorious analysis.</p>
+</li>
+<li>
+<p>The author said new transactions are immune is not because of the RingCT mechanism itself, rater because RingCTs was deployed after the mandatory 2-mixin was enforced. I came up with a doublt, why? but the author didn’t tell us the analysis support.</p>
+</li>
+<li>
+<p>May be next time, we should analyse the untraceability of RingCTs.</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/04/08/A%20Traceability%20Analysis%20of%20Monero%E2%80%99s%20Blockchain/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3084,293 +3345,11 @@ block不能进行引用，只能进行复制。</p>
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/01/10/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E7%90%86%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/01/10/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%9A%84%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">逻辑回归的理解</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2019-01-10 15:11:03" itemprop="dateCreated datePublished" datetime="2019-01-10T15:11:03+08:00">2019-01-10</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="更新于：2023-03-05 20:01:10" itemprop="dateModified" datetime="2023-03-05T20:01:10+08:00">2023-03-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="逻辑回归logistic-regression"><a class="markdownIt-Anchor" href="#逻辑回归logistic-regression"></a> 逻辑回归(Logistic Regression)##</h2>
-<h3 id="1-回归regression"><a class="markdownIt-Anchor" href="#1-回归regression"></a> 1. 回归(Regression)</h3>
-<ul>
-<li>回归，我的理解来说，其直观的理解就是拟合的意思。我们以线性回归为例子，在二维平面上有一系列红色的点，我们想用一条直线来尽量拟合这些红色的点，这就是线性回归。回归的本质就是我们的预测结果尽量贴近实际观测的结果，或者说我们的求得一些参数，经过计算之后的预测结果尽可能接近真实值。</li>
-</ul>
-<center> <image src="https://i.imgur.com/la7bDLS.jpg" width = 50% ></image></center>
-### 2. 逻辑回归的由来 ###
-<ul>
-<li>对于二类线性可分的数据集，使用线性感知器就可以很好的分类。如下图中红色和蓝色的点，我们使用一条直线<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">x_1 +x_2 = 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span>就可以区分两种数据集，在直线上方的属于红色类，直线下方的属于蓝色类。</li>
-</ul>
-<center> <image src="https://i.imgur.com/uPQ0xxk.jpg"></image></center>
-- 但是如果二类线性不可分的数据集，我们无法找到一条直线能够将两种类别很好的区分，即线性回归的分类法对于线性不可分的数据无法有效分类。例如下图中的红色点和蓝色点，我们无法使用一条直线很好的区分这两类，但是我们可以使用非线性分类器，如果我们使用${x_1}^2+{x_2}^2 = 1$，在圆外面的为红色类，在圆里面的一类为蓝色类。
-<center> <image src="https://i.imgur.com/TdJn8NO.jpg" ></image></center>
-- 诚然，数据线性可分可以使用线性分类器，如果数据线性不可分，可以使用非线性分类器，这里似乎没有逻辑回归什么事情。但是如果我们想知道对于一个二类分类问题，对于具体的一个样例，我们不仅想知道该类属于某一类，而且还想知道该类属于某一类的概率多大,有什么办法呢？
-<ul>
-<li>
-<p>线性回归和非线性回归的分类问题都不能给予解答，因为线性回归和非线性回归的问题，假设其分类函数如下：<br />
-$$ y = wx+b $$</p>
-</li>
-<li>
-<p>y的阈值处于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>（</mtext><mo>−</mo><mi mathvariant="normal">∞</mi><mtext>，</mtext><mo>+</mo><mi mathvariant="normal">∞</mi><mtext>）</mtext></mrow><annotation encoding="application/x-tex">（-\infty，+\infty）</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">（</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">，</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">）</span></span></span></span>，此时不能很好的给出属于某一类的概率，因为概率的范围是[0,1],我们需要一个更好的映射函数，能够将分类的结果很好的映射成为[0,1]之间的概率，并且这个函数能够具有很好的可微分性。在这种需求下，人们找到了这个映射函数，即逻辑斯谛函数，也就是我们常说的sigmoid函数，其形式如下：</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>z</mi></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{1+e^{-z} }
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.09077em;vertical-align:-0.7693300000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.697331em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
-</li>
-<li>
-<p>sigmoid函数图像如下图所示</p>
-</li>
-</ul>
-<center> <image src="https://i.imgur.com/T53inQT.png" width = 50% ></image></center>
-<ul>
-<li>sigmoid函数完美的解决了上述需求，而且sigmoid函数连续可微分。</li>
-<li>假设数据离散二类可分，分为0类和1类,如果概率值大于1/2，我们就将该类划分为1类，如果概率值低于1/2,我们就将该类划分为0类。当z取值为0的时候，概率值为1/2，这时候需要人为规定划分为哪一类。</li>
-</ul>
-<h3>3. 逻辑回归的损失函数(Loss Function)和成本函数(Cost Function)<h3>
-<ul>
-<li>在二类分类中，我们假定sigmoid输出结果表示属于1类的概率值，我们很容易想到用平方损失函数，即</li>
-</ul>
-<center>
-<image src="https://i.imgur.com/3C1RzcD.jpg " widh = 50% height=80></image>
-</center>
-<ul>
-<li>在这种情况下，我们φ(z(i))表示sigmoid对第i个值的预测结果，我们将sigmoid函数带入上述成本函数中，绘制其图像，发现这个成本函数的函数图像是一个非凸函数，如下图所示，这个函数里面有很多极小值，如果采用梯度下降法，则会导致陷入局部最优解中,有没有一个凸函数的成本函数呢？</li>
-</ul>
-<center>
-<image src = "https://i.imgur.com/R5r6LvC.jpg " width = 50%></image>
-</center>
-<ul>
-<li>假设sigmoid函数φ(z)表示属于1类的概率，于是做出如下的定义：</li>
-</ul>
-<center><image src=" https://i.imgur.com/IBlS1zQ.jpg"></image></center>
-<ul>
-<li>将两个式子综合来，可以改写为下式：</li>
-</ul>
-<center>
-<image src="https://i.imgur.com/KdpNVpf.jpg"></image></center>
-<ul>
-<li>
-<p>上式将分类为0和分类和1的概率计算公式合二为一。假设分类器分类足够准确，此时对于一个样本，如果它是属于1类，分类器求出的属于1类的概率应该尽可能大，即p(y=1lx)尽可能接近1；如果它是0类，分类器求出的属于0类的概率应该尽可能大，即p(y=0lx)尽可能接近1。</p>
-</li>
-<li>
-<p>通过上述公式对二类分类的情况分析，可知我们的目的是求取参数w和b，使得p(ylx)对0类和1类的分类结果尽可能取最大值，然而实际上我们定义的损失函数的是求最小值，于是，很自然的，我们想到对p(ylx)式子加一个负号，就变成了求最小值的问题，这就得到了逻辑回归中的损失函数。</p>
-</li>
-<li>
-<p>不过，为了计算方便，我们通常对上述式子取log，因而得到下式：</p>
-</li>
-</ul>
-<center>
-<image src="https://i.imgur.com/Swgjn66.jpg " width =50%></image></center>
-<ul>
-<li>公式(1)是对概率公式取log，公式(2)是对公式(1)取相反数。上述公式的函数图像如下图所示。这是一个凸函数（斜率是非单调递减的函数即凸函数），因此可以用梯度下降法求其最小值。</li>
-</ul>
-<p><image src="https://i.imgur.com/CAHBRdg.jpg "></image></center></p>
-<ul>
-<li>根据损失函数是单个样本的预测值和实际值的误差，而成本函数是全部样本的预测值和实际值之间的误差，于是对所有样本的损失值取平均数，得到我们的成本函数：</li>
-</ul>
-<p><image src="https://i.imgur.com/cNXT1Ev.jpg"></image> </center></p>
-<ul>
-<li>损失函数是凸函数，m个损失函数的和仍然是凸函数，因而可以用梯度下降法求最小值。</li>
-</ul>
-<h3 id="4极大似然法求解逻辑回归"><a class="markdownIt-Anchor" href="#4极大似然法求解逻辑回归"></a> 4.极大似然法求解逻辑回归</h3>
-<ul>
-<li>还可以用我们熟知的统计学知识——极大似然法估计逻辑回归中的参数w和b，上述得到的logp(y|w,x),假设目前有m组样本，分别为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>m</mi></msub><mo separator="true">,</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x_1,y_1),(x_2,y_2)...(x_m,y_m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，其中xi表示第i个样本的特征，yi表示第i个样本的类别，yi = 0或者1，利用极大似然法的原则，假设所有训练样本独立同分布，则联合概率为所有样本概率的乘积，即：</li>
-</ul>
-<center><image src="https://i.imgur.com/kaGRRZc.jpg"></image></center>
-- 对上述公式两边取对数，得到下述公式，是不是对这个公式优点熟悉呢？这个公式就是我们的成本函数的和，对于这个公式和成本函数来说，取平均值和不取平均值没有影响。
-<center><image src="https://i.imgur.com/zHLnJJc.jpg"></image></center>
-- 按照极大似然法求极值的方法，分别对w的每个参数求偏导数使其为0，得到对数似然方程组，求解该方程，便可以到的w的参数。只是如果参数很多，求解方程组就会很复杂，此时可以考虑梯度下降法来求解。
-<h3 id="5-总结"><a class="markdownIt-Anchor" href="#5-总结"></a> 5. 总结</h3>
-<ul>
-<li>
-<p>逻辑回归最大的优势在于它的输出结果不仅可以用于分类，还可以表征某个样本属于某类别的概率。</p>
-</li>
-<li>
-<p>逻辑斯谛函数将原本输出结果从范围<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>（</mtext><mo>−</mo><mi mathvariant="normal">∞</mi><mtext>，</mtext><mo>+</mo><mi mathvariant="normal">∞</mi><mtext>）</mtext></mrow><annotation encoding="application/x-tex">（-\infty，+\infty）</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">（</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">，</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">∞</span><span class="mord cjk_fallback">）</span></span></span></span> 映射到(0,1)，从而完成概率的估测。</p>
-</li>
-<li>
-<p>逻辑回归得判定的阈值能够映射为平面的一条判定边界，随着特征的复杂化，判定边界可能是多种多样的样貌，但是它能够较好地把两类样本点分隔开，解决分类问题。</p>
-</li>
-<li>
-<p>求解逻辑回归参数的传统方法是梯度下降，构造为凸函数的代价函数后，每次沿着偏导方向(下降速度最快方向)迈进一小部分，直至N次迭代后到达最低点。</p>
-</li>
-</ul>
-<h3 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h3>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/han_xiaoyang/article/details/49123419">http://blog.csdn.net/han_xiaoyang/article/details/49123419</a></li>
-<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/zjuPeco/article/details/77165974">http://blog.csdn.net/zjuPeco/article/details/77165974</a></li>
-<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/star_liux/article/details/39666737">http://blog.csdn.net/star_liux/article/details/39666737</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&lt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/">&lt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">&gt;</a>
   </nav>
 
 
@@ -3702,25 +3681,25 @@ $$ y = wx+b $$</p>
   
     
       
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
         
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
       
     
   
