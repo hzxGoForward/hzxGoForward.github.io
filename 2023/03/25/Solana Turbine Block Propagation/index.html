@@ -108,15 +108,15 @@
 
 
 
-  <meta name="description" content="Solana 的 Turbine Block Propagation Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 leader（领导）。每个 leader 有固定的出块区间，Solana中将其称之为 slot。 当一个 leader 生产一个新区块后，需要尽快将其分发给">
+  <meta name="description" content="Solana Turbine Block Propagation Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 Leader（领导）。每个 Leader 有固定的出块区间，Solana中将其称之为 slot。 当一个 Leader 生产一个新区块后，需要尽快将其分发给其他">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Solana 的 Turbine Block Propagation">
+<meta property="og:title" content="Solana Turbine Block Propagation">
 <meta property="og:url" content="https://hzxgoforward.github.io/2023/03/25/Solana%20Turbine%20Block%20Propagation/index.html">
 <meta property="og:site_name" content="HuZhenXing">
-<meta property="og:description" content="Solana 的 Turbine Block Propagation Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 leader（领导）。每个 leader 有固定的出块区间，Solana中将其称之为 slot。 当一个 leader 生产一个新区块后，需要尽快将其分发给">
+<meta property="og:description" content="Solana Turbine Block Propagation Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 Leader（领导）。每个 Leader 有固定的出块区间，Solana中将其称之为 slot。 当一个 Leader 生产一个新区块后，需要尽快将其分发给其他">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-03-25T14:25:55.913Z">
-<meta property="article:modified_time" content="2023-03-25T14:38:43.293Z">
+<meta property="article:modified_time" content="2023-03-25T14:41:19.484Z">
 <meta property="article:author" content="hzx">
 <meta property="article:tag" content="区块链">
 <meta name="twitter:card" content="summary">
@@ -136,7 +136,7 @@
   };
 </script>
 
-  <title>Solana 的 Turbine Block Propagation | HuZhenXing</title>
+  <title>Solana Turbine Block Propagation | HuZhenXing</title>
   
 
 
@@ -377,7 +377,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Solana 的 Turbine Block Propagation
+          <h1 class="post-title" itemprop="name headline">Solana Turbine Block Propagation
               
             
           </h1>
@@ -402,7 +402,7 @@
                 
               
 
-              <time title="创建于：2023-03-25 22:25:55 / 更新于：22:38:43" itemprop="dateCreated datePublished" datetime="2023-03-25T22:25:55+08:00">2023-03-25</time>
+              <time title="创建于：2023-03-25 22:25:55 / 更新于：22:41:19" itemprop="dateCreated datePublished" datetime="2023-03-25T22:25:55+08:00">2023-03-25</time>
             
 
             
@@ -464,9 +464,9 @@
       
 
       
-        <h1 id="solana-的-turbine-block-propagation"><a class="markdownIt-Anchor" href="#solana-的-turbine-block-propagation"></a> Solana 的 Turbine Block Propagation</h1>
-<p>Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 leader（领导）。每个 leader 有固定的出块区间，Solana中将其称之为 slot。</p>
-<p>当一个 leader 生产一个新区块后，需要尽快将其分发给其他 validator，为此，Solana 使用了一种称之为 Turbine 的方法。在这种方法中，当 leader 分发新区块时，使用纠删码对新区块进行切分成若干份，随后将每一份数据分发给一个 validator。每个 validator 收到一份数据后，再将自己收到的数据分发给其他 validator。这是一种树形分发方式，其方式完全就是 <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/1165389.945474">split-stream</a> 的翻版。</p>
+        <h1 id="solana-turbine-block-propagation"><a class="markdownIt-Anchor" href="#solana-turbine-block-propagation"></a> Solana Turbine Block Propagation</h1>
+<p>Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 Leader（领导）。每个 Leader 有固定的出块区间，Solana中将其称之为 slot。</p>
+<p>当一个 Leader 生产一个新区块后，需要尽快将其分发给其他 validator，为此，Solana 使用了一种称之为 Turbine 的方法。在这种方法中，当 Leader 分发新区块时，使用纠删码对新区块进行切分成若干份，随后将每一份数据分发给一个 validator。每个 validator 收到一份数据后，再将自己收到的数据分发给其他 validator。这是一种树形分发方式，其方式完全就是 <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/1165389.945474">split-stream</a> 的翻版。</p>
 <h2 id="数据分发结构"><a class="markdownIt-Anchor" href="#数据分发结构"></a> 数据分发结构</h2>
 <p>当 Leader 分发区块时，会选择 <strong>DATA_PLANE_FANOUT</strong> 个节点，并向这些节点分发数据。<strong>DATA_PLANE_FANOUT</strong> 是配置的一个值。当前 Leader 选择时，直接按照各个 validator 质押的 stake 份额的高低选择，Leader 会按照从高到低选择一批节点，然后使用随机选取 <strong>DATA_PLANE_FANOUT</strong> 个节点，进行随机选择的目的是为了提高安全性。可以看出，质押份额越高的节点是最快收到新区块的节点。</p>
 <p>假设 Leader 是分发过程中的根节点，构成了第 0 层（layer），那么 Leader 刚开始选择的这些节点构成了第 1 层，第一层的节点再次选择其他节点构成第 3 层，依次类推，最终，整个数据的分发方式构成了一个多播树，其方式类似下图，每个节点的子节点数由  <strong>DATA_PLANE_FANOUT</strong> 决定，当前这个值是在系统启动时配置好的。</p>
@@ -529,6 +529,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/03/27/NKN/" rel="prev" title="NKN">
+                NKN <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -673,7 +677,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#solana-%E7%9A%84-turbine-block-propagation"><span class="nav-text"> Solana 的 Turbine Block Propagation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E7%BB%93%E6%9E%84"><span class="nav-text"> 数据分发结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shred-%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="nav-text"> Shred 分发过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text"> 参考资料</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#solana-turbine-block-propagation"><span class="nav-text"> Solana Turbine Block Propagation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E7%BB%93%E6%9E%84"><span class="nav-text"> 数据分发结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shred-%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="nav-text"> Shred 分发过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text"> 参考资料</span></a></li></ol></li></ol></div>
             
 
           </div>
