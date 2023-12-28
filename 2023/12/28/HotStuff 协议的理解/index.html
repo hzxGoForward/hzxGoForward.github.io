@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"padding":18},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="HotStuff 协议的理解  简介 HotStuff是继 PBFT 之后 BFT 共识协议中又一里程碑。它具有更低的消息复杂度和更好的扩展性。它的优点如下：  将共识节点之间完成一轮共识的消息复杂度降低到 O(n)\mathcal{O(n)}O(n) 级别，其中 nnn 表示消息的数量。与之相比，PBFT中共识节点完成一轮共识的消息复杂度是 O(n2)\mathcal{O(n^2)}O(n2)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HuZhenXing">
+<meta property="og:url" content="https://hzxgoforward.github.io/2023/12/28/HotStuff%20%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="HuZhenXing">
+<meta property="og:description" content="HotStuff 协议的理解  简介 HotStuff是继 PBFT 之后 BFT 共识协议中又一里程碑。它具有更低的消息复杂度和更好的扩展性。它的优点如下：  将共识节点之间完成一轮共识的消息复杂度降低到 O(n)\mathcal{O(n)}O(n) 级别，其中 nnn 表示消息的数量。与之相比，PBFT中共识节点完成一轮共识的消息复杂度是 O(n2)\mathcal{O(n^2)}O(n2)">
+<meta property="og:locale">
+<meta property="og:image" content="https://hzxgoforward.github.io/2023/12/28/HotStuff%20%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3/image/HotStuff.png">
+<meta property="article:published_time" content="2023-12-28T10:04:54.528Z">
+<meta property="article:modified_time" content="2023-12-25T15:27:38.848Z">
+<meta property="article:author" content="hzx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hzxgoforward.github.io/2023/12/28/HotStuff%20%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3/image/HotStuff.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://hzxgoforward.github.io/2023/12/28/HotStuff 协议的理解/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | HuZhenXing</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">HuZhenXing</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">与其感慨路难行，不如马上出发!</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/12/28/HotStuff%20%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-12-28 18:04:54" itemprop="dateCreated datePublished" datetime="2023-12-28T18:04:54+08:00">2023-12-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-12-25 23:27:38" itemprop="dateModified" datetime="2023-12-25T23:27:38+08:00">2023-12-25</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span id="busuanzi_value_page_pv"></span>次阅读
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="hotstuff-协议的理解"><a class="markdownIt-Anchor" href="#hotstuff-协议的理解"></a> HotStuff 协议的理解</h1>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>HotStuff是继 PBFT 之后 BFT 共识协议中又一里程碑。它具有更低的消息复杂度和更好的扩展性。它的优点如下：</p>
+<ol>
+<li>将共识节点之间完成一轮共识的消息复杂度降低到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mi mathvariant="script">n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span> 级别，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> 表示消息的数量。与之相比，PBFT中共识节点完成一轮共识的消息复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><msup><mi mathvariant="script">n</mi><mn mathvariant="script">2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n^2)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> 级别。</li>
+<li>将更换主节点的消息复杂度降低到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mi mathvariant="script">n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span> 级别。与之相比，PBFT中更换主节点的消息复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><msup><mi mathvariant="script">n</mi><mn mathvariant="script">3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n^3)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span>。</li>
+</ol>
+<p>HotStuff 协议的第一个优点使得它具有更好的扩展性，即当共识组中共识节点数量线性增加时，节点间进行共识的消息复杂度仅仅是线性增加。做过分布式共识实验的都知道，当节点数量增加到 16 以上时，PBFT 协议的每秒处理交易的量（Transaction Per Second，TPS）会由比较明显的衰退，造成这一现象的主要原因是节点间通信消息的复杂度平方级上涨。但是 HotStuff 中节点数量增加时TPS 的衰减的更加缓慢一些。</p>
+<p>HotStuff的第二个优点使得能够频繁的切换主节点，带来的好处是使得整个共识组中每个节点都能拥有排序的权力，这能打破主节点对排序权的垄断。与之相比，PBFT 协议中只有主节点出现故障时共识组才会更换主节点。</p>
+<h2 id="关键概念和数据结构"><a class="markdownIt-Anchor" href="#关键概念和数据结构"></a> 关键概念和数据结构</h2>
+<h3 id="关键概念"><a class="markdownIt-Anchor" href="#关键概念"></a> 关键概念</h3>
+<p>HotStuff 有 3 个版本，分别使 Basic HotStuff、Chained HotStuff 以及 Event-driven HotStuff，下面分别介绍之。在介绍前，需要介绍一些关键概念。</p>
+<p>本文将发起提议的节点称之为<strong>主节点</strong>，将其他节点称之为<strong>从节点</strong>，被排序的内容称之为<strong>命令</strong>。</p>
+<h3 id="数据结构"><a class="markdownIt-Anchor" href="#数据结构"></a> 数据结构</h3>
+<h4 id="node"><a class="markdownIt-Anchor" href="#node"></a> Node</h4>
+<p>一个 node 对应一个提议（proposal），主要包含如下两部分内容：</p>
+<ul>
+<li>parent，它的前一个提议的哈希值。</li>
+<li>cmd，该提议包含的命令。</li>
+</ul>
+<h4 id="qc"><a class="markdownIt-Anchor" href="#qc"></a> QC</h4>
+<p><strong>QC</strong> 全称为 quorum certificate，是 HotStuff 中一个重要概念，翻译为足量的证书，QC 主要包含如下数据：</p>
+<ul>
+<li>type，该 QC 的命令类型。</li>
+<li>view Number，视图编号，节点本地的视图用 <strong>CurView</strong> 表示。</li>
+<li>node，我更愿意称之为提议，每个 node 包含两个内容：一条来自客户端的命令（cmd）以及它的前一个 proposal 的摘要（digest）。摘要实际上是数据的哈希值。</li>
+<li>sig，由（n-f）个节点签名联合组成的一个门限签名，这个签名证明该证书被绝大多数节点认可。</li>
+</ul>
+<p>QC 的主要目的是作为一个可靠证明，表示当前 QC 中包含的命令以及提议被绝大多数节点接收。因为 QC 中的 sig 有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点的签名聚合而成，通过验证 QC 中的签名的合法性，就能知道该 QC 对应的提议是否被其他节点接受。</p>
+<h4 id="msg"><a class="markdownIt-Anchor" href="#msg"></a> MSG</h4>
+<p>主节点向其他节点发送的消息被称之为 MSG，MSG 主要包含如下数据：</p>
+<ul>
+<li>type，消息类型。</li>
+<li>viewNumber，消息对应的视图编号。</li>
+<li>node，消息对应的提议。</li>
+<li>justify，实际其类型是一个 QC，文中将其称之为 justify。</li>
+</ul>
+<h4 id="votemsg"><a class="markdownIt-Anchor" href="#votemsg"></a> VoteMSG</h4>
+<p>从节点向主节点的 MSG 进行投票时发送的消息，主要包含如下数据：</p>
+<ul>
+<li>MSG，主节点发送的消息内容本身。</li>
+<li>partialSig，从节点对MSG 中 type、viewNumber 和 node 部分签名。</li>
+</ul>
+<h4 id="curview"><a class="markdownIt-Anchor" href="#curview"></a> curView</h4>
+<p>curView 表示每个节点本地的视图，它是一个局部变量，不同的节点之间的视图编号会有所不同。</p>
+<h4 id=""><a class="markdownIt-Anchor" href="#"></a> ⊥</h4>
+<p>⊥ 符号在 HotStuff 的论文中经常出现，表示空值的含义。</p>
+<h2 id="basic-hotstuff"><a class="markdownIt-Anchor" href="#basic-hotstuff"></a> Basic HotStuff</h2>
+<p>HotStuff的主要运行过程如下图所示。其中 R0 作为 leader，负责发起共识提议，R1、R2和R3负责投票。</p>
+<img src="./image/HotStuff.png" alt="HotStuff" style="zoom:80%;" />
+<h3 id="new-veiw"><a class="markdownIt-Anchor" href="#new-veiw"></a> New-Veiw</h3>
+<p>HotStuff 中一轮新的共识开始，都是以主节点收集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 <strong>NEW-VIEW</strong> 消息开始。</p>
+<p>共识开始时， R1、R2和R3向新任的主节点发送一个 new-view 消息，<strong>NEW-VIEW</strong> 消息表示其他节点即将过渡到最新的一个视图中。**NEW-VIEW **中包含一个重要的内容，即 <strong>prepared QC</strong>。 prepare QC 是节点在执行共识算法过程中生成的，后续的步骤中读者自会知晓。</p>
+<p>当主节点至少收到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 prepare QC 后，从中选择出具有<strong>最高视图编号</strong>的 prepare QC，并以该 prepare QC 中的 node 作为父节点，并在该 node 之后创建一个新的 node，新的 node 中包含一条客户端的命令以及它的父 node 的哈希值。随后主节点将 prepare QC、node 等这些信息生成一条 <strong>PREPARE</strong> 消息中，然后将其广播给其他节点。<strong>PREPARE</strong> 消息的结构如下所示，分别表示消息的类型、视图编号、提议内容和 prepare QC。</p>
+<p><strong>MSG= &lt;PREPARE,CurView, NODE, PREPARE QC&gt;</strong></p>
+<p>当从节点收到一条 <strong>PREPARE</strong> 消息后，开始进行检查，主要检查如下三项内容：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 prepare，并且视图编号正确。</li>
+<li>proposal 是 prepare QC 的子节点。</li>
+<li><strong>safeNode</strong> 检查，内容如下：
+<ol>
+<li>proposal 是节点本地 locked QC 的子节点，<strong>安全性规则</strong>。</li>
+<li>prepare QC 的视图编号大于 locked QC 的视图编号，<strong>活性规则</strong>。</li>
+</ol>
+</li>
+</ol>
+<p>当上述三项检查全部通过时，从节点向主节点发送一条投票消息 （<strong>VoteMSG</strong>）。</p>
+<p>与 prepare QC 相同， locked QC  也是节点在执行共识过程中生成的，后续步骤中读者自会知晓。</p>
+<h2 id="pre-commit"><a class="markdownIt-Anchor" href="#pre-commit"></a> PRE-COMMIT</h2>
+<p>当主节点至少收到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 VoteMSG 时，将这些所有消息的 partialSig 部分进行聚合后形成一个门限签名，以此构建一个 QC，它的 type 为 commit，因而称之为 commit QC，随后主节点构建一个 <strong>PRE-COMMIT</strong> 消息，该消息内容如下：</p>
+<p><strong>MSG = &lt;PRE-COMMIT, CurView,NODE = None, commitQC&gt;</strong></p>
+<p>主节点将该消息广播给所有节点。</p>
+<p>从节点收到该消息后，进行如下检查：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 pre-commit，并且视图编号正确。</li>
+<li>消息中 QC 的类型为 prepare，并且其视图编号为当前视图编号。</li>
+</ol>
+<p>当通过上述检查时，从节点本地记录 <strong>prepare QC = MSG.QC</strong>。</p>
+<p>此外，从节点还会生成一个 <strong>VoteMsg</strong> 并发送给主节点，其内容如下：</p>
+<p><strong>VoteMSG=&lt;MSG, partial sig&gt;</strong></p>
+<h3 id="commit"><a class="markdownIt-Anchor" href="#commit"></a> COMMIT</h3>
+<p>当主节点收到至少 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 VoteMSG 时，将这些所有消息的 partialSig 部分进行聚合后形成一个门限签名，以此构建一个 QC，它的 type为 pre-commit，因而称之为 precommit QC。随后主节点向从节点广播一条 <strong>COMMIT</strong> 消息，该消息内容如下：</p>
+<p><strong>MSG=&lt;COMMIT, CurView, NODE = None, precommit QC&gt;</strong></p>
+<p>当从节点收到主节点的 <strong>COMMIT</strong> 消息后，进行如下检查：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 commit，并且视图编号正确。</li>
+<li>消息中 QC 的类型为 pre-commit，并且其视图编号为当前视图编号。</li>
+</ol>
+<p>当通过上述检查时，从节点本地记录 <strong>locked QC = MSG.QC</strong>。</p>
+<p>此外，从节点还会生成一个 <strong>VoteMsg</strong> 并发送给主节点,其内容如下：</p>
+<p><strong>VoteMSG=&lt;MSG, partial sig&gt;</strong></p>
+<h3 id="decide"><a class="markdownIt-Anchor" href="#decide"></a> DECIDE</h3>
+<p>当主节点收到至少 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 VoteMSG时，将这些所有消息的 partialSig 部分进行聚合后形成一个门限签名，以此构建一个 QC，它的 type 为 commit QC，以内称之为 commit QC。随后主节点向从节点广播一条 <strong>DECIDE</strong> 消息，该消息内容如下：</p>
+<p><strong>MSG=&lt;DECIDE, CurView, NODE = None, commit QC&gt;</strong></p>
+<p>当从节点收到主节点的 <strong>DECIDE</strong> 消息后，进行如下检查：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 decide，并且视图编号正确。</li>
+<li>消息中 QC 的类型为 commit，并且其视图编号为当前视图编号。</li>
+</ol>
+<p>当通过上述检查时，节点开始执行 QC 中对应的 node 的命令。与此同时，节点本地的当前视图编号自增一（<strong>++curView</strong>），随后向下一任主节点发送 <strong>NEW-VIEW</strong> 消息以开启下一轮共识，它的消息内容如下：</p>
+<p><strong>MSG=&lt;NEW-VIEW, curView，⊥，prepare QC&gt;</strong></p>
+<h2 id="chained-hotstuff"><a class="markdownIt-Anchor" href="#chained-hotstuff"></a> Chained-HotStuff</h2>
+<p>可以发现，Basic HotStuff 中主节点在提议阶段主要作用是构建新的提议并选择最新的 QC，其他阶段主要作用是组合新的 QC 并广播给其他节点，那么为什么不令主节点在每个阶段都做出一个新的提议呢？基于这个思路，就产生了链式的 HotStuff，即文中的 Chained-HotStuff。在 Chained-HotStuff 中不再区分每个阶段的 QC ，而是统一称之为 Generic QC。主要运行过程按照角色划分，主要过程如下：</p>
+<h4 id="主节点"><a class="markdownIt-Anchor" href="#主节点"></a> 主节点</h4>
+<p>根据从节点的投票信息，从中选择出视图编号最大的 QC，在此 QC 之后创建一个新的提议消息并广播给其他节点，消息类型如下：</p>
+<p><strong>MSG=&lt;GENERIC, CurView, NODE, GENERIC QC&gt;</strong></p>
+<h4 id="从节点"><a class="markdownIt-Anchor" href="#从节点"></a> 从节点</h4>
+<p>从节点收到 <strong>GENERIC</strong> 消息之后，检查如下信息：</p>
+<ol>
+<li>消息类型为 <strong>GENERIC</strong> ，并且其视图编号和本地视图编号一致并且来自于对应的主节点。</li>
+<li>使用 SAFENode 规则验证当前提议NODE 和 NODE 的父节点的正确性，如果通过，则向下一个视图的主节点发送投票消息 <strong>VOTEMSG=&lt;MSG, partialSig&gt;</strong>。</li>
+<li>沿着其中的链式规则，找到一系列的提议 b-&gt;b’-&gt;b‘’-&gt;b*，进行如下验证和处理：
+<ol>
+<li>如果 b* 的父节点是 b“，那么记录 prepare QC = b*.justify</li>
+<li>如果 b* 的父节点是 b“ 并且 b’‘ 是 b‘ 的父节点，那么记录 locked QC = b’.justify</li>
+<li>如果 b* 的父节点是 b“ 并且 b’‘ 是 b‘ 的父节点并且 b 是 b‘ 的父节点，那么执行 b.justify 中的提议，并且向客户端返回执行结果。</li>
+</ol>
+</li>
+</ol>
+<h4 id="view-change"><a class="markdownIt-Anchor" href="#view-change"></a> View-Change</h4>
+<p>在等待消息期间，如果发生超时，节点本地视图 curView 自增，随后向对应的主节点发送 <strong>NEXT-VIEW</strong> 消息，内容如下：</p>
+<p><strong>MSG=&lt;GENERIC, CurView, NODE=none, GENERIC QC&gt;</strong></p>
+<h2 id="说明"><a class="markdownIt-Anchor" href="#说明"></a> 说明</h2>
+<ol>
+<li>每个特定的视图编号下最多确认一个提议。因为当一个提议被确认时视图编号就会加一，当某个视图下没有达成共识时引起超时，此时视图继续增加一。</li>
+<li>prepare QC 表示一条命令处于<strong>准备</strong>状态，并且这个准备状态已经被绝大多数节点承认。它的主要作用在发生 view-change 时，令新任的主节点在最新的处于准备状态的命令的基础上进行提议，这样能最大化利用前任主节点的共识工作。但是由于处于准备状态，这条命令也可能会被新任主节点作废。locked QC 表示指令处于<strong>锁定</strong>状态。锁定状态表示该指令已经被锁定为下一个需要执行的指令，它一定会绝大多数节点执行。</li>
+</ol>
+<h2 id="qa-环节"><a class="markdownIt-Anchor" href="#qa-环节"></a> Q&amp;&amp;A 环节</h2>
+<ol>
+<li>
+<p>为什么 new-view 中使用 prepare QC 作为切换视图的依据，locked QC 可以吗？</p>
+<p>locked QC 是完全可以的，因为当一个 node 具有 locked QC 时，那么必然有 prepare QC，因此，使用 locked QC 也可以作为 new-view 中的根据。</p>
+</li>
+<li>
+<p>在切换视图时，为什么使用 prepare QC 而没有使用 locked QC 呢？</p>
+<p>使用 prepare QC 能够最大化利用被替换的主节点在共识过程中做的工作。节点本地存储的locked QC 和 prepare QC 有两种可能的情况：</p>
+<ol>
+<li>locked QC 和 prepare QC 指向同一个提议。</li>
+<li>locked QC 指向提议 A，prepare QC 指向提议 B。此时提议 B 必然是提议A 的一个子孙提议，区别是 A已经被共识<strong>锁定</strong>，但是 B 没有被共识<strong>锁定</strong>。如果在 new-view 消息中使用 locked QC，那么新任主节点的新提议会废掉提议 A。实际上，因为 A 已经获得 prepare QC，那么在 B 的基础上继续提议是更好的选择。需要说明的是，实际上，如果主节点执意选择在 locked QC，即  A 处进行新的提议 B‘，其他节点也会接受这一提议，因为新的提议也能通过 safeNode 函数的检查。因为新的提议 B’ 也是绝大多数节点 locked QC（也就是A）的子节点。</li>
+</ol>
+<p>综上，使用 prepare QC 能够最大化利用前任主节点的共识工作。</p>
+</li>
+<li>
+<p>为什么 HotStuff 中 commit 步骤之后可以达到和 PBFT 中 commit 步骤相同的作用，那么为什么 HotStuff 中还会额外增加 decide 步骤呢？</p>
+<p>这一步骤的作用是降低 HotStuff 中 new-view 消息的复杂度，也正是这一步骤，将 HotStuff 中更换主节点的消息复杂度降低到了 O(n) 级别。</p>
+<p>假设我们去掉 decide 阶段，并且令节点在 commit 阶段收到主节点的 commit 消息之后，不再继续向主节点发送 commit-vote 消息，而是直接执行该命令。</p>
+<p>现在考虑一种场景，假设视图编号为 v 的主节点是拜占庭节点，它将 commit 消息只发送给 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">f-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 个节点，这 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点（主节点和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">f-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>个节点）更新了 locked QC，并且执行 commit 消息对应的命令。</p>
+<p>随后出现超时， HotStuff 中节点向下一任主节点发送 <strong>NEW-VIEW</strong> 消息，每个节点发送最新的 prepare QC，其中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>个节点发送视图编号为 v 的prepare QC，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点发送视图编号为 v-1 的 prepare QC。</p>
+<p>新任主节点在收到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 new-view 消息后从中选择出 prepare QC 中视图编号最大的一个 QC，随后在这个 QC 后生成新的 proposal，并将其放入 <strong>PREPARE</strong> 消息广播给其他节点。需要注意的是，<strong>PREPARE</strong> 消息只包含主节点挑选的视图编号最大的 QC而并非 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 QC。<strong>PREPARE</strong>消息中的 QC 到底是不是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 new-view 消息中视图编号最大的 QC 是没有办法证明的。</p>
+<p>从全局视角看，视图编号最大的 prepare QC 的视图编号为 v，但是主节点可以选择视图编号为 v-1 的一个 prepare QC。此时该主节点在视图编号为 v-1的QC后面提出一个新的提议，然后构建一个 <strong>PREPARE</strong> 消息（该消息的视图编号是 v+1）后广播给其他节点。其中最大prepare QC 的视图编号为 v 的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点会拒绝投票（safeNode 函数中安全规则无法通过），但是剩余的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个最大视图编号为 v-1 的节点会接收这一提议。这就造成不一致，即 HotStuff 更换主节点的方法会导致 commit 阶段执行命令时会出现系统安全性问题。</p>
+<p>因此，解决办法有两种（任选其一）：</p>
+<ol>
+<li>增加一个 decide 阶段，保证一个命令被执行前，绝大多数节点都会锁定该命令，即绝大多数的节点的 locked QC 都是该命令。在 HotStuff 中的 decide 阶段，节点收到 commit QC 时，可以确认绝大多数节点的 locked QC 都是该命令，那么就可以安全的执行该命令,这种方法的弊端是，一条命令的确认时间增加了一个round tripe。</li>
+<li>在主节点的 <strong>PREPARE</strong> 中附带上 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 prepare QC 以方便从节点验证主节点挑选出来的视图编号最大的 QC 确实是全局视角下视图编号最大的 QC，但是这种方法带来的弊端就是 <strong>PREPARE</strong> 消息的复杂度直接变为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><msup><mi mathvariant="script">n</mi><mn mathvariant="script">2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n^2)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> 。</li>
+</ol>
+<p>在 HotStuff 中选择了第一种解决办法，因为命令确认额外增加的时间延迟，可以通过chained-HotStuff 比较好的解决。</p>
+</li>
+<li>
+<p>HotStuff 中的 pacemaker 具体是如何工作的？</p>
+</li>
+</ol>
+<h1 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h1>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1803.05069.pdf">HotStuff arxive 论文</a></li>
+<li></li>
+</ol>
+<p>共识协议需要确定的若干个步骤</p>
+<ol>
+<li>
+<p>确定新提议是什么?</p>
+</li>
+<li>
+<p>发现有足够节点确定了新提议后,<strong>预先提交</strong>下一个提议(局部)</p>
+</li>
+<li>
+<p>有足够多的节点<strong>预先提交</strong>了新提议,<strong>正式提交</strong>新提议(局部)</p>
+</li>
+<li>
+<p>有足够多的节点正式提交新提议,确定新协议被确认(全局)</p>
+</li>
+<li>
+<p>L-BFT 协议为什么需要view-change?</p>
+<ol>
+<li>主节点出现故障时,必须从已有的节点中选择出最新的 主节点以保证共识能够继续。</li>
+</ol>
+</li>
+<li>
+<p>view-change 时最新的 leader 应该在哪个状态的基础上再次进行共识？</p>
+<ol>
+<li>假设通过投票确定最新的 leader，那么应该以投票信息中所有节点的<strong>最新状态</strong>为准，这样能够避免最新 leader 推翻前任 leader 的共识结果。</li>
+<li><strong>最新状态</strong>应该是可验证的，例如每个节点投票新 leader 时，将本地最新的 2f+1 个 prepare 消息发送给新的 leader。</li>
+</ol>
+</li>
+<li>
+<p>view-change 时需要注意的点</p>
+<ol>
+<li>view-change 的时候，一定不能回滚已经确认的共识消息。</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/07/02/%E4%B8%BB%E6%B5%81%E7%9A%84%E5%85%AC%E9%93%BE%E4%B8%AD%E7%BD%91%E7%BB%9C%E6%9E%84%E5%BB%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar1.jpg"
+                alt="博主" />
+            
+              <p class="site-author-name" itemprop="name">博主</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/hzxGoForward" title="github &rarr; https://github.com/hzxGoForward" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/wen-ge-hua-49/activities" title="zhihu &rarr; https://www.zhihu.com/people/wen-ge-hua-49/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-zhihu"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="/hzx@pku.edu.cn" title="email &rarr; hzx@pku.edu.cn"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://me.csdn.net/t46414704152abc/" title="csdn &rarr; https://me.csdn.net/t46414704152abc/" rel="noopener" target="_blank"><i class="fa fa-fw fa-csdn"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://leetcode.cn/u/hzxforward/" title="leetcode &rarr; https://leetcode.cn/u/hzxforward/" rel="noopener" target="_blank"><i class="fa fa-fw fa-leetcode"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hotstuff-%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text"> HotStuff 协议的理解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text"> 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text"> 关键概念和数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"><span class="nav-text"> 关键概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text"> 数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#node"><span class="nav-text"> Node</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#qc"><span class="nav-text"> QC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#msg"><span class="nav-text"> MSG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#votemsg"><span class="nav-text"> VoteMSG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#curview"><span class="nav-text"> curView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"> ⊥</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#basic-hotstuff"><span class="nav-text"> Basic HotStuff</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#new-veiw"><span class="nav-text"> New-Veiw</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pre-commit"><span class="nav-text"> PRE-COMMIT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commit"><span class="nav-text"> COMMIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#decide"><span class="nav-text"> DECIDE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chained-hotstuff"><span class="nav-text"> Chained-HotStuff</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E8%8A%82%E7%82%B9"><span class="nav-text"> 主节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-text"> 从节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#view-change"><span class="nav-text"> View-Change</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-text"> 说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#qa-%E7%8E%AF%E8%8A%82"><span class="nav-text"> Q&amp;&amp;A 环节</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text"> 参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+<!--背景音乐-->
+<!--iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=37856454&auto=1&height=66"></iframe> --> 
+<!--<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=556319523&auto=1&height=66"></iframe> -->
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=86 src="//music.163.com/outchain/player?type=2&id=4341314&auto=1&height=66"></iframe>
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博主</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v6.3.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.6.0</div>
+
+
+<div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!--注释本行<span id="busuanzi_container_site_pv" style='display:none'>-->
+    本站总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    <span class="post-meta-divider">|</span>
+</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+    本站访问<span id="busuanzi_value_site_uv"></span>人次
+</span>
+</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.6.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('Copy').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('Copy')
+        }, 300)
+      }).append(e)
+    })
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+
+</body>
+</html>

@@ -356,6 +356,666 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/04/10/git%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2023/04/10/git%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-04-10 18:29:55" itemprop="dateCreated datePublished" datetime="2023-04-10T18:29:55+08:00">2023-04-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2021-06-12 12:35:59" itemprop="dateModified" datetime="2021-06-12T12:35:59+08:00">2021-06-12</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="git-常用命令"><a class="markdownIt-Anchor" href="#git-常用命令"></a> git 常用命令</h1>
+<p>2020-08-14 11:16:16 星期五</p>
+<h3 id="用户设置"><a class="markdownIt-Anchor" href="#用户设置"></a> 用户设置</h3>
+<p>修改用户名和邮箱地址命令如下，其中引号不能省略。</p>
+<ul>
+<li>git config --global <a target="_blank" rel="noopener" href="http://user.name">user.name</a>  “xxxx”</li>
+<li>git config --global user.email  “xxxx”</li>
+</ul>
+<p>查看用户名和邮箱</p>
+<ul>
+<li>git config <a target="_blank" rel="noopener" href="http://user.name">user.name</a></li>
+<li>git config user.email</li>
+</ul>
+<h4 id="远程相关"><a class="markdownIt-Anchor" href="#远程相关"></a> 远程相关</h4>
+<p>查看远程pull和push的地址</p>
+<ul>
+<li>git remote -v</li>
+</ul>
+<p>添加远程仓库地址</p>
+<ul>
+<li>git remote add origin <a target="_blank" rel="noopener" href="https://github.com/hzxGoForward/bitcoin-hzx.git">https://github.com/hzxGoForward/bitcoin-hzx.git</a></li>
+</ul>
+<p>修改远程仓库地址</p>
+<ul>
+<li>git remote set-url origin <a target="_blank" rel="noopener" href="https://github.com/hzxGoForward/bitcoin-hzx.git">https://github.com/hzxGoForward/bitcoin-hzx.git</a></li>
+</ul>
+<p>将当前分支推送到远程分支</p>
+<ul>
+<li>git push origin 分支名</li>
+</ul>
+<p>拉取并合并远程分支</p>
+<ul>
+<li>git pull origin 分支名</li>
+</ul>
+<p>推送本地分支至远程分支</p>
+<ul>
+<li>git push origin 分支名</li>
+</ul>
+<p>当前分支与远程分支关联</p>
+<ul>
+<li>git branch --set-upstream-to=origin/dev</li>
+</ul>
+<p>创建分支并与远程分支关联</p>
+<ul>
+<li>git branch 分支名 origin/分支名</li>
+</ul>
+<p>将本地内容推送到远程分支</p>
+<ul>
+<li>git push origin/分支名</li>
+</ul>
+<p>查看当前分支与远程分支关联关系</p>
+<ul>
+<li>git branch -vv</li>
+</ul>
+<p>删除远程分支</p>
+<ul>
+<li>git push origin --delete 分支名</li>
+</ul>
+<h2 id="分支相关"><a class="markdownIt-Anchor" href="#分支相关"></a> 分支相关</h2>
+<p>创建分支</p>
+<ul>
+<li>git branch 分支名</li>
+</ul>
+<p>切换分支</p>
+<ul>
+<li>git checkout 分支名</li>
+</ul>
+<p>创建一个新的分支并切换到该分支</p>
+<ul>
+<li>
+<p>git checkout -b 分支名</p>
+</li>
+<li>
+<p>删除本地分支</p>
+</li>
+<li>
+<p>git branch -d 分支名</p>
+</li>
+</ul>
+<h2 id="提交内容"><a class="markdownIt-Anchor" href="#提交内容"></a> 提交内容</h2>
+<p>修改内容转移到新分支——方法一</p>
+<ol>
+<li>git stash</li>
+<li>git checkout -b 分支名</li>
+<li>git stash pop</li>
+</ol>
+<p>修改内容转移到新分支——方法二</p>
+<ol>
+<li>git add .</li>
+<li>git checkout -b 分支名</li>
+<li>git commit -m “msg”</li>
+</ol>
+<p>将修改存储至暂存区</p>
+<ul>
+<li>git add src/net_processing.cpp</li>
+<li>git add.</li>
+</ul>
+<p>放弃对某个文件的修改</p>
+<ul>
+<li>git checkout – src/net_processing.cpp</li>
+<li>git checkout – .</li>
+</ul>
+<p>提交修改</p>
+<ul>
+<li>git commit -m “修改说明”</li>
+</ul>
+<h3 id="gitignore"><a class="markdownIt-Anchor" href="#gitignore"></a> .gitignore</h3>
+<p>忽略*.o和*.a文件</p>
+<ul>
+<li>*.[oa]</li>
+</ul>
+<p>忽略dbg文件和dgb目录</p>
+<ul>
+<li>dbg</li>
+</ul>
+<p>忽略dbg目录</p>
+<ul>
+<li>/dbg</li>
+</ul>
+<p>只忽略dbg文件，不忽略dbg目录 !表示不忽略</p>
+<ul>
+<li>dbg</li>
+<li>!dbg/</li>
+</ul>
+<h3 id="git中gitignore文件不起作用的解决办法"><a class="markdownIt-Anchor" href="#git中gitignore文件不起作用的解决办法"></a> Git中.gitignore文件不起作用的解决办法：</h3>
+<ol>
+<li>修改gitignore文件</li>
+<li>git rm -r --cached .</li>
+<li>git add .</li>
+<li>git commit -m ‘update .gitignore’</li>
+<li>再进行push操作</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/03/27/NKN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2023/03/27/NKN/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">NKN</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-03-27 15:31:28 / 更新于：15:34:21" itemprop="dateCreated datePublished" datetime="2023-03-27T15:31:28+08:00">2023-03-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="nkn"><a class="markdownIt-Anchor" href="#nkn"></a> NKN</h1>
+<p>NKN（New Kind of Network） 是 2018年和 IPFS 一起产生的项目，IPFS 致力于构造一个去中心化存储层，而 NKN 致力于构建一个去中心化网络层。</p>
+<p>NKN 的白皮书中介绍了它的若干特殊概念。</p>
+<ol>
+<li>Cellular Automata powered DDTN（元胞自动机驱动的去中心化数据传输网络）。</li>
+<li>Cullular Automata driven consensus (元胞自动机驱动的共识)。</li>
+<li>Proof of Relay（传输证明）。</li>
+<li>Tokenization of network connectivity and data transmission capability（代币化网络连接和数据传输）</li>
+</ol>
+<p>下文对一些重要概念进行介绍。</p>
+<h2 id="cellular-automata-ca"><a class="markdownIt-Anchor" href="#cellular-automata-ca"></a> Cellular Automata (CA)</h2>
+<p>根据 NKN 白皮书介绍，CA 是一群节点构成的一个状态机，每个节点都根据局部规则改变自身的状态，局部规则依赖于其邻居节点。</p>
+<p>每个节点在改变的时候，将变化传递给邻居节点，最终其变化信息也会传递至 CA 中的所有节点，使得 CA 进行演进。元胞自动机是一个离散的的系统状态，其定义为：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>A</mi><mo>=</mo><mo stretchy="false">(</mo><mi>S</mi><mo separator="true">,</mo><mi>N</mi><mo separator="true">,</mo><mi>K</mi><mo separator="true">,</mo><mi>f</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">CA = (S, N, K, f)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mclose">)</span></span></span></span></span></p>
+<p>其中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 表示节点当前状态；<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 表示网络中节点数；<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 表示邻居节点集合； <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 表示状态转换函数。</p>
+<p>元胞自动机的系统状态从初始状态开始演进，每个节点根据自身和邻居节点的状态进行改变，全局状态由所有节点的局部状态决定，并相应的演进。</p>
+<p>元胞自动机中最重要的状态转移函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> ，具体指代的是网络拓扑更新规则。</p>
+<h2 id="decentralized-data-transmission-networkddtn"><a class="markdownIt-Anchor" href="#decentralized-data-transmission-networkddtn"></a> Decentralized Data Transmission Network（DDTN）</h2>
+<p>NKN 引入了去中心化数据传输网络（DDTN）的概念。DDTN 将独立和自组织的转发节点组织起来为客户端提供连通性和数据传输能力。这些节点以无需信任的去中心化的方式协调，并且使用代币激励节点共享网络资源。</p>
+<h2 id="总体评价"><a class="markdownIt-Anchor" href="#总体评价"></a> 总体评价</h2>
+<ol>
+<li>看起来引入了元包自动机这个高大上的概念，实际上没有什么实质性内容。例如，使用介绍元胞自动机构成的网络中，每个节点的网络拓扑更新规则到底是什么？整个文档自始至终都没交代，为什么使用元胞自动机就能比一般的网络构建方式更加去中心化？元胞自动机构建的网络如何保证效率性？</li>
+<li>参考文献的引用方式很混乱，Cellular Aotomata 的概念第一次出现的时候，完全没有写引用，后面介绍了很多的时候，突然来一大堆引用，这种引用方式很不正式。</li>
+<li>白皮书里面把很多重要的技术细节指向了黄皮书，然而截止现在2023年3月27日，黄皮书在网络上仍然找不到，该项目依托答辩。</li>
+</ol>
+<h1 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h1>
+<p><a href="extension://bfdogplmndidlpjfhoijckpakkdjkkil/pdf/viewer.html?file=https%3A%2F%2Fnkn.org%2Fwp-content%2Fuploads%2F2020%2F10%2FNKN_Whitepaper.pdf">NKN-whitepaper</a></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/03/25/Solana%20Turbine%20Block%20Propagation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2023/03/25/Solana%20Turbine%20Block%20Propagation/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">Solana Turbine Block Propagation</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-03-25 22:25:55 / 更新于：22:41:19" itemprop="dateCreated datePublished" datetime="2023-03-25T22:25:55+08:00">2023-03-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="solana-turbine-block-propagation"><a class="markdownIt-Anchor" href="#solana-turbine-block-propagation"></a> Solana Turbine Block Propagation</h1>
+<p>Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 Leader（领导）。每个 Leader 有固定的出块区间，Solana中将其称之为 slot。</p>
+<p>当一个 Leader 生产一个新区块后，需要尽快将其分发给其他 validator，为此，Solana 使用了一种称之为 Turbine 的方法。在这种方法中，当 Leader 分发新区块时，使用纠删码对新区块进行切分成若干份，随后将每一份数据分发给一个 validator。每个 validator 收到一份数据后，再将自己收到的数据分发给其他 validator。这是一种树形分发方式，其方式完全就是 <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/1165389.945474">split-stream</a> 的翻版。</p>
+<h2 id="数据分发结构"><a class="markdownIt-Anchor" href="#数据分发结构"></a> 数据分发结构</h2>
+<p>当 Leader 分发区块时，会选择 <strong>DATA_PLANE_FANOUT</strong> 个节点，并向这些节点分发数据。<strong>DATA_PLANE_FANOUT</strong> 是配置的一个值。当前 Leader 选择时，直接按照各个 validator 质押的 stake 份额的高低选择，Leader 会按照从高到低选择一批节点，然后使用随机选取 <strong>DATA_PLANE_FANOUT</strong> 个节点，进行随机选择的目的是为了提高安全性。可以看出，质押份额越高的节点是最快收到新区块的节点。</p>
+<p>假设 Leader 是分发过程中的根节点，构成了第 0 层（layer），那么 Leader 刚开始选择的这些节点构成了第 1 层，第一层的节点再次选择其他节点构成第 3 层，依次类推，最终，整个数据的分发方式构成了一个多播树，其方式类似下图，每个节点的子节点数由  <strong>DATA_PLANE_FANOUT</strong> 决定，当前这个值是在系统启动时配置好的。</p>
+<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NDQiIGhlaWdodD0iMzA0Ij4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI3NDQiIGhlaWdodD0iMzA0Ij48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iMjE2IiB3aWR0aD0iMTY4IiBoZWlnaHQ9IjY0IiBjbGFzcz0ic29saWQgbm9maWxsIiByeD0iMCI+PC9yZWN0PgogIDx0ZXh0IHg9IjM0IiB5PSIyNTIiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMTM4IiB5PSIyNTIiID4zPC90ZXh0PgogIDxyZWN0IHg9IjE4OCIgeT0iMjE2IiB3aWR0aD0iMTY4IiBoZWlnaHQ9IjY0IiBjbGFzcz0ic29saWQgbm9maWxsIiByeD0iMCI+PC9yZWN0PgogIDx0ZXh0IHg9IjIxOCIgeT0iMjUyIiA+TmVpZ2hib3Job29kPC90ZXh0PgogIDx0ZXh0IHg9IjMyMiIgeT0iMjUyIiA+NDwvdGV4dD4KICA8cmVjdCB4PSIzODAiIHk9IjIxNiIgd2lkdGg9IjE2OCIgaGVpZ2h0PSI2NCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8dGV4dCB4PSI0MTAiIHk9IjI1MiIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSI1MTQiIHk9IjI1MiIgPjU8L3RleHQ+CiAgPHJlY3QgeD0iNTY0IiB5PSIyMTYiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iNTk0IiB5PSIyNTIiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNjk4IiB5PSIyNTIiID42PC90ZXh0PgogIDx0ZXh0IHg9IjMwNiIgeT0iNDQiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNDEwIiB5PSI0NCIgPjA8L3RleHQ+CiAgPHRleHQgeD0iMTU0IiB5PSIxNDAiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMjU4IiB5PSIxNDAiID4xPC90ZXh0PgogIDx0ZXh0IHg9IjQ3NCIgeT0iMTQwIiA+TmVpZ2hib3Job29kPC90ZXh0PgogIDx0ZXh0IHg9IjU3OCIgeT0iMTQwIiA+MjwvdGV4dD4KICA8Zz4KICAgIDxsaW5lIHgxPSIyNzYiIHkxPSI4IiB4Mj0iNDQ0IiB5Mj0iOCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjc2IiB5MT0iOCIgeDI9IjI3NiIgeTI9IjcyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0NDQiIHkxPSI4IiB4Mj0iNDQ0IiB5Mj0iNzIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIwNCIgeTE9IjQwIiB4Mj0iMjc2IiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIwNCIgeTE9IjQwIiB4Mj0iMjA0IiB5Mj0iODQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjQ0NCIgeTE9IjQwIiB4Mj0iNTMyIiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjUzMiIgeTE9IjQwIiB4Mj0iNTMyIiB5Mj0iODQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjI3NiIgeTE9IjcyIiB4Mj0iNDQ0IiB5Mj0iNzIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPHBvbHlnb24gcG9pbnRzPSIyMDAsODQgMjA4LDg0IDIwNCw5NiIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogICAgPHBvbHlnb24gcG9pbnRzPSI1MjgsODQgNTM2LDg0IDUzMiw5NiIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogIDwvZz4KICA8Zz4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxMDQiIHgyPSIyOTIiIHkyPSIxMDQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjEyNCIgeTE9IjEwNCIgeDI9IjEyNCIgeTI9IjE2OCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjkyIiB5MT0iMTA0IiB4Mj0iMjkyIiB5Mj0iMTY4IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxNjgiIHgyPSIyOTIiIHkyPSIxNjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjE1NiIgeTE9IjE2OCIgeDI9IjE1NiIgeTI9IjE5NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjA0IiB5MT0iMTY4IiB4Mj0iMjA0IiB5Mj0iMTk2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxwb2x5Z29uIHBvaW50cz0iMTUyLDE5NiAxNjAsMTk2IDE1NiwyMDgiIGNsYXNzPSJmaWxsZWQiPjwvcG9seWdvbj4KICAgIDxwb2x5Z29uIHBvaW50cz0iMjAwLDE5NiAyMDgsMTk2IDIwNCwyMDgiIGNsYXNzPSJmaWxsZWQiPjwvcG9seWdvbj4KICA8L2c+CiAgPGc+CiAgICA8bGluZSB4MT0iNDQ0IiB5MT0iMTA0IiB4Mj0iNjEyIiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0NDQiIHkxPSIxMDQiIHgyPSI0NDQiIHkyPSIxNjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjYxMiIgeTE9IjEwNCIgeDI9IjYxMiIgeTI9IjE2OCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iNDQ0IiB5MT0iMTY4IiB4Mj0iNjEyIiB5Mj0iMTY4IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI1MzIiIHkxPSIxNjgiIHgyPSI1MzIiIHkyPSIxOTYiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjU4MCIgeTE9IjE2OCIgeDI9IjU4MCIgeTI9IjE5NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjUyOCwxOTYgNTM2LDE5NiA1MzIsMjA4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8cG9seWdvbiBwb2ludHM9IjU3NiwxOTYgNTg0LDE5NiA1ODAsMjA4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgo8L3N2Zz4=)</p>
+<h2 id="shred-分发过程"><a class="markdownIt-Anchor" href="#shred-分发过程"></a> Shred 分发过程</h2>
+<p>当 Leader 分发新区块时，Leader 在第 0 层。然后把编码为若干个分片，每个分片称之为一个 Shred。</p>
+<p>当分发一个 Shred 时，Leader 节点选择并发送给一个特定的节点，这个节点称之为这个Turbine 树的根节点（root node）或者锚节点（anchor node）。锚节点会将该 Shred 分发给第 1 层的节点，同时还会发送给第 2 层的节点。因此，一个 锚节点需要将一个 Shred 分发给 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mi>D</mi><mi>A</mi><mi>T</mi><mi>A</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>L</mi><mi>A</mi><mi>N</mi><mi>E</mi><mi mathvariant="normal">_</mi><mi>F</mi><mi>A</mi><mi>N</mi><mi>O</mi><mi>U</mi><mi>T</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2 \times DATA\_PLANE\_FANOUT - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">A</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 个节点，而普通节点只需要发送给下一层的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi><mi>T</mi><mi>A</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>L</mi><mi>A</mi><mi>N</mi><mi>E</mi><mi mathvariant="normal">_</mi><mi>F</mi><mi>A</mi><mi>N</mi><mi>O</mi><mi>U</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">DATA\_PLANE\_FANOUT</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">A</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 个节点。</p>
+<p>下图展示了一个 Leader  在 fanout 设置为 2 的情况下把一个 Shred 分发给 Neighborhood 0 的过程。Leader 首先选择将 Shred 发送给 Validator 1（根节点），随后 Validator 1 将 Shred 转发给 Validator 2，而 Validator 1 和 Validator 2 构成了第 1 层。</p>
+<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NTIiIGhlaWdodD0iMjU2Ij4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI1NTIiIGhlaWdodD0iMjU2Ij48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iMTA0IiB3aWR0aD0iNTM2IiBoZWlnaHQ9IjEyOCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8cmVjdCB4PSIzNjQiIHk9IjEzNiIgd2lkdGg9IjE0NCIgaGVpZ2h0PSI2NCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8dGV4dCB4PSIzOTQiIHk9IjE3MiIgPlZhbGlkYXRvcjwvdGV4dD4KICA8dGV4dCB4PSI0NzQiIHk9IjE3MiIgPjI8L3RleHQ+CiAgPHRleHQgeD0iMjE4IiB5PSIxNDAiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMzIyIiB5PSIxNDAiID4wPC90ZXh0PgogIDx0ZXh0IHg9IjY2IiB5PSIxNzIiID5WYWxpZGF0b3I8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjE4OCIgPlJvb3Q8L3RleHQ+CiAgPHRleHQgeD0iMTQ2IiB5PSIxNzIiID4xPC90ZXh0PgogIDx0ZXh0IHg9IjI1MCIgeT0iNDQiID5MZWFkZXI8L3RleHQ+CiAgPGc+CiAgICA8bGluZSB4MT0iMjEyIiB5MT0iOCIgeDI9IjMzMiIgeTI9IjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIxMiIgeTE9IjgiIHgyPSIyMTIiIHkyPSI3MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzMyIiB5MT0iOCIgeDI9IjMzMiIgeTI9IjcyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMDgiIHkxPSI0MCIgeDI9IjIxMiIgeTI9IjQwIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMDgiIHkxPSI0MCIgeDI9IjEwOCIgeTI9IjExNiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjEyIiB5MT0iNzIiIHgyPSIzMzIiIHkyPSI3MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwNCwxMTYgMTEyLDExNiAxMDgsMTI4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgogIDxnPgogICAgPGxpbmUgeDE9IjM2IiB5MT0iMTM2IiB4Mj0iMTgwIiB5Mj0iMTM2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIzNiIgeTE9IjEzNiIgeDI9IjM2IiB5Mj0iMjAwIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxODAiIHkxPSIxMzYiIHgyPSIxODAiIHkyPSIyMDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjE4MCIgeTE9IjE1MiIgeDI9IjM1MiIgeTI9IjE1MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjM1MiwxNDggMzYwLDE1MiAzNTIsMTU2IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8bGluZSB4MT0iMzYiIHkxPSIyMDAiIHgyPSIxODAiIHkyPSIyMDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogIDwvZz4KPC9zdmc+)</p>
+<p>如下图所示，Validator 1 和 Validator 2 继续将 Shred 发送给第 2 层的节点。可以看出，Validator 1 作为锚节点总共发送了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">2\times2-1=3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 次，而 Validator 2 只发送了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 次。</p>
+<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NTIiIGhlaWdodD0iMzIwIj4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI1NTIiIGhlaWdodD0iMzIwIj48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iOCIgd2lkdGg9IjUzNiIgaGVpZ2h0PSIxNzYiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iMjE4IiB5PSI0NCIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSIzMjIiIHk9IjQ0IiA+MDwvdGV4dD4KICA8dGV4dCB4PSI2NiIgeT0iNzYiID5WYWxpZGF0b3I8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjkyIiA+Um9vdDwvdGV4dD4KICA8dGV4dCB4PSIxNDYiIHk9Ijc2IiA+MTwvdGV4dD4KICA8dGV4dCB4PSIzOTQiIHk9Ijc2IiA+VmFsaWRhdG9yPC90ZXh0PgogIDx0ZXh0IHg9IjQ3NCIgeT0iNzYiID4yPC90ZXh0PgogIDxyZWN0IHg9IjI4IiB5PSIyMzIiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iNTgiIHk9IjI2OCIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSIxNjIiIHk9IjI2OCIgPjE8L3RleHQ+CiAgPHJlY3QgeD0iMzQ4IiB5PSIyMzIiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iMzc4IiB5PSIyNjgiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNDgyIiB5PSIyNjgiID4yPC90ZXh0PgogIDxnPgogICAgPGxpbmUgeDE9IjM2IiB5MT0iNDAiIHgyPSIxODAiIHkyPSI0MCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzYiIHkxPSI0MCIgeDI9IjM2IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxODAiIHkxPSI0MCIgeDI9IjE4MCIgeTI9IjEwNCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTgwIiB5MT0iNTYiIHgyPSIzNTIiIHkyPSI1NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjM1Miw1MiAzNjAsNTYgMzUyLDYwIiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8bGluZSB4MT0iMzYiIHkxPSIxMDQiIHgyPSIxODAiIHkyPSIxMDQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjEwOCIgeTE9IjEwNCIgeDI9IjEwOCIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTI0IiB5MT0iMTA0IiB4Mj0iMTI0IiB5Mj0iMTM2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxMzYiIHgyPSIzNjQiIHkyPSIxMzYiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjEzNiIgeDI9IjM2NCIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwNCwyMTIgMTEyLDIxMiAxMDgsMjI0IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8cG9seWdvbiBwb2ludHM9IjM2MCwyMTIgMzY4LDIxMiAzNjQsMjI0IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgogIDxnPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjQwIiB4Mj0iNTA4IiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjQwIiB4Mj0iMzY0IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI1MDgiIHkxPSI0MCIgeDI9IjUwOCIgeTI9IjEwNCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzY0IiB5MT0iMTA0IiB4Mj0iNTA4IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0MjAiIHkxPSIxMDQiIHgyPSI0MjAiIHkyPSIxNTIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjQzNiIgeTE9IjEwNCIgeDI9IjQzNiIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTY0IiB5MT0iMTUyIiB4Mj0iNDIwIiB5Mj0iMTUyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxNjQiIHkxPSIxNTIiIHgyPSIxNjQiIHkyPSIyMTIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPHBvbHlnb24gcG9pbnRzPSIxNjAsMjEyIDE2OCwyMTIgMTY0LDIyNCIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogICAgPHBvbHlnb24gcG9pbnRzPSI0MzIsMjEyIDQ0MCwyMTIgNDM2LDIyNCIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogIDwvZz4KPC9zdmc+)</p>
+<p>需要说明的是，上述图解只是如何发送一份 Shred 的过程，实际上，Leader 会使用纠删码把一个区块编码为多个 Shred，然后针对每一个 Shred，把每个 Shred 发送给不同的根节点。假设整个区块被编码为 2 个 Shred，随后 Validator 1 将收到的 Shred 1 发送给 Validator2，而 Validator 2 会将收到的 Shred 2 发送给 Validator 2。最终 Validator 1 和 Validator 2 都可以通过纠删码解码原始的区块。</p>
+<p>为了快速传输数据，Solana 使用 UDP 协议进行传输，而 UDP 不是可靠传输，因此，传输过程中加入 FEC 以增加数据的鲁棒性。</p>
+<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.solana.com/cluster/turbine-block-propagation">Slolana Document－Turbine Block Propagation</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/03/06/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2319,813 +2979,11 @@ The network funds itself by reserving 10% of the block reward for budget project
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E4%B8%ADTxid%E5%92%8CTxhash%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E4%B8%ADTxid%E5%92%8CTxhash%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">比特币中Txid和Txhash的区别</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2019-04-15 09:17:30" itemprop="dateCreated datePublished" datetime="2019-04-15T09:17:30+08:00">2019-04-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="更新于：2023-03-05 20:09:08" itemprop="dateModified" datetime="2023-03-05T20:09:08+08:00">2023-03-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6/" itemprop="url" rel="index"><span itemprop="name">区块链技术研究</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="比特币中txid和txhash的区别"><a class="markdownIt-Anchor" href="#比特币中txid和txhash的区别"></a> 比特币中Txid和Txhash的区别</h2>
-<p>在比特币中为什么有些交易的txid 和txhash相同,但是有些交易的txid 和txhash又不同,这其中到底是为什么？</p>
-<p>这是因为比特币中隔离见证(Segregate Witness, segwit)技术的引入导致的这个问题.</p>
-<ul>
-<li>如果一笔交易是segwit 的交易,那么这笔交易计算txid的过程中不包括witness data,但是txhash是在计算hash的过程中包括witness data. witness data只的是交易中ScriptSig(交易中用户的签名和公钥).</li>
-<li>如果一笔交易是非segwit的交易,那么txid 和txhash是相同的.</li>
-</ul>
-<p>隔离见证的引入参见比特币<a target="_blank" rel="noopener" href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki">bip141提议.</a><br />
-bip141提议计算交易的hash时, 将signature data排除在外, signature data就是上文提到的witness data.</p>
-<p>在比特币交易的input中提供的是txid，为什么把witness data排除在外呢？这是因为一笔交易中的输入部分有效的签名有多种形式,恶意节点收到一笔交易T1的时候,可以对交易的签名进行修改,修改之后签名仍然合法,但是整个交易的hash却发生了变化,假设变为了Tx2 恶意节点再将这个交易广播,如果其他节点接受了Tx2并且打包上链,那么Tx1就无法上链,此时发出Tx1的人无法查询到自己的交易上链,接收者让发送者再发送一次交易,这就会导致接收者多次接收交易.</p>
-<h2 id="为什么需要隔离见证"><a class="markdownIt-Anchor" href="#为什么需要隔离见证"></a> 为什么需要隔离见证</h2>
-<p>这里涉及到交易延展性问题,具体隔离见证的解释,可以参考如下链接:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/chunlongyu/article/details/80433375">深入理解隔离见证</a></li>
-<li><a target="_blank" rel="noopener" href="https://bitcoin.org/en/transactions-guide#transaction-malleability">Transaction Malleability</a></li>
-</ul>
-<p>第二个链接,知乎上前几个回答不靠谱,隔离见证最好的是用来解决交易延展性攻击问题.</p>
-<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
-<p><a target="_blank" rel="noopener" href="https://bitcoin.stackexchange.com/questions/77699/whats-the-difference-between-txid-and-hash-getrawtransaction-bitcoind">stackExchange中的问题</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%A8%E8%8A%82%E7%82%B9%E5%AF%B9%E4%BA%A4%E6%98%93%E5%92%8C%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/15/%E6%AF%94%E7%89%B9%E5%B8%81%E5%85%A8%E8%8A%82%E7%82%B9%E5%AF%B9%E4%BA%A4%E6%98%93%E5%92%8C%E5%8C%BA%E5%9D%97%E7%9A%84%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">比特币全节点对交易和区块的处理过程</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2019-04-15 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-15T00:00:00+08:00">2019-04-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="更新于：2023-03-05 20:08:13" itemprop="dateModified" datetime="2023-03-05T20:08:13+08:00">2023-03-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6/" itemprop="url" rel="index"><span itemprop="name">区块链技术研究</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="交易的处理过程"><a class="markdownIt-Anchor" href="#交易的处理过程"></a> 交易的处理过程</h2>
-<p>“tx” messages</p>
-<ol>
-<li>Check syntactic correctness</li>
-<li>Make sure neither in or out lists are empty</li>
-<li>Size in bytes &lt;= MAX_BLOCK_SIZE</li>
-<li>Each output value, as well as the total, must be in legal money range</li>
-<li>Make sure none of the inputs have hash=0, n=-1 (coinbase transactions)</li>
-<li>Check that nLockTime &lt;= INT_MAX<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>, size in bytes &gt;= 100<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, and sig opcount &lt;= 2<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></li>
-<li>Reject “nonstandard” transactions: scriptSig doing anything other than pushing numbers on the stack, or scriptPubkey not matching the two usual forms.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></li>
-<li>Reject if we already have matching tx in the pool, or in a block in the main branch</li>
-<li>For each input, if the referenced output exists in any other tx in the pool, reject this transaction.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></li>
-<li>For each input, look in the main branch and the transaction pool to find the referenced output transaction. If the output transaction is missing for any input, this will be an orphan transaction. Add to the orphan transactions, if a matching transaction is not in there already.<br />
-For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject this transaction</li>
-<li>For each input, if the referenced output does not exist (e.g. never existed or has already been spent), reject this transaction<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></li>
-<li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range</li>
-<li>Reject if the sum of input values &lt; sum of output values</li>
-<li>Reject if transaction fee (defined as sum of input values minus sum of output values) would be too low to get into an empty block</li>
-<li>Verify the scriptPubKey accepts for each input; reject if any are bad</li>
-<li>Add to transaction pool<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></li>
-<li>“Add to wallet if mine”</li>
-<li>Relay transaction to peers</li>
-<li>For each orphan transaction that uses this one as one of its inputs, run all these steps (including this one) recursively on that orphan.</li>
-</ol>
-<h2 id="区块的处理过程"><a class="markdownIt-Anchor" href="#区块的处理过程"></a> 区块的处理过程</h2>
-<ol>
-<li>
-<p>Check syntactic correctness</p>
-</li>
-<li>
-<p>Reject if duplicate of block we have in any of the three categories</p>
-</li>
-<li>
-<p>Transaction list must be non-empty</p>
-</li>
-<li>
-<p>Block hash must satisfy claimed nBits proof of work</p>
-</li>
-<li>
-<p>Block timestamp must not be more than two hours in the future</p>
-</li>
-<li>
-<p>First transaction must be coinbase (i.e. only 1 input, with hash=0,<br />
-n=-1), the rest must not be</p>
-</li>
-<li>
-<p>For each transaction, apply “tx” checks 2-4</p>
-</li>
-<li>
-<p>For the coinbase (first) transaction, scriptSig length must be 2-100</p>
-</li>
-<li>
-<p>Reject if sum of transaction sig opcounts &gt; MAX_BLOCK_SIGOPS</p>
-</li>
-<li>
-<p>Verify Merkle hash</p>
-</li>
-<li>
-<p>Check if prev block (matching prev hash) is in main branch or side<br />
-branches. If not, add this to orphan blocks, then query peer we got<br />
-this from for 1st missing orphan block in prev chain;done with block</p>
-</li>
-<li>
-<p>Check that nBits value matches the difficulty rules.</p>
-</li>
-<li>
-<p>Reject if timestamp is the median time of the last 11 blocks or<br />
-before</p>
-</li>
-<li>
-<p>For certain old blocks (i.e. on initial block download) check that<br />
-hash matches known values</p>
-</li>
-<li>
-<p>Add block into the tree. There are three cases: 1. block further<br />
-extends the main branch; 2. block extends a side branch but does<br />
-not add enough difficulty to make it become the new main branch; 3.<br />
-block extends a side branch and makes it the new main branch.</p>
-</li>
-<li>
-<p>For case 1, adding to main branch:</p>
-<ol>
-<li>
-<p>For all but the coinbase transaction, apply the following:</p>
-<ol>
-<li>For each input, look in the main branch to find the referenced output transaction. Reject if the output transaction is missing for any input.</li>
-<li>For each input, if we are using the nth output of the earlier transaction, but it has fewer than n+1 outputs, reject.</li>
-<li>For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.</li>
-<li>Verify crypto signatures for each input; reject if any are bad.</li>
-<li>For each input, if the referenced output has already been spent by a transaction in the main branch, reject.</li>
-<li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range.</li>
-<li>Reject if the sum of input values &lt; sum of output values.</li>
-</ol>
-</li>
-<li>
-<p>Reject if coinbase value &gt; sum of block creation fee and transaction fees</p>
-</li>
-<li>
-<p>(If we have not rejected):</p>
-</li>
-<li>
-<p>For each transaction, “Add to wallet if mine”</p>
-</li>
-<li>
-<p>For each transaction in the block, delete any matching transaction from the transaction pool</p>
-</li>
-<li>
-<p>Relay block to our peers</p>
-</li>
-<li>
-<p>If we rejected, the block is not counted as part of the main branch</p>
-</li>
-</ol>
-</li>
-</ol>
-<pre><code>17. For case 2, adding to a side branch, we don't do anything.
-18. For case 3, a side branch becoming the main branch:
-
-	1. Find the fork block on the main branch which this side branch forks off of.
-	2. Redefine the main branch to only go up to this fork block.
-	3. For each block on the side branch, from the child of the fork block to the leaf, add to the main branch:
-	
-		1. Do &quot;branch&quot; checks 3-11.
-		2. For all but the coinbase transaction, apply the following:
-
-			1. For each input, look in the main branch to find the referenced output transaction.Reject if the output transaction is missing for any input.
-			2. For each input, if we are using the nth output of the earlier transaction, but it has fewer than n+1 outputs, reject.
-			3. For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.
-			4. Verify crypto signatures for each input; reject if any are bad.
-			5. For each input, if the referenced output has already been spent by a transaction in the main branch, reject.
-			6. Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range.
-			7. Reject if the sum of input values &lt; sum of output values.
-		
-		3. Reject if coinbase value &gt; sum of block creation fee and transaction fees.
-		4. (If we have not rejected):
-		5. For each transaction, &quot;Add to wallet if mine&quot;
-
-
-	4. If we reject at any point, leave the main branch as what it was originally, done with block.
-	5. For each block in the old main branch, from the leaf down to the child of the fork block:
-
-		1. For each non-coinbase transaction in the block:
-			1. Apply &quot;tx&quot; checks 2-9, except in step 8, only look in the transaction pool for duplicates, not the main branch.
-			2. Add to transaction pool if accepted, else go on to next transaction
-
-	6. For each block in the new main branch, from the child of the fork node to the leaf:
-		1. For each transaction in the block, delete any matching transaction from the transaction pool.
-	7. Relay block to our peers
-</code></pre>
-<ol start="19">
-<li>For each orphan block for which this block is its prev, run all these steps (including this one) recursively on that orphan</li>
-</ol>
-<h2 id="注解"><a class="markdownIt-Anchor" href="#注解"></a> 注解</h2>
-<h2 id="引用"><a class="markdownIt-Anchor" href="#引用"></a> 引用</h2>
-<p><a target="_blank" rel="noopener" href="https://en.bitcoin.it/wiki/Protocol_rules">https://en.bitcoin.it/wiki/Protocol_rules</a></p>
-<hr class="footnotes-sep" />
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>nLockTime must not exceed 31 bits, as some clients will interpret it incorrectly. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>A valid transaction requires at least 100 bytes. If it’s any less, the transaction is not valid <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>The number of signature operands in the signature (no, that is not redundant) for standard transactions will never exceed two. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p>Note that this is not a hard requirement on clients. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn5" class="footnote-item"><p>Note that this is not a hard requirement on clients. The network-enforced rule is that only one transaction spending a particular output can be in the blockchain, thus preventing double-spending. Technically miners can choose which one they want to put into the block they’re working on as long as no other transaction has spent that output either previously in the blockchain, or in the same block. The in-memory transaction pool can technically be managed in whatever way the miner is willing to implement. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn6" class="footnote-item"><p>This is the protection against double-spending. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn7" class="footnote-item"><p>Note that when the transaction is accepted into the memory pool, an additional check is made to ensure that the coinbase value does not exceed the transaction fees plus the expected BTC value (25BTC as of this writing). <a href="#fnref7" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2019/04/10/An%20Empirical%20Analysis%20of%20Traceability%20in%20the%20Monero%20Blockchain/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/10/An%20Empirical%20Analysis%20of%20Traceability%20in%20the%20Monero%20Blockchain/" class="post-title-link" itemprop="https://hzxgoforward.github.io/page/2/index.html">An Empirical Analysis of Traceability in the Monero Blockchain</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2019-04-10 18:56:14" itemprop="dateCreated datePublished" datetime="2019-04-10T18:56:14+08:00">2019-04-10</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="更新于：2023-03-05 20:02:19" itemprop="dateModified" datetime="2023-03-05T20:02:19+08:00">2023-03-05</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6/" itemprop="url" rel="index"><span itemprop="name">区块链技术研究</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="abstract"><a class="markdownIt-Anchor" href="#abstract"></a> Abstract</h2>
-<p>This paper empirically evaluate <strong>two weakness</strong> in Monero’s mixin sampling strategy.</p>
-<ul>
-<li>About 62% of transaction inputs with one or more mixins are vulnerable to cascade effect so that the real input can be duduced by elimination</li>
-<li>Monero mixins are sampled in a way that mixins can be easily distinguished form the real input by their age distribution. Since the real input is always the newest input.</li>
-</ul>
-<p>The author use the 2th weakness to guess real input with a 80% accuracy over all transactions with one or more mixins.</p>
-<p>Besides, the author study the importance of mining pools and the former anonymous marketplace AlphaBay on the transaction volume. After removing mining pool activity, there remains a largte amount of potentially privacy-sensitive transactions that are affected by these weakness.</p>
-<p>To improve the anonymity of Monero, the author gives two contermeasures.</p>
-<ul>
-<li>A new mixins sampling method with two-parameter model (gama distribution)is proposed which can well approximate the user’s ‘spend-time’ distribution.</li>
-<li>Sampling mixins in ‘bins’, this method regardless of sampling distribution.</li>
-</ul>
-<h2 id="deducible-monero-transactions"><a class="markdownIt-Anchor" href="#deducible-monero-transactions"></a> Deducible Monero Transactions</h2>
-<p>A significant number of Monero transactions do not contain any mixins at all, but instead explicityly identify the real TXO being spent. Since users are allowed to create zero-mixins transactions at the begining of Monero. These zero-mixins transaction present a hazard of deanonymization of transactions include them as mixins.</p>
-<p>At the time of April 15, 2017, a total of 12158814 transaction inputs have zero mixins.Figure 5 presents the fraction of transactions containing zero-mixin inputs over time.<br />
-<img src="https://img-blog.csdnimg.cn/2019041009332043.png" alt="在这里插入图片描述" /></p>
-<h3 id="implemention"><a class="markdownIt-Anchor" href="#implemention"></a> implemention</h3>
-<p>The author extract Monero blackchain up to block 128774(April 15, 2017) and<br />
-stored it in a Neo4j graph database (11.5GB of data in total). the algorithm is the same as cascade effect(Amrit Kumar, Clément Fischer, Shruti Tople, and Prateek Saxena. A traceability analysis of Monero’s blockchain. In Simon N. Foley, Dieter Gollmann, and Einar Snekkenes, editors, Computer Security – ESORICS 2017: 22nd European Symposium on Research in Computer Security, Oslo, Norway, September 11-15, 2017, Proceedings, Part II, pages 153–173. Springer International Publishing, 2017.)</p>
-<h3 id="results-on-deducible-transactions"><a class="markdownIt-Anchor" href="#results-on-deducible-transactions"></a> Results on Deducible Transactions</h3>
-<p>Table 2 presents the results, totaly there are about 63% Monero transaction inputs with more than one mixins were deduced.</p>
-<p><img src="https://img-blog.csdnimg.cn/20190410094354625.png" alt="在这里插入图片描述" /><br />
-Figure 6 show the amount of vulnerable Monero transactions with the number of mixins, and it also shows transaction is less likely to be deducible with more mixins.<br />
-<img src="https://img-blog.csdnimg.cn/20190410094947234.png" alt="在这里插入图片描述" /></p>
-<h2 id="tracing-with-temporal-analysis"><a class="markdownIt-Anchor" href="#tracing-with-temporal-analysis"></a> Tracing With Temporal Analysis</h2>
-<h3 id="effective-untracebility"><a class="markdownIt-Anchor" href="#effective-untracebility"></a> Effective-Untracebility</h3>
-<p>To quantify the untraceability of a transaction input, the authors used <strong>guessing entropy</strong> to represent the expected number of gusses before guessing the real spent among a inputs. The transaction input’s guessing entropy is defined as</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">e</mi></mrow><mo>=</mo><munder><mo>∑</mo><mrow><mn>0</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>M</mi></mrow></munder><mi>i</mi><mo>⋅</mo><msub><mi>p</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\mathrm{Ge}=\sum_{0 \leq i \leq M} i \cdot p_{i}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathrm">G</span><span class="mord mathrm">e</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.43952em;vertical-align:-1.389515em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8556639999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mrel mtight">≤</span><span class="mord mathnormal mtight">i</span><span class="mrel mtight">≤</span><span class="mord mathnormal mtight" style="margin-right:0.10903em;">M</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.389515em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
-<p>where Ge is guessing entropy,  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><msub><mi>p</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>p</mi><mn>1</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>p</mi><mi>M</mi></msub></mrow><annotation encoding="application/x-tex">p = p_0, p_1, . . . , p_M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">M</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> are probabilities, sorted highest to lowest, that a <strong>referenced output</strong> is the real spend of a transaction input.</p>
-<p>The authors define <strong>effective-untraceability</strong> as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mi>G</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">1+2Ge</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathnormal">G</span><span class="mord mathnormal">e</span></span></span></span>.  if all referenced outputs of a transaction input are equally likely to be the real sepend, the effective-untraceabilty for that inputs is M+1.</p>
-<h2 id="the-guess-newest-heuristic"><a class="markdownIt-Anchor" href="#the-guess-newest-heuristic"></a> The Guess-Newest Heuristic</h2>
-<p>The author proposed a heustric that among all the prior outpus referenced by a Monero transaction input, the real spend is usually the newest one. That point view came from the Figure 2.<br />
-<img src="https://img-blog.csdnimg.cn/2019041010321024.png" alt="在这里插入图片描述" /><br />
-The conclusion came from zero-mixin inputs and inputs deduced from zero-mixin inputs. The mixin’s spending time is quite different with the real input.This is because users spend coins soon after receiving them while the mixin’s sampling method do not take account of user’s spending behaviours.</p>
-<p>The authors found the 92% of the deducible inputs coule be gussed correctly in that way. The result is in Table 3.<br />
-<img src="https://img-blog.csdnimg.cn/20190410110645176.png" alt="在这里插入图片描述" /></p>
-<h2 id="countermeasures"><a class="markdownIt-Anchor" href="#countermeasures"></a> Countermeasures</h2>
-<ol>
-<li><strong>Improve the mixin-sampling procedure to match the real spend-time of MOnero users.</strong></li>
-<li><strong>introduce a countermeasure called binned mixin sampling which modifies the current mixin sampling procedure.</strong></li>
-</ol>
-<h3 id="estimating-the-spend-time-distribution"><a class="markdownIt-Anchor" href="#estimating-the-spend-time-distribution"></a> Estimating the spend-time distribution</h3>
-<p>Following Figure shows the CDF of Bitcoin blockchain and Monero blockchain.<br />
-<img src="https://img-blog.csdnimg.cn/20190410162056147.png" alt="在这里插入图片描述" /><br />
-The Bitcoin spend-time have a somewhat similar shape with Monero spend-time.The authors use R’s fitdistr function to fit a gama distribution(shape parameter19.28, rate parameter 1.61)</p>
-<h3 id="sampling-mixins-using-the-spend-time-distribution"><a class="markdownIt-Anchor" href="#sampling-mixins-using-the-spend-time-distribution"></a> Sampling mixins using the spend-time distribution</h3>
-<p>using the distribution above to sample mixins to matches the ideal spend-time. The author’s method is:</p>
-<pre><code>1. sample a target timestamp directly from the distribution
-2. Find the nearest block containing at least one RingCT output.
-3. sample uniformly among the transaction outputs in that block
-</code></pre>
-<p>A more detail Algorithm is following<br />
-<img src="https://img-blog.csdnimg.cn/20190410162826490.png" alt="在这里插入图片描述" /></p>
-<h3 id="monte-carlo-simulation"><a class="markdownIt-Anchor" href="#monte-carlo-simulation"></a> Monte Carlo Simulation</h3>
-<p>Following Figure shows the effective untraceability set under the current regime and the author’s proposed mixin sampling routine, the effective-untraceability set has significant increased.method performs slightly worse than ideal at 6 and 12 months out, although still much better than the current method, and stays within 75% of the ideal<br />
-<img src="https://img-blog.csdnimg.cn/20190410163723319.png" alt="在这里插入图片描述" /></p>
-<ul>
-<li>Preserve some untraceability even in the face of a highly compromised mixin sampling distribution.</li>
-</ul>
-<h3 id="binned-mixin-sampling"><a class="markdownIt-Anchor" href="#binned-mixin-sampling"></a> Binned mixin sampling</h3>
-<p>Group outputs in the Monero blockchain into sets of some fixed size called bins such that ecah output in a bin is confirmed in the same block or a neighboring block as Figure 13.</p>
-<p><img src="https://img-blog.csdnimg.cn/20190410164656232.png" alt="在这里插入图片描述" /><br />
-Any transaction input referencing a transaction output in a bin, either as a mixin or spend, must also reference all other outputs in that bin. Thus, a real spend cannot be distinguished by age from the other mixin outputs in the bin. Additionally, binned mixin sampling ensures that all the outputs in a bin cannot be deduced as spent until the last unspent output in the bin is spent, preventing deduction attacks from reducing the effectiveuntraceability of an output to less than the bin size.</p>
-<p>Sample Algorithm is showed in Algorithm 2.<br />
-<img src="https://img-blog.csdnimg.cn/20190410184941659.png" alt="在这里插入图片描述" /></p>
-<h2 id="recommendations"><a class="markdownIt-Anchor" href="#recommendations"></a> Recommendations</h2>
-<ul>
-<li>The mixing sampling distribution should be modified to closer match the real distribution.</li>
-<li>Avoid including publicly deanonymized transaction outputs as mixins</li>
-<li>Monero users should be warned that their prior transactions are likely vulnerable to tracing analysis<br />
-The aothor launched a block explorer(<a target="_blank" rel="noopener" href="https://monerolink.com">https://monerolink.com</a>), which displays the linkages between transactions infered using our techniques, they recommend additionally developing a wallet tool that users can run locally to determine wheter their previous transactions are vulnerable.</li>
-</ul>
-<h2 id="thinking"><a class="markdownIt-Anchor" href="#thinking"></a> Thinking</h2>
-<p>There is some points in this paper:</p>
-<ul>
-<li>
-<p>Since zero-mixins result in a short transaction and spend less fees, so the user choose to choose zero-mixins, but the author ignores if it is because there are not enough same denominations?  But the paper [A Traceability Analysis of Monero’s Blockchain] (<a target="_blank" rel="noopener" href="https://blog.csdn.net/t46414704152abc/article/details/89175204">https://blog.csdn.net/t46414704152abc/article/details/89175204</a>) presents a rigorious analysis.</p>
-</li>
-<li>
-<p>The author said new transactions are immune is not because of the RingCT mechanism itself, rater because RingCTs was deployed after the mandatory 2-mixin was enforced. I came up with a doublt, why? but the author didn’t tell us the analysis support.</p>
-</li>
-<li>
-<p>May be next time, we should analyse the untraceability of RingCTs.</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&lt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/">&lt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">&gt;</a>
   </nav>
 
 
@@ -3463,13 +3321,13 @@ The aothor launched a block explorer(<a target="_blank" rel="noopener" href="htt
       
     
       
+    
+      
+    
+      
+    
+      
         
-      
-    
-      
-    
-      
-    
       
     
       

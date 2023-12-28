@@ -356,6 +356,718 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/12/28/HotStuff%20%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2023/12/28/HotStuff%20%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="https://hzxgoforward.github.io/index.html">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-12-28 18:04:54" itemprop="dateCreated datePublished" datetime="2023-12-28T18:04:54+08:00">2023-12-28</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-12-25 23:27:38" itemprop="dateModified" datetime="2023-12-25T23:27:38+08:00">2023-12-25</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="hotstuff-协议的理解"><a class="markdownIt-Anchor" href="#hotstuff-协议的理解"></a> HotStuff 协议的理解</h1>
+<h2 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h2>
+<p>HotStuff是继 PBFT 之后 BFT 共识协议中又一里程碑。它具有更低的消息复杂度和更好的扩展性。它的优点如下：</p>
+<ol>
+<li>将共识节点之间完成一轮共识的消息复杂度降低到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mi mathvariant="script">n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span> 级别，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> 表示消息的数量。与之相比，PBFT中共识节点完成一轮共识的消息复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><msup><mi mathvariant="script">n</mi><mn mathvariant="script">2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n^2)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> 级别。</li>
+<li>将更换主节点的消息复杂度降低到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><mi mathvariant="script">n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span> 级别。与之相比，PBFT中更换主节点的消息复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><msup><mi mathvariant="script">n</mi><mn mathvariant="script">3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n^3)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span>。</li>
+</ol>
+<p>HotStuff 协议的第一个优点使得它具有更好的扩展性，即当共识组中共识节点数量线性增加时，节点间进行共识的消息复杂度仅仅是线性增加。做过分布式共识实验的都知道，当节点数量增加到 16 以上时，PBFT 协议的每秒处理交易的量（Transaction Per Second，TPS）会由比较明显的衰退，造成这一现象的主要原因是节点间通信消息的复杂度平方级上涨。但是 HotStuff 中节点数量增加时TPS 的衰减的更加缓慢一些。</p>
+<p>HotStuff的第二个优点使得能够频繁的切换主节点，带来的好处是使得整个共识组中每个节点都能拥有排序的权力，这能打破主节点对排序权的垄断。与之相比，PBFT 协议中只有主节点出现故障时共识组才会更换主节点。</p>
+<h2 id="关键概念和数据结构"><a class="markdownIt-Anchor" href="#关键概念和数据结构"></a> 关键概念和数据结构</h2>
+<h3 id="关键概念"><a class="markdownIt-Anchor" href="#关键概念"></a> 关键概念</h3>
+<p>HotStuff 有 3 个版本，分别使 Basic HotStuff、Chained HotStuff 以及 Event-driven HotStuff，下面分别介绍之。在介绍前，需要介绍一些关键概念。</p>
+<p>本文将发起提议的节点称之为<strong>主节点</strong>，将其他节点称之为<strong>从节点</strong>，被排序的内容称之为<strong>命令</strong>。</p>
+<h3 id="数据结构"><a class="markdownIt-Anchor" href="#数据结构"></a> 数据结构</h3>
+<h4 id="node"><a class="markdownIt-Anchor" href="#node"></a> Node</h4>
+<p>一个 node 对应一个提议（proposal），主要包含如下两部分内容：</p>
+<ul>
+<li>parent，它的前一个提议的哈希值。</li>
+<li>cmd，该提议包含的命令。</li>
+</ul>
+<h4 id="qc"><a class="markdownIt-Anchor" href="#qc"></a> QC</h4>
+<p><strong>QC</strong> 全称为 quorum certificate，是 HotStuff 中一个重要概念，翻译为足量的证书，QC 主要包含如下数据：</p>
+<ul>
+<li>type，该 QC 的命令类型。</li>
+<li>view Number，视图编号，节点本地的视图用 <strong>CurView</strong> 表示。</li>
+<li>node，我更愿意称之为提议，每个 node 包含两个内容：一条来自客户端的命令（cmd）以及它的前一个 proposal 的摘要（digest）。摘要实际上是数据的哈希值。</li>
+<li>sig，由（n-f）个节点签名联合组成的一个门限签名，这个签名证明该证书被绝大多数节点认可。</li>
+</ul>
+<p>QC 的主要目的是作为一个可靠证明，表示当前 QC 中包含的命令以及提议被绝大多数节点接收。因为 QC 中的 sig 有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点的签名聚合而成，通过验证 QC 中的签名的合法性，就能知道该 QC 对应的提议是否被其他节点接受。</p>
+<h4 id="msg"><a class="markdownIt-Anchor" href="#msg"></a> MSG</h4>
+<p>主节点向其他节点发送的消息被称之为 MSG，MSG 主要包含如下数据：</p>
+<ul>
+<li>type，消息类型。</li>
+<li>viewNumber，消息对应的视图编号。</li>
+<li>node，消息对应的提议。</li>
+<li>justify，实际其类型是一个 QC，文中将其称之为 justify。</li>
+</ul>
+<h4 id="votemsg"><a class="markdownIt-Anchor" href="#votemsg"></a> VoteMSG</h4>
+<p>从节点向主节点的 MSG 进行投票时发送的消息，主要包含如下数据：</p>
+<ul>
+<li>MSG，主节点发送的消息内容本身。</li>
+<li>partialSig，从节点对MSG 中 type、viewNumber 和 node 部分签名。</li>
+</ul>
+<h4 id="curview"><a class="markdownIt-Anchor" href="#curview"></a> curView</h4>
+<p>curView 表示每个节点本地的视图，它是一个局部变量，不同的节点之间的视图编号会有所不同。</p>
+<h4 id=""><a class="markdownIt-Anchor" href="#"></a> ⊥</h4>
+<p>⊥ 符号在 HotStuff 的论文中经常出现，表示空值的含义。</p>
+<h2 id="basic-hotstuff"><a class="markdownIt-Anchor" href="#basic-hotstuff"></a> Basic HotStuff</h2>
+<p>HotStuff的主要运行过程如下图所示。其中 R0 作为 leader，负责发起共识提议，R1、R2和R3负责投票。</p>
+<img src="./image/HotStuff.png" alt="HotStuff" style="zoom:80%;" />
+<h3 id="new-veiw"><a class="markdownIt-Anchor" href="#new-veiw"></a> New-Veiw</h3>
+<p>HotStuff 中一轮新的共识开始，都是以主节点收集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 <strong>NEW-VIEW</strong> 消息开始。</p>
+<p>共识开始时， R1、R2和R3向新任的主节点发送一个 new-view 消息，<strong>NEW-VIEW</strong> 消息表示其他节点即将过渡到最新的一个视图中。**NEW-VIEW **中包含一个重要的内容，即 <strong>prepared QC</strong>。 prepare QC 是节点在执行共识算法过程中生成的，后续的步骤中读者自会知晓。</p>
+<p>当主节点至少收到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 prepare QC 后，从中选择出具有<strong>最高视图编号</strong>的 prepare QC，并以该 prepare QC 中的 node 作为父节点，并在该 node 之后创建一个新的 node，新的 node 中包含一条客户端的命令以及它的父 node 的哈希值。随后主节点将 prepare QC、node 等这些信息生成一条 <strong>PREPARE</strong> 消息中，然后将其广播给其他节点。<strong>PREPARE</strong> 消息的结构如下所示，分别表示消息的类型、视图编号、提议内容和 prepare QC。</p>
+<p><strong>MSG= &lt;PREPARE,CurView, NODE, PREPARE QC&gt;</strong></p>
+<p>当从节点收到一条 <strong>PREPARE</strong> 消息后，开始进行检查，主要检查如下三项内容：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 prepare，并且视图编号正确。</li>
+<li>proposal 是 prepare QC 的子节点。</li>
+<li><strong>safeNode</strong> 检查，内容如下：
+<ol>
+<li>proposal 是节点本地 locked QC 的子节点，<strong>安全性规则</strong>。</li>
+<li>prepare QC 的视图编号大于 locked QC 的视图编号，<strong>活性规则</strong>。</li>
+</ol>
+</li>
+</ol>
+<p>当上述三项检查全部通过时，从节点向主节点发送一条投票消息 （<strong>VoteMSG</strong>）。</p>
+<p>与 prepare QC 相同， locked QC  也是节点在执行共识过程中生成的，后续步骤中读者自会知晓。</p>
+<h2 id="pre-commit"><a class="markdownIt-Anchor" href="#pre-commit"></a> PRE-COMMIT</h2>
+<p>当主节点至少收到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 VoteMSG 时，将这些所有消息的 partialSig 部分进行聚合后形成一个门限签名，以此构建一个 QC，它的 type 为 commit，因而称之为 commit QC，随后主节点构建一个 <strong>PRE-COMMIT</strong> 消息，该消息内容如下：</p>
+<p><strong>MSG = &lt;PRE-COMMIT, CurView,NODE = None, commitQC&gt;</strong></p>
+<p>主节点将该消息广播给所有节点。</p>
+<p>从节点收到该消息后，进行如下检查：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 pre-commit，并且视图编号正确。</li>
+<li>消息中 QC 的类型为 prepare，并且其视图编号为当前视图编号。</li>
+</ol>
+<p>当通过上述检查时，从节点本地记录 <strong>prepare QC = MSG.QC</strong>。</p>
+<p>此外，从节点还会生成一个 <strong>VoteMsg</strong> 并发送给主节点，其内容如下：</p>
+<p><strong>VoteMSG=&lt;MSG, partial sig&gt;</strong></p>
+<h3 id="commit"><a class="markdownIt-Anchor" href="#commit"></a> COMMIT</h3>
+<p>当主节点收到至少 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 VoteMSG 时，将这些所有消息的 partialSig 部分进行聚合后形成一个门限签名，以此构建一个 QC，它的 type为 pre-commit，因而称之为 precommit QC。随后主节点向从节点广播一条 <strong>COMMIT</strong> 消息，该消息内容如下：</p>
+<p><strong>MSG=&lt;COMMIT, CurView, NODE = None, precommit QC&gt;</strong></p>
+<p>当从节点收到主节点的 <strong>COMMIT</strong> 消息后，进行如下检查：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 commit，并且视图编号正确。</li>
+<li>消息中 QC 的类型为 pre-commit，并且其视图编号为当前视图编号。</li>
+</ol>
+<p>当通过上述检查时，从节点本地记录 <strong>locked QC = MSG.QC</strong>。</p>
+<p>此外，从节点还会生成一个 <strong>VoteMsg</strong> 并发送给主节点,其内容如下：</p>
+<p><strong>VoteMSG=&lt;MSG, partial sig&gt;</strong></p>
+<h3 id="decide"><a class="markdownIt-Anchor" href="#decide"></a> DECIDE</h3>
+<p>当主节点收到至少 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 VoteMSG时，将这些所有消息的 partialSig 部分进行聚合后形成一个门限签名，以此构建一个 QC，它的 type 为 commit QC，以内称之为 commit QC。随后主节点向从节点广播一条 <strong>DECIDE</strong> 消息，该消息内容如下：</p>
+<p><strong>MSG=&lt;DECIDE, CurView, NODE = None, commit QC&gt;</strong></p>
+<p>当从节点收到主节点的 <strong>DECIDE</strong> 消息后，进行如下检查：</p>
+<ol>
+<li>该消息发送自当前视图编号对应的主节点，消息类型为 decide，并且视图编号正确。</li>
+<li>消息中 QC 的类型为 commit，并且其视图编号为当前视图编号。</li>
+</ol>
+<p>当通过上述检查时，节点开始执行 QC 中对应的 node 的命令。与此同时，节点本地的当前视图编号自增一（<strong>++curView</strong>），随后向下一任主节点发送 <strong>NEW-VIEW</strong> 消息以开启下一轮共识，它的消息内容如下：</p>
+<p><strong>MSG=&lt;NEW-VIEW, curView，⊥，prepare QC&gt;</strong></p>
+<h2 id="chained-hotstuff"><a class="markdownIt-Anchor" href="#chained-hotstuff"></a> Chained-HotStuff</h2>
+<p>可以发现，Basic HotStuff 中主节点在提议阶段主要作用是构建新的提议并选择最新的 QC，其他阶段主要作用是组合新的 QC 并广播给其他节点，那么为什么不令主节点在每个阶段都做出一个新的提议呢？基于这个思路，就产生了链式的 HotStuff，即文中的 Chained-HotStuff。在 Chained-HotStuff 中不再区分每个阶段的 QC ，而是统一称之为 Generic QC。主要运行过程按照角色划分，主要过程如下：</p>
+<h4 id="主节点"><a class="markdownIt-Anchor" href="#主节点"></a> 主节点</h4>
+<p>根据从节点的投票信息，从中选择出视图编号最大的 QC，在此 QC 之后创建一个新的提议消息并广播给其他节点，消息类型如下：</p>
+<p><strong>MSG=&lt;GENERIC, CurView, NODE, GENERIC QC&gt;</strong></p>
+<h4 id="从节点"><a class="markdownIt-Anchor" href="#从节点"></a> 从节点</h4>
+<p>从节点收到 <strong>GENERIC</strong> 消息之后，检查如下信息：</p>
+<ol>
+<li>消息类型为 <strong>GENERIC</strong> ，并且其视图编号和本地视图编号一致并且来自于对应的主节点。</li>
+<li>使用 SAFENode 规则验证当前提议NODE 和 NODE 的父节点的正确性，如果通过，则向下一个视图的主节点发送投票消息 <strong>VOTEMSG=&lt;MSG, partialSig&gt;</strong>。</li>
+<li>沿着其中的链式规则，找到一系列的提议 b-&gt;b’-&gt;b‘’-&gt;b*，进行如下验证和处理：
+<ol>
+<li>如果 b* 的父节点是 b“，那么记录 prepare QC = b*.justify</li>
+<li>如果 b* 的父节点是 b“ 并且 b’‘ 是 b‘ 的父节点，那么记录 locked QC = b’.justify</li>
+<li>如果 b* 的父节点是 b“ 并且 b’‘ 是 b‘ 的父节点并且 b 是 b‘ 的父节点，那么执行 b.justify 中的提议，并且向客户端返回执行结果。</li>
+</ol>
+</li>
+</ol>
+<h4 id="view-change"><a class="markdownIt-Anchor" href="#view-change"></a> View-Change</h4>
+<p>在等待消息期间，如果发生超时，节点本地视图 curView 自增，随后向对应的主节点发送 <strong>NEXT-VIEW</strong> 消息，内容如下：</p>
+<p><strong>MSG=&lt;GENERIC, CurView, NODE=none, GENERIC QC&gt;</strong></p>
+<h2 id="说明"><a class="markdownIt-Anchor" href="#说明"></a> 说明</h2>
+<ol>
+<li>每个特定的视图编号下最多确认一个提议。因为当一个提议被确认时视图编号就会加一，当某个视图下没有达成共识时引起超时，此时视图继续增加一。</li>
+<li>prepare QC 表示一条命令处于<strong>准备</strong>状态，并且这个准备状态已经被绝大多数节点承认。它的主要作用在发生 view-change 时，令新任的主节点在最新的处于准备状态的命令的基础上进行提议，这样能最大化利用前任主节点的共识工作。但是由于处于准备状态，这条命令也可能会被新任主节点作废。locked QC 表示指令处于<strong>锁定</strong>状态。锁定状态表示该指令已经被锁定为下一个需要执行的指令，它一定会绝大多数节点执行。</li>
+</ol>
+<h2 id="qa-环节"><a class="markdownIt-Anchor" href="#qa-环节"></a> Q&amp;&amp;A 环节</h2>
+<ol>
+<li>
+<p>为什么 new-view 中使用 prepare QC 作为切换视图的依据，locked QC 可以吗？</p>
+<p>locked QC 是完全可以的，因为当一个 node 具有 locked QC 时，那么必然有 prepare QC，因此，使用 locked QC 也可以作为 new-view 中的根据。</p>
+</li>
+<li>
+<p>在切换视图时，为什么使用 prepare QC 而没有使用 locked QC 呢？</p>
+<p>使用 prepare QC 能够最大化利用被替换的主节点在共识过程中做的工作。节点本地存储的locked QC 和 prepare QC 有两种可能的情况：</p>
+<ol>
+<li>locked QC 和 prepare QC 指向同一个提议。</li>
+<li>locked QC 指向提议 A，prepare QC 指向提议 B。此时提议 B 必然是提议A 的一个子孙提议，区别是 A已经被共识<strong>锁定</strong>，但是 B 没有被共识<strong>锁定</strong>。如果在 new-view 消息中使用 locked QC，那么新任主节点的新提议会废掉提议 A。实际上，因为 A 已经获得 prepare QC，那么在 B 的基础上继续提议是更好的选择。需要说明的是，实际上，如果主节点执意选择在 locked QC，即  A 处进行新的提议 B‘，其他节点也会接受这一提议，因为新的提议也能通过 safeNode 函数的检查。因为新的提议 B’ 也是绝大多数节点 locked QC（也就是A）的子节点。</li>
+</ol>
+<p>综上，使用 prepare QC 能够最大化利用前任主节点的共识工作。</p>
+</li>
+<li>
+<p>为什么 HotStuff 中 commit 步骤之后可以达到和 PBFT 中 commit 步骤相同的作用，那么为什么 HotStuff 中还会额外增加 decide 步骤呢？</p>
+<p>这一步骤的作用是降低 HotStuff 中 new-view 消息的复杂度，也正是这一步骤，将 HotStuff 中更换主节点的消息复杂度降低到了 O(n) 级别。</p>
+<p>假设我们去掉 decide 阶段，并且令节点在 commit 阶段收到主节点的 commit 消息之后，不再继续向主节点发送 commit-vote 消息，而是直接执行该命令。</p>
+<p>现在考虑一种场景，假设视图编号为 v 的主节点是拜占庭节点，它将 commit 消息只发送给 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">f-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 个节点，这 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点（主节点和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">f-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>个节点）更新了 locked QC，并且执行 commit 消息对应的命令。</p>
+<p>随后出现超时， HotStuff 中节点向下一任主节点发送 <strong>NEW-VIEW</strong> 消息，每个节点发送最新的 prepare QC，其中<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>个节点发送视图编号为 v 的prepare QC，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点发送视图编号为 v-1 的 prepare QC。</p>
+<p>新任主节点在收到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 new-view 消息后从中选择出 prepare QC 中视图编号最大的一个 QC，随后在这个 QC 后生成新的 proposal，并将其放入 <strong>PREPARE</strong> 消息广播给其他节点。需要注意的是，<strong>PREPARE</strong> 消息只包含主节点挑选的视图编号最大的 QC而并非 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 QC。<strong>PREPARE</strong>消息中的 QC 到底是不是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 new-view 消息中视图编号最大的 QC 是没有办法证明的。</p>
+<p>从全局视角看，视图编号最大的 prepare QC 的视图编号为 v，但是主节点可以选择视图编号为 v-1 的一个 prepare QC。此时该主节点在视图编号为 v-1的QC后面提出一个新的提议，然后构建一个 <strong>PREPARE</strong> 消息（该消息的视图编号是 v+1）后广播给其他节点。其中最大prepare QC 的视图编号为 v 的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个节点会拒绝投票（safeNode 函数中安全规则无法通过），但是剩余的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个最大视图编号为 v-1 的节点会接收这一提议。这就造成不一致，即 HotStuff 更换主节点的方法会导致 commit 阶段执行命令时会出现系统安全性问题。</p>
+<p>因此，解决办法有两种（任选其一）：</p>
+<ol>
+<li>增加一个 decide 阶段，保证一个命令被执行前，绝大多数节点都会锁定该命令，即绝大多数的节点的 locked QC 都是该命令。在 HotStuff 中的 decide 阶段，节点收到 commit QC 时，可以确认绝大多数节点的 locked QC 都是该命令，那么就可以安全的执行该命令,这种方法的弊端是，一条命令的确认时间增加了一个round tripe。</li>
+<li>在主节点的 <strong>PREPARE</strong> 中附带上 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">n-f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 个 prepare QC 以方便从节点验证主节点挑选出来的视图编号最大的 QC 确实是全局视角下视图编号最大的 QC，但是这种方法带来的弊端就是 <strong>PREPARE</strong> 消息的复杂度直接变为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">O</mi><mo stretchy="false">(</mo><msup><mi mathvariant="script">n</mi><mn mathvariant="script">2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O(n^2)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> 。</li>
+</ol>
+<p>在 HotStuff 中选择了第一种解决办法，因为命令确认额外增加的时间延迟，可以通过chained-HotStuff 比较好的解决。</p>
+</li>
+<li>
+<p>HotStuff 中的 pacemaker 具体是如何工作的？</p>
+</li>
+</ol>
+<h1 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h1>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1803.05069.pdf">HotStuff arxive 论文</a></li>
+<li></li>
+</ol>
+<p>共识协议需要确定的若干个步骤</p>
+<ol>
+<li>
+<p>确定新提议是什么?</p>
+</li>
+<li>
+<p>发现有足够节点确定了新提议后,<strong>预先提交</strong>下一个提议(局部)</p>
+</li>
+<li>
+<p>有足够多的节点<strong>预先提交</strong>了新提议,<strong>正式提交</strong>新提议(局部)</p>
+</li>
+<li>
+<p>有足够多的节点正式提交新提议,确定新协议被确认(全局)</p>
+</li>
+<li>
+<p>L-BFT 协议为什么需要view-change?</p>
+<ol>
+<li>主节点出现故障时,必须从已有的节点中选择出最新的 主节点以保证共识能够继续。</li>
+</ol>
+</li>
+<li>
+<p>view-change 时最新的 leader 应该在哪个状态的基础上再次进行共识？</p>
+<ol>
+<li>假设通过投票确定最新的 leader，那么应该以投票信息中所有节点的<strong>最新状态</strong>为准，这样能够避免最新 leader 推翻前任 leader 的共识结果。</li>
+<li><strong>最新状态</strong>应该是可验证的，例如每个节点投票新 leader 时，将本地最新的 2f+1 个 prepare 消息发送给新的 leader。</li>
+</ol>
+</li>
+<li>
+<p>view-change 时需要注意的点</p>
+<ol>
+<li>view-change 的时候，一定不能回滚已经确认的共识消息。</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/07/02/%E4%B8%BB%E6%B5%81%E7%9A%84%E5%85%AC%E9%93%BE%E4%B8%AD%E7%BD%91%E7%BB%9C%E6%9E%84%E5%BB%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2023/07/02/%E4%B8%BB%E6%B5%81%E7%9A%84%E5%85%AC%E9%93%BE%E4%B8%AD%E7%BD%91%E7%BB%9C%E6%9E%84%E5%BB%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="https://hzxgoforward.github.io/index.html">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-07-02 22:23:12" itemprop="dateCreated datePublished" datetime="2023-07-02T22:23:12+08:00">2023-07-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-07-03 00:26:03" itemprop="dateModified" datetime="2023-07-03T00:26:03+08:00">2023-07-03</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="主流的公链种网络构建和数据分发过程"><a class="markdownIt-Anchor" href="#主流的公链种网络构建和数据分发过程"></a> 主流的公链种网络构建和数据分发过程。</h1>
+<p>名称定义</p>
+<p><strong>共识节点</strong>：参与共识并生成新区块后扩展区块链的节点，又称之为<strong>验证节点</strong>。</p>
+<p><strong>全节点</strong>：不参与共识，但是会跟踪和验证账本数据并存储完整区块链数据的节点。</p>
+<h2 id="aptos"><a class="markdownIt-Anchor" href="#aptos"></a> Aptos</h2>
+<h2 id="near"><a class="markdownIt-Anchor" href="#near"></a> Near</h2>
+<p><a target="_blank" rel="noopener" href="https://near.org/developers">near.org/developers</a></p>
+<h2 id="sui"><a class="markdownIt-Anchor" href="#sui"></a> SUI</h2>
+<h2 id="节点发现以及入网过程"><a class="markdownIt-Anchor" href="#节点发现以及入网过程"></a> 节点发现以及入网过程</h2>
+<p>节点启动时有一个配置文件 fullnode.yaml 文件，该文件中指定节点进入 Testnet 还是 Mainnet。配置文件中还指定了种子节点的信息。例如如果进入主网时种子节点的信息为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">p2p-config:</span><br><span class="line">  seed-peers:</span><br><span class="line">    - address: /dns/icn-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 303f1f35afc9a6f82f8d21724f44e1245f4d8eca0806713a07c525dadda95a66</span><br><span class="line">    - address: /dns/icn-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: cb7ce193cf7a41e9cc2f99e65dd1487b6314a57c74be42cc8c9225b203301812</span><br><span class="line">    - address: /dns/mel-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: d32b55bdf1737ec415df8c88b3bf91e194b59ee3127e3f38ea46fd88ba2e7849</span><br><span class="line">    - address: /dns/mel-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: bbf3be337fc16614a1953da83db729abfdc40596e197f36fe408574f7c9b780e</span><br><span class="line">    - address: /dns/ewr-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: c7bf6cb93ca8fdda655c47ebb85ace28e6931464564332bf63e27e90199c50ee</span><br><span class="line">    - address: /dns/ewr-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 3227f8a05f0faa1a197c075d31135a366a1c6f3d4872cb8af66c14dea3e0eb66</span><br><span class="line">    - address: /dns/sjc-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 6f0b25087cd6b2fd2e4329bcf308ac95a37c49277dd7286b72470c124809db5b</span><br><span class="line">    - address: /dns/sjc-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: af1d5d8468b3612ac2b6ff3ca91e99a71390dbe5b83dea9f6ae2da708d689227</span><br><span class="line">    - address: /dns/lhr-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: c619a5e0f8f36eac45118c1f8bda28f0f508e2839042781f1d4a9818043f732c</span><br><span class="line">    - address: /dns/lhr-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 53dcedf250f73b1ec83250614498947db00d17c0181020fcdb7b6db12afbc175</span><br></pre></td></tr></table></figure>
+<p>SUI 中全节点入网时，每个从 seed 节点处获取网络中的节点，然后从中随机选择一些节点建立连接，基于这种方式进入网络。</p>
+<h3 id="数据同步"><a class="markdownIt-Anchor" href="#数据同步"></a> 数据同步</h3>
+<p>文件源码位置：<a target="_blank" rel="noopener" href="https://github.com/MystenLabs/sui/blob/main/crates/sui-network/src/state_sync/mod.rs">sui/crates/sui-network/src/state_sync/mod.rs at main · MystenLabs/sui · GitHub</a></p>
+<p>数据类型：checkpoint 、transactions。</p>
+<p>当共识层的 validator 产生一个 checkpoint 之后，调用 send_checkpoint 方法将最新状态发送给其他节点。</p>
+<p>其他节点收到新的 checkpoint 之后，存储该信息后调用 spawn_notify_peers_of_checkpoint 函数将该信息通知给其他节点。通知的内容为 PeerStateSyncInfo，其结构如下。可以发现其中只包含 checkpoint 的摘要，最低的区块高度和最高的区块高度，但是并不包含 checkpoint 本身。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Copy, Clone, Debug, PartialEq, Eq)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PeerStateSyncInfo</span> &#123;</span><br><span class="line">    <span class="comment">/// The digest of the Peer&#x27;s genesis checkpoint.</span></span><br><span class="line">    genesis_checkpoint_digest: CheckpointDigest,</span><br><span class="line">    <span class="comment">/// Indicates if this Peer is on the same chain as us.</span></span><br><span class="line">    on_same_chain_as_us: <span class="type">bool</span>,</span><br><span class="line">    <span class="comment">/// Highest checkpoint sequence number we know of for this Peer.</span></span><br><span class="line">    height: CheckpointSequenceNumber,</span><br><span class="line">    <span class="comment">/// lowest available checkpoint watermark for this Peer.</span></span><br><span class="line">    <span class="comment">/// This defaults to 0 for now.</span></span><br><span class="line">    lowest: CheckpointSequenceNumber,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当一个节点收到其他节点最新 checkpoint 的消息时，检查其高度是否高于自身，如果高于自身高度，则开启状态同步过程。</p>
+<p>此外，每个节点定期与邻居同步最新的 checkpoint 消息，如果发现自身落后，则请求区块。</p>
+<h2 id="solana"><a class="markdownIt-Anchor" href="#solana"></a> Solana</h2>
+<h3 id="reference-synchronization-solana-docs"><a class="markdownIt-Anchor" href="#reference-synchronization-solana-docs"></a> Reference: <a target="_blank" rel="noopener" href="https://docs.solana.com/cluster/synchronization">Synchronization | Solana Docs</a></h3>
+<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/06/09/Byzantine%20Ordered%20Consensus%20without%20Byzantine%20Oligarchy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HuZhenXing">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2023/06/09/Byzantine%20Ordered%20Consensus%20without%20Byzantine%20Oligarchy/" class="post-title-link" itemprop="https://hzxgoforward.github.io/index.html">未命名</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建于：2023-06-09 18:09:01" itemprop="dateCreated datePublished" datetime="2023-06-09T18:09:01+08:00">2023-06-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-06-14 19:53:52" itemprop="dateModified" datetime="2023-06-14T19:53:52+08:00">2023-06-14</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr />
+<h2 id="layout-checkingtitle-byzantine-ordered-consensus-without-byzantine-oligarchydate-2023-6-14-150313tags-共识categories-区块链技术研究"><a class="markdownIt-Anchor" href="#layout-checkingtitle-byzantine-ordered-consensus-without-byzantine-oligarchydate-2023-6-14-150313tags-共识categories-区块链技术研究"></a> layout: checking<br />
+title: Byzantine Ordered Consensus without Byzantine Oligarchy<br />
+date: 2023-6-14 15:03:13<br />
+tags: 共识<br />
+categories: 区块链技术研究</h2>
+<h1 id="byzantine-ordered-consensus-without-byzantine-oligarchy"><a class="markdownIt-Anchor" href="#byzantine-ordered-consensus-without-byzantine-oligarchy"></a> Byzantine Ordered Consensus without Byzantine Oligarchy</h1>
+<p>论文地址: <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/uploads/prod/2020/10/paper-5f89e2898ee53.pdf">OSDI</a></p>
+<p><strong>Q1</strong> 论文试图解决什么问题？</p>
+<p>In the permissioned blockchains that rely on Byzantine fault tolerant (BFT) SMR, however, nodes have a stake in the specific sequence that ledger records, as well as in preventing other parties from manipulating the sequencing to their advantage. The traditional specification of SMR correctness, however, has no language to express these concerns.<br />
+This paper introduces Byzantine ordered consensus, a new primitive that augments the correctness specification of BFT SMR to include specific guarantees on the total orders it produces; and a new architecture for BFT SMR.</p>
+<p><strong>Q2</strong> 这是否是一个新的问题？</p>
+<p>是。</p>
+<p><strong>Q3</strong> 这篇文章要验证一个什么科学假设？</p>
+<p><strong>Q4</strong> 有哪些相关研究？如何归类？谁是这一课题在领域内值得关注的研究员？</p>
+<p><strong>Q5</strong> 论文中提到的解决方案之关键是什么？</p>
+<p><strong>Q6</strong> 论文中的实验是如何设计的？</p>
+<p><strong>Q7</strong> 用于定量评估的数据集是什么？代码有没有开源？</p>
+<p><strong>Q8</strong> 论文中的实验及结果有没有很好地支持需要验证的科学假设？</p>
+<p><strong>Q9</strong> 这篇论文到底有什么贡献？</p>
+<p><strong>Q10</strong> 下一步呢？有什么工作可以继续深入？</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/04/10/GossipSub_Attack-Resilient%20Message%20Propagation%20in%20the%20Filecoin%20and%20ETH2.0%20Networks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -592,12 +1304,24 @@
                 
               
 
-              <time title="创建于：2023-04-10 18:30:19 / 更新于：18:38:32" itemprop="dateCreated datePublished" datetime="2023-04-10T18:30:19+08:00">2023-04-10</time>
+              <time title="创建于：2023-04-10 18:30:19" itemprop="dateCreated datePublished" datetime="2023-04-10T18:30:19+08:00">2023-04-10</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="更新于：2023-04-28 17:01:41" itemprop="dateModified" datetime="2023-04-28T17:01:41+08:00">2023-04-28</time>
               
             
           </span>
@@ -682,6 +1406,8 @@
 <h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
 <p><a target="_blank" rel="noopener" href="https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf">Consensus: Bridging Theory and Practice (stanford.edu)</a></p>
 <p><a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/blockchain_guide/04_distributed_system/flp">FLP 不可能原理 - 区块链技术指南 (gitbook.io)</a></p>
+<p>[Synchrony, Asynchrony and Partial synchrony](<a target="_blank" rel="noopener" href="https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/">Synchrony, Asynchrony and Partial synchrony (decentralizedthoughts.github.io)</a>)</p>
+<p>[共识问题之三：拜占庭容错（BFT）共识算法的发展历程](<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/509757942">共识问题之三：拜占庭容错（BFT）共识算法的发展历程 - 知乎 (zhihu.com)</a>)</p>
 
           
         
@@ -1686,671 +2412,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/04/10/git%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2023/04/10/git%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="https://hzxgoforward.github.io/index.html">未命名</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2023-04-10 18:29:55" itemprop="dateCreated datePublished" datetime="2023-04-10T18:29:55+08:00">2023-04-10</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="更新于：2021-06-12 12:35:59" itemprop="dateModified" datetime="2021-06-12T12:35:59+08:00">2021-06-12</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="git-常用命令"><a class="markdownIt-Anchor" href="#git-常用命令"></a> git 常用命令</h1>
-<p>2020-08-14 11:16:16 星期五</p>
-<h3 id="用户设置"><a class="markdownIt-Anchor" href="#用户设置"></a> 用户设置</h3>
-<p>修改用户名和邮箱地址命令如下，其中引号不能省略。</p>
-<ul>
-<li>git config --global <a target="_blank" rel="noopener" href="http://user.name">user.name</a>  “xxxx”</li>
-<li>git config --global user.email  “xxxx”</li>
-</ul>
-<p>查看用户名和邮箱</p>
-<ul>
-<li>git config <a target="_blank" rel="noopener" href="http://user.name">user.name</a></li>
-<li>git config user.email</li>
-</ul>
-<h4 id="远程相关"><a class="markdownIt-Anchor" href="#远程相关"></a> 远程相关</h4>
-<p>查看远程pull和push的地址</p>
-<ul>
-<li>git remote -v</li>
-</ul>
-<p>添加远程仓库地址</p>
-<ul>
-<li>git remote add origin <a target="_blank" rel="noopener" href="https://github.com/hzxGoForward/bitcoin-hzx.git">https://github.com/hzxGoForward/bitcoin-hzx.git</a></li>
-</ul>
-<p>修改远程仓库地址</p>
-<ul>
-<li>git remote set-url origin <a target="_blank" rel="noopener" href="https://github.com/hzxGoForward/bitcoin-hzx.git">https://github.com/hzxGoForward/bitcoin-hzx.git</a></li>
-</ul>
-<p>将当前分支推送到远程分支</p>
-<ul>
-<li>git push origin 分支名</li>
-</ul>
-<p>拉取并合并远程分支</p>
-<ul>
-<li>git pull origin 分支名</li>
-</ul>
-<p>推送本地分支至远程分支</p>
-<ul>
-<li>git push origin 分支名</li>
-</ul>
-<p>当前分支与远程分支关联</p>
-<ul>
-<li>git branch --set-upstream-to=origin/dev</li>
-</ul>
-<p>创建分支并与远程分支关联</p>
-<ul>
-<li>git branch 分支名 origin/分支名</li>
-</ul>
-<p>将本地内容推送到远程分支</p>
-<ul>
-<li>git push origin/分支名</li>
-</ul>
-<p>查看当前分支与远程分支关联关系</p>
-<ul>
-<li>git branch -vv</li>
-</ul>
-<p>删除远程分支</p>
-<ul>
-<li>git push origin --delete 分支名</li>
-</ul>
-<h2 id="分支相关"><a class="markdownIt-Anchor" href="#分支相关"></a> 分支相关</h2>
-<p>创建分支</p>
-<ul>
-<li>git branch 分支名</li>
-</ul>
-<p>切换分支</p>
-<ul>
-<li>git checkout 分支名</li>
-</ul>
-<p>创建一个新的分支并切换到该分支</p>
-<ul>
-<li>
-<p>git checkout -b 分支名</p>
-</li>
-<li>
-<p>删除本地分支</p>
-</li>
-<li>
-<p>git branch -d 分支名</p>
-</li>
-</ul>
-<h2 id="提交内容"><a class="markdownIt-Anchor" href="#提交内容"></a> 提交内容</h2>
-<p>修改内容转移到新分支——方法一</p>
-<ol>
-<li>git stash</li>
-<li>git checkout -b 分支名</li>
-<li>git stash pop</li>
-</ol>
-<p>修改内容转移到新分支——方法二</p>
-<ol>
-<li>git add .</li>
-<li>git checkout -b 分支名</li>
-<li>git commit -m “msg”</li>
-</ol>
-<p>将修改存储至暂存区</p>
-<ul>
-<li>git add src/net_processing.cpp</li>
-<li>git add.</li>
-</ul>
-<p>放弃对某个文件的修改</p>
-<ul>
-<li>git checkout – src/net_processing.cpp</li>
-<li>git checkout – .</li>
-</ul>
-<p>提交修改</p>
-<ul>
-<li>git commit -m “修改说明”</li>
-</ul>
-<h3 id="gitignore"><a class="markdownIt-Anchor" href="#gitignore"></a> .gitignore</h3>
-<p>忽略*.o和*.a文件</p>
-<ul>
-<li>*.[oa]</li>
-</ul>
-<p>忽略dbg文件和dgb目录</p>
-<ul>
-<li>dbg</li>
-</ul>
-<p>忽略dbg目录</p>
-<ul>
-<li>/dbg</li>
-</ul>
-<p>只忽略dbg文件，不忽略dbg目录 !表示不忽略</p>
-<ul>
-<li>dbg</li>
-<li>!dbg/</li>
-</ul>
-<h3 id="git中gitignore文件不起作用的解决办法"><a class="markdownIt-Anchor" href="#git中gitignore文件不起作用的解决办法"></a> Git中.gitignore文件不起作用的解决办法：</h3>
-<ol>
-<li>修改gitignore文件</li>
-<li>git rm -r --cached .</li>
-<li>git add .</li>
-<li>git commit -m ‘update .gitignore’</li>
-<li>再进行push操作</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/03/27/NKN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2023/03/27/NKN/" class="post-title-link" itemprop="https://hzxgoforward.github.io/index.html">NKN</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2023-03-27 15:31:28 / 更新于：15:34:21" itemprop="dateCreated datePublished" datetime="2023-03-27T15:31:28+08:00">2023-03-27</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="nkn"><a class="markdownIt-Anchor" href="#nkn"></a> NKN</h1>
-<p>NKN（New Kind of Network） 是 2018年和 IPFS 一起产生的项目，IPFS 致力于构造一个去中心化存储层，而 NKN 致力于构建一个去中心化网络层。</p>
-<p>NKN 的白皮书中介绍了它的若干特殊概念。</p>
-<ol>
-<li>Cellular Automata powered DDTN（元胞自动机驱动的去中心化数据传输网络）。</li>
-<li>Cullular Automata driven consensus (元胞自动机驱动的共识)。</li>
-<li>Proof of Relay（传输证明）。</li>
-<li>Tokenization of network connectivity and data transmission capability（代币化网络连接和数据传输）</li>
-</ol>
-<p>下文对一些重要概念进行介绍。</p>
-<h2 id="cellular-automata-ca"><a class="markdownIt-Anchor" href="#cellular-automata-ca"></a> Cellular Automata (CA)</h2>
-<p>根据 NKN 白皮书介绍，CA 是一群节点构成的一个状态机，每个节点都根据局部规则改变自身的状态，局部规则依赖于其邻居节点。</p>
-<p>每个节点在改变的时候，将变化传递给邻居节点，最终其变化信息也会传递至 CA 中的所有节点，使得 CA 进行演进。元胞自动机是一个离散的的系统状态，其定义为：</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>A</mi><mo>=</mo><mo stretchy="false">(</mo><mi>S</mi><mo separator="true">,</mo><mi>N</mi><mo separator="true">,</mo><mi>K</mi><mo separator="true">,</mo><mi>f</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">CA = (S, N, K, f)
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mclose">)</span></span></span></span></span></p>
-<p>其中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 表示节点当前状态；<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 表示网络中节点数；<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 表示邻居节点集合； <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 表示状态转换函数。</p>
-<p>元胞自动机的系统状态从初始状态开始演进，每个节点根据自身和邻居节点的状态进行改变，全局状态由所有节点的局部状态决定，并相应的演进。</p>
-<p>元胞自动机中最重要的状态转移函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> ，具体指代的是网络拓扑更新规则。</p>
-<h2 id="decentralized-data-transmission-networkddtn"><a class="markdownIt-Anchor" href="#decentralized-data-transmission-networkddtn"></a> Decentralized Data Transmission Network（DDTN）</h2>
-<p>NKN 引入了去中心化数据传输网络（DDTN）的概念。DDTN 将独立和自组织的转发节点组织起来为客户端提供连通性和数据传输能力。这些节点以无需信任的去中心化的方式协调，并且使用代币激励节点共享网络资源。</p>
-<h2 id="总体评价"><a class="markdownIt-Anchor" href="#总体评价"></a> 总体评价</h2>
-<ol>
-<li>看起来引入了元包自动机这个高大上的概念，实际上没有什么实质性内容。例如，使用介绍元胞自动机构成的网络中，每个节点的网络拓扑更新规则到底是什么？整个文档自始至终都没交代，为什么使用元胞自动机就能比一般的网络构建方式更加去中心化？元胞自动机构建的网络如何保证效率性？</li>
-<li>参考文献的引用方式很混乱，Cellular Aotomata 的概念第一次出现的时候，完全没有写引用，后面介绍了很多的时候，突然来一大堆引用，这种引用方式很不正式。</li>
-<li>白皮书里面把很多重要的技术细节指向了黄皮书，然而截止现在2023年3月27日，黄皮书在网络上仍然找不到，该项目依托答辩。</li>
-</ol>
-<h1 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h1>
-<p><a href="extension://bfdogplmndidlpjfhoijckpakkdjkkil/pdf/viewer.html?file=https%3A%2F%2Fnkn.org%2Fwp-content%2Fuploads%2F2020%2F10%2FNKN_Whitepaper.pdf">NKN-whitepaper</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/03/25/Solana%20Turbine%20Block%20Propagation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="博主">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar1.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HuZhenXing">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2023/03/25/Solana%20Turbine%20Block%20Propagation/" class="post-title-link" itemprop="https://hzxgoforward.github.io/index.html">Solana Turbine Block Propagation</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建于：2023-03-25 22:25:55 / 更新于：22:41:19" itemprop="dateCreated datePublished" datetime="2023-03-25T22:25:55+08:00">2023-03-25</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="solana-turbine-block-propagation"><a class="markdownIt-Anchor" href="#solana-turbine-block-propagation"></a> Solana Turbine Block Propagation</h1>
-<p>Solana中的共识节点称之为 validators，所有的 validators 构成一个 cluster（簇）。每次只有一个共识节点负责出块，这个负责出块的节点称之为 Leader（领导）。每个 Leader 有固定的出块区间，Solana中将其称之为 slot。</p>
-<p>当一个 Leader 生产一个新区块后，需要尽快将其分发给其他 validator，为此，Solana 使用了一种称之为 Turbine 的方法。在这种方法中，当 Leader 分发新区块时，使用纠删码对新区块进行切分成若干份，随后将每一份数据分发给一个 validator。每个 validator 收到一份数据后，再将自己收到的数据分发给其他 validator。这是一种树形分发方式，其方式完全就是 <a target="_blank" rel="noopener" href="https://dl.acm.org/doi/abs/10.1145/1165389.945474">split-stream</a> 的翻版。</p>
-<h2 id="数据分发结构"><a class="markdownIt-Anchor" href="#数据分发结构"></a> 数据分发结构</h2>
-<p>当 Leader 分发区块时，会选择 <strong>DATA_PLANE_FANOUT</strong> 个节点，并向这些节点分发数据。<strong>DATA_PLANE_FANOUT</strong> 是配置的一个值。当前 Leader 选择时，直接按照各个 validator 质押的 stake 份额的高低选择，Leader 会按照从高到低选择一批节点，然后使用随机选取 <strong>DATA_PLANE_FANOUT</strong> 个节点，进行随机选择的目的是为了提高安全性。可以看出，质押份额越高的节点是最快收到新区块的节点。</p>
-<p>假设 Leader 是分发过程中的根节点，构成了第 0 层（layer），那么 Leader 刚开始选择的这些节点构成了第 1 层，第一层的节点再次选择其他节点构成第 3 层，依次类推，最终，整个数据的分发方式构成了一个多播树，其方式类似下图，每个节点的子节点数由  <strong>DATA_PLANE_FANOUT</strong> 决定，当前这个值是在系统启动时配置好的。</p>
-<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3NDQiIGhlaWdodD0iMzA0Ij4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI3NDQiIGhlaWdodD0iMzA0Ij48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iMjE2IiB3aWR0aD0iMTY4IiBoZWlnaHQ9IjY0IiBjbGFzcz0ic29saWQgbm9maWxsIiByeD0iMCI+PC9yZWN0PgogIDx0ZXh0IHg9IjM0IiB5PSIyNTIiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMTM4IiB5PSIyNTIiID4zPC90ZXh0PgogIDxyZWN0IHg9IjE4OCIgeT0iMjE2IiB3aWR0aD0iMTY4IiBoZWlnaHQ9IjY0IiBjbGFzcz0ic29saWQgbm9maWxsIiByeD0iMCI+PC9yZWN0PgogIDx0ZXh0IHg9IjIxOCIgeT0iMjUyIiA+TmVpZ2hib3Job29kPC90ZXh0PgogIDx0ZXh0IHg9IjMyMiIgeT0iMjUyIiA+NDwvdGV4dD4KICA8cmVjdCB4PSIzODAiIHk9IjIxNiIgd2lkdGg9IjE2OCIgaGVpZ2h0PSI2NCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8dGV4dCB4PSI0MTAiIHk9IjI1MiIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSI1MTQiIHk9IjI1MiIgPjU8L3RleHQ+CiAgPHJlY3QgeD0iNTY0IiB5PSIyMTYiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iNTk0IiB5PSIyNTIiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNjk4IiB5PSIyNTIiID42PC90ZXh0PgogIDx0ZXh0IHg9IjMwNiIgeT0iNDQiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNDEwIiB5PSI0NCIgPjA8L3RleHQ+CiAgPHRleHQgeD0iMTU0IiB5PSIxNDAiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMjU4IiB5PSIxNDAiID4xPC90ZXh0PgogIDx0ZXh0IHg9IjQ3NCIgeT0iMTQwIiA+TmVpZ2hib3Job29kPC90ZXh0PgogIDx0ZXh0IHg9IjU3OCIgeT0iMTQwIiA+MjwvdGV4dD4KICA8Zz4KICAgIDxsaW5lIHgxPSIyNzYiIHkxPSI4IiB4Mj0iNDQ0IiB5Mj0iOCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjc2IiB5MT0iOCIgeDI9IjI3NiIgeTI9IjcyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0NDQiIHkxPSI4IiB4Mj0iNDQ0IiB5Mj0iNzIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIwNCIgeTE9IjQwIiB4Mj0iMjc2IiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIwNCIgeTE9IjQwIiB4Mj0iMjA0IiB5Mj0iODQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjQ0NCIgeTE9IjQwIiB4Mj0iNTMyIiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjUzMiIgeTE9IjQwIiB4Mj0iNTMyIiB5Mj0iODQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjI3NiIgeTE9IjcyIiB4Mj0iNDQ0IiB5Mj0iNzIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPHBvbHlnb24gcG9pbnRzPSIyMDAsODQgMjA4LDg0IDIwNCw5NiIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogICAgPHBvbHlnb24gcG9pbnRzPSI1MjgsODQgNTM2LDg0IDUzMiw5NiIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogIDwvZz4KICA8Zz4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxMDQiIHgyPSIyOTIiIHkyPSIxMDQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjEyNCIgeTE9IjEwNCIgeDI9IjEyNCIgeTI9IjE2OCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjkyIiB5MT0iMTA0IiB4Mj0iMjkyIiB5Mj0iMTY4IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxNjgiIHgyPSIyOTIiIHkyPSIxNjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjE1NiIgeTE9IjE2OCIgeDI9IjE1NiIgeTI9IjE5NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjA0IiB5MT0iMTY4IiB4Mj0iMjA0IiB5Mj0iMTk2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxwb2x5Z29uIHBvaW50cz0iMTUyLDE5NiAxNjAsMTk2IDE1NiwyMDgiIGNsYXNzPSJmaWxsZWQiPjwvcG9seWdvbj4KICAgIDxwb2x5Z29uIHBvaW50cz0iMjAwLDE5NiAyMDgsMTk2IDIwNCwyMDgiIGNsYXNzPSJmaWxsZWQiPjwvcG9seWdvbj4KICA8L2c+CiAgPGc+CiAgICA8bGluZSB4MT0iNDQ0IiB5MT0iMTA0IiB4Mj0iNjEyIiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0NDQiIHkxPSIxMDQiIHgyPSI0NDQiIHkyPSIxNjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjYxMiIgeTE9IjEwNCIgeDI9IjYxMiIgeTI9IjE2OCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iNDQ0IiB5MT0iMTY4IiB4Mj0iNjEyIiB5Mj0iMTY4IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI1MzIiIHkxPSIxNjgiIHgyPSI1MzIiIHkyPSIxOTYiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjU4MCIgeTE9IjE2OCIgeDI9IjU4MCIgeTI9IjE5NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjUyOCwxOTYgNTM2LDE5NiA1MzIsMjA4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8cG9seWdvbiBwb2ludHM9IjU3NiwxOTYgNTg0LDE5NiA1ODAsMjA4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgo8L3N2Zz4=)</p>
-<h2 id="shred-分发过程"><a class="markdownIt-Anchor" href="#shred-分发过程"></a> Shred 分发过程</h2>
-<p>当 Leader 分发新区块时，Leader 在第 0 层。然后把编码为若干个分片，每个分片称之为一个 Shred。</p>
-<p>当分发一个 Shred 时，Leader 节点选择并发送给一个特定的节点，这个节点称之为这个Turbine 树的根节点（root node）或者锚节点（anchor node）。锚节点会将该 Shred 分发给第 1 层的节点，同时还会发送给第 2 层的节点。因此，一个 锚节点需要将一个 Shred 分发给 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mi>D</mi><mi>A</mi><mi>T</mi><mi>A</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>L</mi><mi>A</mi><mi>N</mi><mi>E</mi><mi mathvariant="normal">_</mi><mi>F</mi><mi>A</mi><mi>N</mi><mi>O</mi><mi>U</mi><mi>T</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2 \times DATA\_PLANE\_FANOUT - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">A</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 个节点，而普通节点只需要发送给下一层的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi><mi>T</mi><mi>A</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>L</mi><mi>A</mi><mi>N</mi><mi>E</mi><mi mathvariant="normal">_</mi><mi>F</mi><mi>A</mi><mi>N</mi><mi>O</mi><mi>U</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">DATA\_PLANE\_FANOUT</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.99333em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">A</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 个节点。</p>
-<p>下图展示了一个 Leader  在 fanout 设置为 2 的情况下把一个 Shred 分发给 Neighborhood 0 的过程。Leader 首先选择将 Shred 发送给 Validator 1（根节点），随后 Validator 1 将 Shred 转发给 Validator 2，而 Validator 1 和 Validator 2 构成了第 1 层。</p>
-<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NTIiIGhlaWdodD0iMjU2Ij4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI1NTIiIGhlaWdodD0iMjU2Ij48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iMTA0IiB3aWR0aD0iNTM2IiBoZWlnaHQ9IjEyOCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8cmVjdCB4PSIzNjQiIHk9IjEzNiIgd2lkdGg9IjE0NCIgaGVpZ2h0PSI2NCIgY2xhc3M9InNvbGlkIG5vZmlsbCIgcng9IjAiPjwvcmVjdD4KICA8dGV4dCB4PSIzOTQiIHk9IjE3MiIgPlZhbGlkYXRvcjwvdGV4dD4KICA8dGV4dCB4PSI0NzQiIHk9IjE3MiIgPjI8L3RleHQ+CiAgPHRleHQgeD0iMjE4IiB5PSIxNDAiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iMzIyIiB5PSIxNDAiID4wPC90ZXh0PgogIDx0ZXh0IHg9IjY2IiB5PSIxNzIiID5WYWxpZGF0b3I8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjE4OCIgPlJvb3Q8L3RleHQ+CiAgPHRleHQgeD0iMTQ2IiB5PSIxNzIiID4xPC90ZXh0PgogIDx0ZXh0IHg9IjI1MCIgeT0iNDQiID5MZWFkZXI8L3RleHQ+CiAgPGc+CiAgICA8bGluZSB4MT0iMjEyIiB5MT0iOCIgeDI9IjMzMiIgeTI9IjgiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjIxMiIgeTE9IjgiIHgyPSIyMTIiIHkyPSI3MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzMyIiB5MT0iOCIgeDI9IjMzMiIgeTI9IjcyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMDgiIHkxPSI0MCIgeDI9IjIxMiIgeTI9IjQwIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMDgiIHkxPSI0MCIgeDI9IjEwOCIgeTI9IjExNiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMjEyIiB5MT0iNzIiIHgyPSIzMzIiIHkyPSI3MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwNCwxMTYgMTEyLDExNiAxMDgsMTI4IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgogIDxnPgogICAgPGxpbmUgeDE9IjM2IiB5MT0iMTM2IiB4Mj0iMTgwIiB5Mj0iMTM2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIzNiIgeTE9IjEzNiIgeDI9IjM2IiB5Mj0iMjAwIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxODAiIHkxPSIxMzYiIHgyPSIxODAiIHkyPSIyMDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjE4MCIgeTE9IjE1MiIgeDI9IjM1MiIgeTI9IjE1MiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjM1MiwxNDggMzYwLDE1MiAzNTIsMTU2IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8bGluZSB4MT0iMzYiIHkxPSIyMDAiIHgyPSIxODAiIHkyPSIyMDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogIDwvZz4KPC9zdmc+)</p>
-<p>如下图所示，Validator 1 和 Validator 2 继续将 Shred 发送给第 2 层的节点。可以看出，Validator 1 作为锚节点总共发送了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">2\times2-1=3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 次，而 Validator 2 只发送了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span> 次。</p>
-<p>![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NTIiIGhlaWdodD0iMzIwIj4KICA8c3R5bGU+CiAgICBsaW5lLCBwYXRoLCBjaXJjbGUsIHJlY3QsIHBvbHlnb257c3Ryb2tlOmJsYWNrO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1vcGFjaXR5OjE7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO310ZXh0e2ZvbnQtZmFtaWx5Oklvc2V2a2EgRml4ZWQsIG1vbm9zcGFjZTtmb250LXNpemU6MTRweDt9cmVjdC5iYWNrZHJvcHtzdHJva2U6bm9uZTtmaWxsOndoaXRlO30uYnJva2Vue3N0cm9rZS1kYXNoYXJyYXk6ODt9LmZpbGxlZHtmaWxsOmJsYWNrO30uYmdfZmlsbGVke2ZpbGw6d2hpdGU7fS5ub2ZpbGx7ZmlsbDp3aGl0ZTt9LmVuZF9tYXJrZWRfYXJyb3d7bWFya2VyLWVuZDp1cmwoI2Fycm93KTt9LnN0YXJ0X21hcmtlZF9hcnJvd3ttYXJrZXItc3RhcnQ6dXJsKCNhcnJvdyk7fS5lbmRfbWFya2VkX2RpYW1vbmR7bWFya2VyLWVuZDp1cmwoI2RpYW1vbmQpO30uc3RhcnRfbWFya2VkX2RpYW1vbmR7bWFya2VyLXN0YXJ0OnVybCgjZGlhbW9uZCk7fS5lbmRfbWFya2VkX2NpcmNsZXttYXJrZXItZW5kOnVybCgjY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjY2lyY2xlKTt9LmVuZF9tYXJrZWRfb3Blbl9jaXJjbGV7bWFya2VyLWVuZDp1cmwoI29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9vcGVuX2NpcmNsZXttYXJrZXItc3RhcnQ6dXJsKCNvcGVuX2NpcmNsZSk7fS5lbmRfbWFya2VkX2JpZ19vcGVuX2NpcmNsZXttYXJrZXItZW5kOnVybCgjYmlnX29wZW5fY2lyY2xlKTt9LnN0YXJ0X21hcmtlZF9iaWdfb3Blbl9jaXJjbGV7bWFya2VyLXN0YXJ0OnVybCgjYmlnX29wZW5fY2lyY2xlKTt9CiAgICA8IS0tc2VwYXJhdG9yLS0+CiAgICAKICA8L3N0eWxlPgogIDxkZWZzPgogICAgPG1hcmtlciBpZD0iYXJyb3ciIHZpZXdCb3g9Ii0yIC0yIDggOCIgcmVmWD0iNCIgcmVmWT0iMiIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8cG9seWdvbiBwb2ludHM9IjAsMCAwLDQgNCwyIDAsMCI+PC9wb2x5Z29uPgogICAgPC9tYXJrZXI+CiAgICA8bWFya2VyIGlkPSJkaWFtb25kIiB2aWV3Qm94PSItMiAtMiA4IDgiIHJlZlg9IjQiIHJlZlk9IjIiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLDIgMiwwIDQsMiAyLDQgMCwyIj48L3BvbHlnb24+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9ImNpcmNsZSIgdmlld0JveD0iMCAwIDggOCIgcmVmWD0iNCIgcmVmWT0iNCIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICA8Y2lyY2xlIGN4PSI0IiBjeT0iNCIgcj0iMiIgY2xhc3M9ImZpbGxlZCI+PC9jaXJjbGU+CiAgICA8L21hcmtlcj4KICAgIDxtYXJrZXIgaWQ9Im9wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogICAgPG1hcmtlciBpZD0iYmlnX29wZW5fY2lyY2xlIiB2aWV3Qm94PSIwIDAgOCA4IiByZWZYPSI0IiByZWZZPSI0IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgIDxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIzIiBjbGFzcz0iYmdfZmlsbGVkIj48L2NpcmNsZT4KICAgIDwvbWFya2VyPgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0iYmFja2Ryb3AiIHg9IjAiIHk9IjAiIHdpZHRoPSI1NTIiIGhlaWdodD0iMzIwIj48L3JlY3Q+CiAgPHJlY3QgeD0iNCIgeT0iOCIgd2lkdGg9IjUzNiIgaGVpZ2h0PSIxNzYiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iMjE4IiB5PSI0NCIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSIzMjIiIHk9IjQ0IiA+MDwvdGV4dD4KICA8dGV4dCB4PSI2NiIgeT0iNzYiID5WYWxpZGF0b3I8L3RleHQ+CiAgPHRleHQgeD0iOTAiIHk9IjkyIiA+Um9vdDwvdGV4dD4KICA8dGV4dCB4PSIxNDYiIHk9Ijc2IiA+MTwvdGV4dD4KICA8dGV4dCB4PSIzOTQiIHk9Ijc2IiA+VmFsaWRhdG9yPC90ZXh0PgogIDx0ZXh0IHg9IjQ3NCIgeT0iNzYiID4yPC90ZXh0PgogIDxyZWN0IHg9IjI4IiB5PSIyMzIiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iNTgiIHk9IjI2OCIgPk5laWdoYm9yaG9vZDwvdGV4dD4KICA8dGV4dCB4PSIxNjIiIHk9IjI2OCIgPjE8L3RleHQ+CiAgPHJlY3QgeD0iMzQ4IiB5PSIyMzIiIHdpZHRoPSIxNjgiIGhlaWdodD0iNjQiIGNsYXNzPSJzb2xpZCBub2ZpbGwiIHJ4PSIwIj48L3JlY3Q+CiAgPHRleHQgeD0iMzc4IiB5PSIyNjgiID5OZWlnaGJvcmhvb2Q8L3RleHQ+CiAgPHRleHQgeD0iNDgyIiB5PSIyNjgiID4yPC90ZXh0PgogIDxnPgogICAgPGxpbmUgeDE9IjM2IiB5MT0iNDAiIHgyPSIxODAiIHkyPSI0MCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzYiIHkxPSI0MCIgeDI9IjM2IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxODAiIHkxPSI0MCIgeDI9IjE4MCIgeTI9IjEwNCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTgwIiB5MT0iNTYiIHgyPSIzNTIiIHkyPSI1NiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjM1Miw1MiAzNjAsNTYgMzUyLDYwIiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8bGluZSB4MT0iMzYiIHkxPSIxMDQiIHgyPSIxODAiIHkyPSIxMDQiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjEwOCIgeTE9IjEwNCIgeDI9IjEwOCIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTI0IiB5MT0iMTA0IiB4Mj0iMTI0IiB5Mj0iMTM2IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxMjQiIHkxPSIxMzYiIHgyPSIzNjQiIHkyPSIxMzYiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjEzNiIgeDI9IjM2NCIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8cG9seWdvbiBwb2ludHM9IjEwNCwyMTIgMTEyLDIxMiAxMDgsMjI0IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgICA8cG9seWdvbiBwb2ludHM9IjM2MCwyMTIgMzY4LDIxMiAzNjQsMjI0IiBjbGFzcz0iZmlsbGVkIj48L3BvbHlnb24+CiAgPC9nPgogIDxnPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjQwIiB4Mj0iNTA4IiB5Mj0iNDAiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjM2NCIgeTE9IjQwIiB4Mj0iMzY0IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI1MDgiIHkxPSI0MCIgeDI9IjUwOCIgeTI9IjEwNCIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMzY0IiB5MT0iMTA0IiB4Mj0iNTA4IiB5Mj0iMTA0IiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSI0MjAiIHkxPSIxMDQiIHgyPSI0MjAiIHkyPSIxNTIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPGxpbmUgeDE9IjQzNiIgeTE9IjEwNCIgeDI9IjQzNiIgeTI9IjIxMiIgY2xhc3M9InNvbGlkIj48L2xpbmU+CiAgICA8bGluZSB4MT0iMTY0IiB5MT0iMTUyIiB4Mj0iNDIwIiB5Mj0iMTUyIiBjbGFzcz0ic29saWQiPjwvbGluZT4KICAgIDxsaW5lIHgxPSIxNjQiIHkxPSIxNTIiIHgyPSIxNjQiIHkyPSIyMTIiIGNsYXNzPSJzb2xpZCI+PC9saW5lPgogICAgPHBvbHlnb24gcG9pbnRzPSIxNjAsMjEyIDE2OCwyMTIgMTY0LDIyNCIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogICAgPHBvbHlnb24gcG9pbnRzPSI0MzIsMjEyIDQ0MCwyMTIgNDM2LDIyNCIgY2xhc3M9ImZpbGxlZCI+PC9wb2x5Z29uPgogIDwvZz4KPC9zdmc+)</p>
-<p>需要说明的是，上述图解只是如何发送一份 Shred 的过程，实际上，Leader 会使用纠删码把一个区块编码为多个 Shred，然后针对每一个 Shred，把每个 Shred 发送给不同的根节点。假设整个区块被编码为 2 个 Shred，随后 Validator 1 将收到的 Shred 1 发送给 Validator2，而 Validator 2 会将收到的 Shred 2 发送给 Validator 2。最终 Validator 1 和 Validator 2 都可以通过纠删码解码原始的区块。</p>
-<p>为了快速传输数据，Solana 使用 UDP 协议进行传输，而 UDP 不是可靠传输，因此，传输过程中加入 FEC 以增加数据的鲁棒性。</p>
-<h2 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h2>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://docs.solana.com/cluster/turbine-block-propagation">Slolana Document－Turbine Block Propagation</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">&gt;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">&gt;</a>
   </nav>
 
 

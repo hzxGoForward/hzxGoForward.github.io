@@ -108,17 +108,16 @@
 
 
 
-  <meta name="description" content="同步、半同步、异步的理解  同步、半同步、异步定义一  同步是指节点之间的延迟存在一个已知的 Δt 上界 半同步是指节点之间的延迟存在一个 Δt 的上界，但是不知道上界是多少，但是消息一定会传送到。 异步只保证最终消息可达，对传输时间的上限没有假设。   同步、半同步、异步定义二  同步（synchronous）网络假设网络中的消息能够在一个已知的时间 Δ 内到达，这是一种非常理想的假设，实际的">
+  <meta name="description" content="主流的公链种网络构建和数据分发过程。 名称定义 共识节点：参与共识并生成新区块后扩展区块链的节点，又称之为验证节点。 全节点：不参与共识，但是会跟踪和验证账本数据并存储完整区块链数据的节点。  Aptos  Near near.org&#x2F;developers  SUI  节点发现以及入网过程 节点启动时有一个配置文件 fullnode.yaml 文件，该文件中指定节点进入 Testnet 还是 M">
 <meta property="og:type" content="article">
-<meta property="og:title" content="同步、半同步、异步的概念">
-<meta property="og:url" content="https://hzxgoforward.github.io/2023/04/10/%E5%90%8C%E6%AD%A5%E3%80%81%E5%8D%8A%E5%90%8C%E6%AD%A5%E3%80%81%E5%BC%82%E6%AD%A5%E7%9A%84%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:title" content="HuZhenXing">
+<meta property="og:url" content="https://hzxgoforward.github.io/2023/07/02/%E4%B8%BB%E6%B5%81%E7%9A%84%E5%85%AC%E9%93%BE%E4%B8%AD%E7%BD%91%E7%BB%9C%E6%9E%84%E5%BB%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B/index.html">
 <meta property="og:site_name" content="HuZhenXing">
-<meta property="og:description" content="同步、半同步、异步的理解  同步、半同步、异步定义一  同步是指节点之间的延迟存在一个已知的 Δt 上界 半同步是指节点之间的延迟存在一个 Δt 的上界，但是不知道上界是多少，但是消息一定会传送到。 异步只保证最终消息可达，对传输时间的上限没有假设。   同步、半同步、异步定义二  同步（synchronous）网络假设网络中的消息能够在一个已知的时间 Δ 内到达，这是一种非常理想的假设，实际的">
+<meta property="og:description" content="主流的公链种网络构建和数据分发过程。 名称定义 共识节点：参与共识并生成新区块后扩展区块链的节点，又称之为验证节点。 全节点：不参与共识，但是会跟踪和验证账本数据并存储完整区块链数据的节点。  Aptos  Near near.org&#x2F;developers  SUI  节点发现以及入网过程 节点启动时有一个配置文件 fullnode.yaml 文件，该文件中指定节点进入 Testnet 还是 M">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-04-10T10:30:19.346Z">
-<meta property="article:modified_time" content="2023-04-28T09:01:41.709Z">
+<meta property="article:published_time" content="2023-07-02T14:23:12.662Z">
+<meta property="article:modified_time" content="2023-07-02T16:26:03.273Z">
 <meta property="article:author" content="hzx">
-<meta property="article:tag" content="共识协议">
 <meta name="twitter:card" content="summary">
 
 
@@ -126,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="https://hzxgoforward.github.io/2023/04/10/同步、半同步、异步的理解/"/>
+  <link rel="canonical" href="https://hzxgoforward.github.io/2023/07/02/主流的公链中网络构建和数据分发过程/"/>
 
 
 
@@ -136,7 +135,7 @@
   };
 </script>
 
-  <title>同步、半同步、异步的概念 | HuZhenXing</title>
+  <title> | HuZhenXing</title>
   
 
 
@@ -360,7 +359,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/04/10/%E5%90%8C%E6%AD%A5%E3%80%81%E5%8D%8A%E5%90%8C%E6%AD%A5%E3%80%81%E5%BC%82%E6%AD%A5%E7%9A%84%E7%90%86%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="https://hzxgoforward.github.io/2023/07/02/%E4%B8%BB%E6%B5%81%E7%9A%84%E5%85%AC%E9%93%BE%E4%B8%AD%E7%BD%91%E7%BB%9C%E6%9E%84%E5%BB%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="博主">
@@ -377,7 +376,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">同步、半同步、异步的概念
+          <h1 class="post-title" itemprop="name headline">
               
             
           </h1>
@@ -402,7 +401,7 @@
                 
               
 
-              <time title="创建于：2023-04-10 18:30:19" itemprop="dateCreated datePublished" datetime="2023-04-10T18:30:19+08:00">2023-04-10</time>
+              <time title="创建于：2023-07-02 22:23:12" itemprop="dateCreated datePublished" datetime="2023-07-02T22:23:12+08:00">2023-07-02</time>
             
 
             
@@ -419,29 +418,11 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="更新于：2023-04-28 17:01:41" itemprop="dateModified" datetime="2023-04-28T17:01:41+08:00">2023-04-28</time>
+                <time title="更新于：2023-07-03 00:26:03" itemprop="dateModified" datetime="2023-07-03T00:26:03+08:00">2023-07-03</time>
               
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E5%85%B1%E8%AF%86%E5%8D%8F%E8%AE%AE/" itemprop="url" rel="index"><span itemprop="name">共识协议</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -476,37 +457,29 @@
       
 
       
-        <h1 id="同步-半同步-异步的理解"><a class="markdownIt-Anchor" href="#同步-半同步-异步的理解"></a> 同步、半同步、异步的理解</h1>
-<h3 id="同步-半同步-异步定义一"><a class="markdownIt-Anchor" href="#同步-半同步-异步定义一"></a> 同步、半同步、异步定义一</h3>
-<ul>
-<li>同步是指节点之间的延迟存在一个已知的 Δt 上界</li>
-<li>半同步是指节点之间的延迟存在一个 Δt 的上界，但是不知道上界是多少，但是消息一定会传送到。</li>
-<li>异步只保证最终消息可达，对传输时间的上限没有假设。</li>
-</ul>
-<h3 id="同步-半同步-异步定义二"><a class="markdownIt-Anchor" href="#同步-半同步-异步定义二"></a> 同步、半同步、异步定义二</h3>
-<ul>
-<li><strong>同步（synchronous）网络</strong>假设网络中的消息能够在一个已知的时间 Δ 内到达，这是一种非常理想的假设，实际的工程实践中很难保证这一假设成立。</li>
-<li><strong>半同步（partially synchronous）网络</strong>假设在一个 GST（global stabilization time）事件之后，消息在 Δ 时间内到达。随着网络技术的发展，这种假设已经能符合我们生活中遇到多绝大多数网络情况，而且设计和实现这类协议的难度不高，因此很多常见的协议比如 Paxos、Raft、PBFT 等都是基于半同步网络假设设计的共识协议。这些协议虽然能够保证在任何网络情况下系统的一致性，但在异步网络下会丧失活性。</li>
-<li><strong>异步（Asynchronous）网络</strong>只保证消息最终能到达，并没有到达时间的限制，这几乎涵盖所有网络情况。由此可见，异步 BFT 协议的鲁棒性最强，即使在极端网络条件下协议也不会丧失活性。</li>
-</ul>
-<h3 id="比特币为什么是同步协议"><a class="markdownIt-Anchor" href="#比特币为什么是同步协议"></a> 比特币为什么是同步协议</h3>
-<p>同步和半同步的区别在于，同步假设下，超过设定的时间，系统安全性会丧失。半同步假设下，超时之后系统安全性不会丧失。</p>
-<p>在比特币系统中，如果节点 10 分钟内无法收到新区块，那么整个网络有很大的风险会出现分叉，当网络出现分叉时，系统的安全性已经受到威胁，因此，比特币可以理解为同步协议。</p>
-<h3 id="cap-理论"><a class="markdownIt-Anchor" href="#cap-理论"></a> CAP 理论</h3>
-<p>一个分布式系统中，Consistency、Availability、Partition tolerance 无法同时获得。</p>
-<ul>
-<li>一致性（Consistency）：任何事务应该都是原子的，所有副本上的状态都是事务成功提交后的结果，并保持强一致；</li>
-<li>可用性（Availability）：系统（非失败节点）能在有限时间内完成对操作请求的应答；</li>
-<li>分区容忍性（Partition）：系统中的网络可能发生分区故障（成为多个子网，甚至出现节点上线和下线），即节点之间的通信无法保障。而网络故障不应该影响到系统正常服务。</li>
-</ul>
-<p>CAP 原理认为，分布式系统最多只能保证三项特性中的两项特性。</p>
-<h3 id="flp-不可能原理"><a class="markdownIt-Anchor" href="#flp-不可能原理"></a> FLP 不可能原理</h3>
-<p><strong>FLP 不可能原理</strong>：在网络可靠、但允许节点失效（即便只有一个）的最小化异步模型系统中，不存在一个可以解决一致性问题的确定性共识算法（No completely asynchronous consensus protocol can tolerate even a single unannounced process death）。</p>
-<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
-<p><a target="_blank" rel="noopener" href="https://web.stanford.edu/~ouster/cgi-bin/papers/OngaroPhD.pdf">Consensus: Bridging Theory and Practice (stanford.edu)</a></p>
-<p><a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/blockchain_guide/04_distributed_system/flp">FLP 不可能原理 - 区块链技术指南 (gitbook.io)</a></p>
-<p>[Synchrony, Asynchrony and Partial synchrony](<a target="_blank" rel="noopener" href="https://decentralizedthoughts.github.io/2019-06-01-2019-5-31-models/">Synchrony, Asynchrony and Partial synchrony (decentralizedthoughts.github.io)</a>)</p>
-<p>[共识问题之三：拜占庭容错（BFT）共识算法的发展历程](<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/509757942">共识问题之三：拜占庭容错（BFT）共识算法的发展历程 - 知乎 (zhihu.com)</a>)</p>
+        <h1 id="主流的公链种网络构建和数据分发过程"><a class="markdownIt-Anchor" href="#主流的公链种网络构建和数据分发过程"></a> 主流的公链种网络构建和数据分发过程。</h1>
+<p>名称定义</p>
+<p><strong>共识节点</strong>：参与共识并生成新区块后扩展区块链的节点，又称之为<strong>验证节点</strong>。</p>
+<p><strong>全节点</strong>：不参与共识，但是会跟踪和验证账本数据并存储完整区块链数据的节点。</p>
+<h2 id="aptos"><a class="markdownIt-Anchor" href="#aptos"></a> Aptos</h2>
+<h2 id="near"><a class="markdownIt-Anchor" href="#near"></a> Near</h2>
+<p><a target="_blank" rel="noopener" href="https://near.org/developers">near.org/developers</a></p>
+<h2 id="sui"><a class="markdownIt-Anchor" href="#sui"></a> SUI</h2>
+<h2 id="节点发现以及入网过程"><a class="markdownIt-Anchor" href="#节点发现以及入网过程"></a> 节点发现以及入网过程</h2>
+<p>节点启动时有一个配置文件 fullnode.yaml 文件，该文件中指定节点进入 Testnet 还是 Mainnet。配置文件中还指定了种子节点的信息。例如如果进入主网时种子节点的信息为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">p2p-config:</span><br><span class="line">  seed-peers:</span><br><span class="line">    - address: /dns/icn-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 303f1f35afc9a6f82f8d21724f44e1245f4d8eca0806713a07c525dadda95a66</span><br><span class="line">    - address: /dns/icn-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: cb7ce193cf7a41e9cc2f99e65dd1487b6314a57c74be42cc8c9225b203301812</span><br><span class="line">    - address: /dns/mel-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: d32b55bdf1737ec415df8c88b3bf91e194b59ee3127e3f38ea46fd88ba2e7849</span><br><span class="line">    - address: /dns/mel-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: bbf3be337fc16614a1953da83db729abfdc40596e197f36fe408574f7c9b780e</span><br><span class="line">    - address: /dns/ewr-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: c7bf6cb93ca8fdda655c47ebb85ace28e6931464564332bf63e27e90199c50ee</span><br><span class="line">    - address: /dns/ewr-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 3227f8a05f0faa1a197c075d31135a366a1c6f3d4872cb8af66c14dea3e0eb66</span><br><span class="line">    - address: /dns/sjc-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 6f0b25087cd6b2fd2e4329bcf308ac95a37c49277dd7286b72470c124809db5b</span><br><span class="line">    - address: /dns/sjc-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: af1d5d8468b3612ac2b6ff3ca91e99a71390dbe5b83dea9f6ae2da708d689227</span><br><span class="line">    - address: /dns/lhr-00.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: c619a5e0f8f36eac45118c1f8bda28f0f508e2839042781f1d4a9818043f732c</span><br><span class="line">    - address: /dns/lhr-01.mainnet.sui.io/udp/8084</span><br><span class="line">      peer-id: 53dcedf250f73b1ec83250614498947db00d17c0181020fcdb7b6db12afbc175</span><br></pre></td></tr></table></figure>
+<p>SUI 中全节点入网时，每个从 seed 节点处获取网络中的节点，然后从中随机选择一些节点建立连接，基于这种方式进入网络。</p>
+<h3 id="数据同步"><a class="markdownIt-Anchor" href="#数据同步"></a> 数据同步</h3>
+<p>文件源码位置：<a target="_blank" rel="noopener" href="https://github.com/MystenLabs/sui/blob/main/crates/sui-network/src/state_sync/mod.rs">sui/crates/sui-network/src/state_sync/mod.rs at main · MystenLabs/sui · GitHub</a></p>
+<p>数据类型：checkpoint 、transactions。</p>
+<p>当共识层的 validator 产生一个 checkpoint 之后，调用 send_checkpoint 方法将最新状态发送给其他节点。</p>
+<p>其他节点收到新的 checkpoint 之后，存储该信息后调用 spawn_notify_peers_of_checkpoint 函数将该信息通知给其他节点。通知的内容为 PeerStateSyncInfo，其结构如下。可以发现其中只包含 checkpoint 的摘要，最低的区块高度和最高的区块高度，但是并不包含 checkpoint 本身。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Copy, Clone, Debug, PartialEq, Eq)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PeerStateSyncInfo</span> &#123;</span><br><span class="line">    <span class="comment">/// The digest of the Peer&#x27;s genesis checkpoint.</span></span><br><span class="line">    genesis_checkpoint_digest: CheckpointDigest,</span><br><span class="line">    <span class="comment">/// Indicates if this Peer is on the same chain as us.</span></span><br><span class="line">    on_same_chain_as_us: <span class="type">bool</span>,</span><br><span class="line">    <span class="comment">/// Highest checkpoint sequence number we know of for this Peer.</span></span><br><span class="line">    height: CheckpointSequenceNumber,</span><br><span class="line">    <span class="comment">/// lowest available checkpoint watermark for this Peer.</span></span><br><span class="line">    <span class="comment">/// This defaults to 0 for now.</span></span><br><span class="line">    lowest: CheckpointSequenceNumber,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当一个节点收到其他节点最新 checkpoint 的消息时，检查其高度是否高于自身，如果高于自身高度，则开启状态同步过程。</p>
+<p>此外，每个节点定期与邻居同步最新的 checkpoint 消息，如果发现自身落后，则请求区块。</p>
+<h2 id="solana"><a class="markdownIt-Anchor" href="#solana"></a> Solana</h2>
+<h3 id="reference-synchronization-solana-docs"><a class="markdownIt-Anchor" href="#reference-synchronization-solana-docs"></a> Reference: <a target="_blank" rel="noopener" href="https://docs.solana.com/cluster/synchronization">Synchronization | Solana Docs</a></h3>
+<h1 id=""><a class="markdownIt-Anchor" href="#"></a> </h1>
 
       
     </div>
@@ -528,12 +501,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/%E5%85%B1%E8%AF%86%E5%8D%8F%E8%AE%AE/" rel="tag"># 共识协议</a>
-          
-        </div>
-      
 
       
       
@@ -543,8 +510,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/04/10/SSH%20%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95+%E8%BF%9C%E7%A8%8B%E6%8B%B7%E8%B4%9D/" rel="next" title="ssh 远程登录和拷贝">
-                <i class="fa fa-chevron-left"></i> ssh 远程登录和拷贝
+              <a href="/2023/06/09/Byzantine%20Ordered%20Consensus%20without%20Byzantine%20Oligarchy/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
               </a>
             
           </div>
@@ -553,7 +520,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2023/04/10/GossipSub_Attack-Resilient%20Message%20Propagation%20in%20the%20Filecoin%20and%20ETH2.0%20Networks/" rel="prev" title="">
+              <a href="/2023/12/28/HotStuff%20%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%90%86%E8%A7%A3/" rel="prev" title="">
                  <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -700,7 +667,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-%E5%8D%8A%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text"> 同步、半同步、异步的理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-%E5%8D%8A%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5%E5%AE%9A%E4%B9%89%E4%B8%80"><span class="nav-text"> 同步、半同步、异步定义一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-%E5%8D%8A%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5%E5%AE%9A%E4%B9%89%E4%BA%8C"><span class="nav-text"> 同步、半同步、异步定义二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E7%89%B9%E5%B8%81%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E5%90%8C%E6%AD%A5%E5%8D%8F%E8%AE%AE"><span class="nav-text"> 比特币为什么是同步协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cap-%E7%90%86%E8%AE%BA"><span class="nav-text"> CAP 理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flp-%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%8E%9F%E7%90%86"><span class="nav-text"> FLP 不可能原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text"> 参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E6%B5%81%E7%9A%84%E5%85%AC%E9%93%BE%E7%A7%8D%E7%BD%91%E7%BB%9C%E6%9E%84%E5%BB%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%88%86%E5%8F%91%E8%BF%87%E7%A8%8B"><span class="nav-text"> 主流的公链种网络构建和数据分发过程。</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#aptos"><span class="nav-text"> Aptos</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#near"><span class="nav-text"> Near</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sui"><span class="nav-text"> SUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%8F%91%E7%8E%B0%E4%BB%A5%E5%8F%8A%E5%85%A5%E7%BD%91%E8%BF%87%E7%A8%8B"><span class="nav-text"> 节点发现以及入网过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="nav-text"> 数据同步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#solana"><span class="nav-text"> Solana</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reference-synchronization-solana-docs"><span class="nav-text"> Reference: Synchronization | Solana Docs</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text"> </span></a></li></ol></div>
             
 
           </div>
